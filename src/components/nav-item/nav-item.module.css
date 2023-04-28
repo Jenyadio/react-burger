@@ -1,5 +1,6 @@
 .navItem {
     display: flex;
+    align-items: center;
     gap: 8px;
     cursor: pointer;
 }
@@ -10,4 +11,13 @@
 
 .navItem:nth-child(4) {
     margin-left: 279px;
+}
+
+.navItemLink {
+    text-decoration: none;
+    color: #8585AD;
+}
+
+.active {
+    color: #F2F2F3;
 }

@@ -13,10 +13,10 @@ function AppHeader() {
     <header className={headerStyles.header}>
         <div className={headerStyles.wrapper}>
             <nav className={headerStyles.nav}>
-                <NavItem name="Конструктор" icon={burger} inactive={false}/>
-                <NavItem name="Лента заказов" icon={list} inactive={true}/>
+                <NavItem name="Конструктор" icon={burger} active={true}/>
+                <NavItem name="Лента заказов" icon={list} active={false}/>
                 <Logo />
-                <NavItem name="Личный кабинет" icon={profile} inactive={true}/>
+                <NavItem name="Личный кабинет" icon={profile} active={false}/>
             </nav>
         </div>
     </header>
