@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
-function BurgerTabs() {
+function Tabs() {
     const [current, setCurrent] = React.useState('Булки')
     return (
       <div style={{ display: 'flex' }}>
@@ -18,4 +18,4 @@ function BurgerTabs() {
     )
 }
 
-export default BurgerTabs
+export default Tabs
