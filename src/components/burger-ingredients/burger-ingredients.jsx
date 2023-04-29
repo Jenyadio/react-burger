@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Tabs from '../tabs/tabs'
 import Ingredients from '../ingredients/ingredients'
 import burgerIngredientsStyles from '../../components/burger-ingredients/burger-ingredients.module.css'

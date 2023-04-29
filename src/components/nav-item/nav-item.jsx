@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import navStyles from '../nav-item/nav-item.module.css';
 
 function NavItem({ icon, name, active}) {
@@ -13,7 +12,7 @@ function NavItem({ icon, name, active}) {
 }
 
 NavItem.propTypes = {
-    icon: PropTypes.elementType,
+    icon: PropTypes.object,
     name: PropTypes.string,
     inactive: PropTypes.bool,
 }
