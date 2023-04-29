@@ -12,9 +12,9 @@ function BurgerIngredients() {
             <Tabs />
         </header>
         <main className={burgerIngredientsStyles.box}>
-            <Ingredients name="Булки" type="bun"/>
-            <Ingredients name="Соусы" type="sauce"/>
-            <Ingredients name="Начинки" type="main"/>
+            <Ingredients name="Булки" type="bun" id="bun"/>
+            <Ingredients name="Соусы" type="sauce" id="sauce"/>
+            <Ingredients name="Начинки" type="main" id="main"/>
         </main>
     </section>
   )
