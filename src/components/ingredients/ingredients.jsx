@@ -10,7 +10,7 @@ function Ingredients(props) {
         <h2 className={`${ingredientsStyles.header} mt-10 text text_type_main-medium`} id={props.id}>{props.name}</h2>
         <div className={`${ingredientsStyles.box} mt-6 ml-4 mr-4`}>
             {data.filter(item => item.type === props.type).map((item, index) => (
-                <Item image={item.image} key={index} type={item.type} name={item.name}/>
+                <Item image={item.image} key={index} type={item.type} name={item.name} price={item.price}/>
             ))}
         </div>
     </article>
