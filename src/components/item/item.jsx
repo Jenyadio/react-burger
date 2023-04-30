@@ -17,10 +17,10 @@ function Item({image, type, name, price}) {
 }
 
 Item.propTypes = {
-  image: PropTypes.string,
-  type: PropTypes.string,
-  name: PropTypes.string,
-  price: PropTypes.number,
+  image: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
 }
 
 export default Item
