@@ -1,9 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import img from "../../images/check-icon.svg"
 import orderStyles from '../../components/order-details/order-details.module.css'
 
-function OrderDetails(props) {
+function OrderDetails() {
   return (
     <div className={orderStyles.box}>
         <p className="text text_type_digits-large pt-10 mb-8">034536</p>
@@ -14,7 +13,5 @@ function OrderDetails(props) {
     </div>
   )
 }
-
-OrderDetails.propTypes = {}
 
 export default OrderDetails

@@ -28,6 +28,9 @@ function OrderTotal(props) {
   )
 }
 
-OrderTotal.propTypes = {}
+OrderTotal.propTypes = {
+    onOpen: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired
+}
 
 export default OrderTotal

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Item from '../item/item'
 import ingredientsStyles from '../../components/ingredients/ingredients.module.css'

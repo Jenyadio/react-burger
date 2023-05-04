@@ -12,6 +12,9 @@ function CaloriesItem({name, value}) {
   )
 }
 
-CaloriesItem.propTypes = {}
+CaloriesItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired
+}
 
 export default CaloriesItem

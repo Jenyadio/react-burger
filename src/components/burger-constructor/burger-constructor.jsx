@@ -42,6 +42,9 @@ function BurgerConstructor({ data, active, onClose, onOpen }) {
 
 BurgerConstructor.propTypes = {
   data: PropTypes.array.isRequired,
+  active: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onOpen: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor

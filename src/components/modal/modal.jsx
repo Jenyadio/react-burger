@@ -22,6 +22,9 @@ function Modal({ onClose, header, children}) {
   )
 }
 
-Modal.propTypes = {}
+Modal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  header: PropTypes.string,
+}
 
 export default Modal
