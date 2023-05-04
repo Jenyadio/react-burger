@@ -9,6 +9,7 @@ function AppMain() {
     hasError: false,
     data: null,
   })
+  const [active, setActive] = useState(false);
 
   const url = "https://norma.nomoreparties.space/api/ingredients";
 
@@ -26,7 +27,13 @@ function AppMain() {
     getIngredients();
   }, [])
 
-  console.log(state.data)
+  const handleOpenModal = () => {
+    setActive(true);
+  }
+
+  const handleCloseModal = () => {
+    setActive(false);
+  }
 
   return (
     <main className={mainStyles.main}>
@@ -37,7 +44,7 @@ function AppMain() {
           state.data.data.length &&
           <>
             <BurgerIngredients data={state.data.data} />
-            <BurgerConstructor data={state.data.data}/>
+            <BurgerConstructor active={active} onClose={handleCloseModal} onOpen={handleOpenModal} data={state.data.data}/>
           </>
         }
     </main>
