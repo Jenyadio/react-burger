@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import { createPortal } from 'react-dom'
 import ModalHeader from '../modal-header/modal-header';
@@ -7,6 +7,21 @@ import modalStyles from '../modal/modal.module.css'
 const modalRoot = document.getElementById("react-modals");
 
 function Modal({ onClose, header, children}) {
+
+  const escModal = useCallback((event) => {
+    if (event.key === "Escape") {
+      onClose()
+    }
+  }, [onClose]);
+
+  useEffect(() => {
+    document.addEventListener("keydown", escModal, false);
+
+    return () => {
+      document.removeEventListener("keydown", escModal, false);
+    };
+  }, [escModal]);
+
 
   return createPortal (
     (
