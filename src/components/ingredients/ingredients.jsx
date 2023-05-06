@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Item from '../item/item'
 import ingredientsStyles from '../../components/ingredients/ingredients.module.css'
+import dataStructure from '../../utils/data-proptype-structure'
 function Ingredients({ data, name, type, id}) {
 
   const list = data.filter(item => item.type === type);
@@ -19,6 +20,7 @@ function Ingredients({ data, name, type, id}) {
 }
 
 Ingredients.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape(dataStructure).isRequired).isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,

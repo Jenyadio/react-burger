@@ -25,13 +25,13 @@ function Modal({ onClose, header, children}) {
 
   return createPortal (
     (
-        <article>
+        <section>
             <div className={`${modalStyles.modal} pt-10 pl-10 pr-10 pb-15`}>
             <ModalHeader onClose={onClose}>{header}</ModalHeader>
                 {children}
             </div>
             <ModalOverlay onClose={onClose} />
-        </article>
+        </section>
     ), 
     modalRoot
   )
@@ -40,6 +40,7 @@ function Modal({ onClose, header, children}) {
 Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   header: PropTypes.string,
+  children: PropTypes.element.isRequired,
 }
 
 export default Modal

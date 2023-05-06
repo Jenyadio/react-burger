@@ -6,11 +6,11 @@ import Modal from '../modal/modal'
 import OrderDetails from '../order-details/order-details'
 
 
-function OrderTotal(props) {
+function OrderTotal({ onOpen, onClose, active }) {
 
   return (
    <>
-    <div className={orderStyles.order} onClick={props.onOpen}>
+    <div className={orderStyles.order} onClick={onOpen}>
         <div className={`${orderStyles.price} mr-10`}>
           <p className="text text_type_digits-medium mr-2">610</p>
           <CurrencyIcon type="primary" />
@@ -19,8 +19,8 @@ function OrderTotal(props) {
           Оформить заказ
         </Button>
     </div>
-    {props.active && 
-        <Modal onClose={props.onClose}>
+    {active && 
+        <Modal onClose={onClose}>
             <OrderDetails />
         </Modal>
     }
@@ -30,7 +30,8 @@ function OrderTotal(props) {
 
 OrderTotal.propTypes = {
     onOpen: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    active: PropTypes.bool.isRequired
 }
 
 export default OrderTotal

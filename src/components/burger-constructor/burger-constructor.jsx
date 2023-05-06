@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import constructorStyles from '../../components/burger-constructor/burger-constructor.module.css'
 import OrderTotal from '../order-total/order-total'
+import dataStructure from '../../utils/data-proptype-structure'
 
 function BurgerConstructor({ data, active, onClose, onOpen }) {
   return (
@@ -41,7 +42,7 @@ function BurgerConstructor({ data, active, onClose, onOpen }) {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape(dataStructure).isRequired).isRequired,
   active: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onOpen: PropTypes.func.isRequired

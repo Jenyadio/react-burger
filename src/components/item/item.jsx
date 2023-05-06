@@ -5,7 +5,7 @@ import itemStyles from '../../components/item/item.module.css'
 import Modal from '../modal/modal'
 import IngredientDetails from '../ingredient-details/ingredient-details'
 
-function Item(props) {
+function Item({ image, type, price, name, image_large, calories, proteins, fat, carbohydrates }) {
   const [active, setActive] = useState(false);
 
   const handleOpenModal = () => {
@@ -19,16 +19,16 @@ function Item(props) {
   return (
     <>
       <div className={`${itemStyles.box} mb-8`} onClick={handleOpenModal}>
-        <img className="pr-4 pl-4" src={props.image} alt={props.type} />
+        <img className="pr-4 pl-4" src={image} alt={type} />
         <div className={`${itemStyles.price} mt-1 mb-1`}>
-            <p className="text text_type_digits-default">{props.price}</p>
+            <p className="text text_type_digits-default">{price}</p>
             <CurrencyIcon type="primary" />
         </div>
-        <p className={`${itemStyles.description} text text_type_main-default mb-6`}>{props.name}</p>
+        <p className={`${itemStyles.description} text text_type_main-default mb-6`}>{name}</p>
       </div>
       {active && 
         <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-          <IngredientDetails image={props.image_large} name={props.name} calories={props.calories} proteins={props.proteins} fat={props.fat} carbohydrates={props.carbohydrates} type={props.type} />
+          <IngredientDetails image={image_large} name={name} calories={calories} proteins={proteins} fat={fat} carbohydrates={carbohydrates} type={type} />
         </Modal>
       }
     </>
@@ -36,10 +36,15 @@ function Item(props) {
 }
 
 Item.propTypes = {
-  image: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
+    name: PropTypes.string,
+    type: PropTypes.string,
+    proteins: PropTypes.number,
+    fat: PropTypes.number,
+    carbohydrates: PropTypes.number,
+    calories: PropTypes.number,
+    price: PropTypes.number,
+    image: PropTypes.string,
+    image_large: PropTypes.string,
 }
 
 export default Item

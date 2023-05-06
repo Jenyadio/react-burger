@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import BurgerIngredients from '../burger-ingredients/burger-ingredients'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
 import mainStyles from '../../components/app-main/app-main.module.css'
+import getIngredients from '../../utils/burger-api'
 
 function AppMain() {
   const [state, setState] = useState({
@@ -11,20 +12,10 @@ function AppMain() {
   })
   const [active, setActive] = useState(false);
 
-  const url = "https://norma.nomoreparties.space/api/ingredients";
-
   useEffect(() => {
-    const getIngredients = () => {
-    setState({ ...state, hasError: false, isLoading: true });
-    fetch(url)
-      .then(res => res.json())
-      .then(data => setState({ ...state, data, isLoading: false }))
-      .catch(e => {
-        setState({ ...state, hasError: true, isLoading: false });
-      });
-    };
-    
-    getIngredients();
+   const response = getIngredients();
+   response.then(data => data ? setState({ ...state, data, hasError: false, isLoading: false }) : setState({ ...state, hasError: true, isLoading: false })
+   )
   }, [])
 
   const handleOpenModal = () => {

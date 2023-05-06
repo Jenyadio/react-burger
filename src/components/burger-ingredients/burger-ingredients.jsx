@@ -3,6 +3,7 @@ import Tabs from '../tabs/tabs'
 import PropTypes from 'prop-types'
 import Ingredients from '../ingredients/ingredients'
 import burgerIngredientsStyles from '../../components/burger-ingredients/burger-ingredients.module.css'
+import dataStructure from '../../utils/data-proptype-structure'
 
 function BurgerIngredients({ data }) {
   return (
@@ -21,7 +22,7 @@ function BurgerIngredients({ data }) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape(dataStructure).isRequired).isRequired,
 }
 
 export default BurgerIngredients
