@@ -1,9 +1,11 @@
 import React from 'react'
-import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import data from '../../utils/data.json'
+import PropTypes from 'prop-types'
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import constructorStyles from '../../components/burger-constructor/burger-constructor.module.css'
+import OrderTotal from '../order-total/order-total'
+import dataStructure from '../../utils/data-proptype-structure'
 
-function BurgerConstructor() {
+function BurgerConstructor({ data, active, onClose, onOpen }) {
   return (
     <section>
       <div className={`${constructorStyles.box} mt-25 mb-10`}>
@@ -34,17 +36,16 @@ function BurgerConstructor() {
           thumbnail={data[0].image}
         />
       </div>
-      <div className={constructorStyles.order}>
-        <div className={`${constructorStyles.price} mr-10`}>
-          <p className="text text_type_digits-medium mr-2">610</p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <Button htmlType="button" type="primary" size="large">
-          Оформить заказ
-        </Button>
-      </div>
+      <OrderTotal active={active} onClose={onClose} onOpen={onOpen}/>
     </section>
   )
+}
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape(dataStructure).isRequired).isRequired,
+  active: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onOpen: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor

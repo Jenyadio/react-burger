@@ -25,20 +25,3 @@
 .boxInside::-webkit-scrollbar-thumb {
     background-color: #8585AD;
 }
-
-.order {
-    display: flex;
-    align-items: center;
-    justify-content: right;
-}
-
-.price {
-    display: flex;
-    align-items: center;
-}
-
-.price svg {
-    width: 33px;
-    height: 33px;
-}
-
