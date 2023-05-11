@@ -1,9 +1,12 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import constructorStyles from '../../components/burger-constructor/burger-constructor.module.css'
-import OrderTotal from '../order-total/order-total'
-import dataStructure from '../../utils/data-proptype-structure'
+import React from "react";
+import PropTypes from "prop-types";
+import {
+  ConstructorElement,
+  DragIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import constructorStyles from "../../components/burger-constructor/burger-constructor.module.css";
+import OrderTotal from "../order-total/order-total";
+import dataStructure from "../../utils/data-proptype-structure";
 
 function BurgerConstructor({ data, active, onClose, onOpen }) {
   return (
@@ -17,16 +20,18 @@ function BurgerConstructor({ data, active, onClose, onOpen }) {
           thumbnail={data[0].image}
         />
         <div className={`${constructorStyles.boxInside} pr-2`}>
-        {data.filter(item => item.type === "main" || item.type === "sauce").map((item, index) => (
-         <div key={index}>
-          <DragIcon type="primary" />
-          <ConstructorElement
-          text={item.name}
-          price={item.price}
-          thumbnail={item.image}
-          />
-         </div>
-        ))}
+          {data
+            .filter((item) => item.type === "main" || item.type === "sauce")
+            .map((item, index) => (
+              <div key={index}>
+                <DragIcon type="primary" />
+                <ConstructorElement
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              </div>
+            ))}
         </div>
         <ConstructorElement
           type="bottom"
@@ -36,16 +41,20 @@ function BurgerConstructor({ data, active, onClose, onOpen }) {
           thumbnail={data[0].image}
         />
       </div>
-      <OrderTotal active={active} onClose={onClose} onOpen={onOpen}/>
+      <OrderTotal
+        active={active}
+        onClose={onClose}
+        onOpen={onOpen}
+      />
     </section>
-  )
+  );
 }
 
 BurgerConstructor.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape(dataStructure).isRequired).isRequired,
   active: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onOpen: PropTypes.func.isRequired
-}
+  onOpen: PropTypes.func.isRequired,
+};
 
-export default BurgerConstructor
+export default BurgerConstructor;
