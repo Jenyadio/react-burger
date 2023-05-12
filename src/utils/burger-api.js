@@ -6,9 +6,6 @@ const checkResponse = (res) => {
 
 export default function getIngredients() {
     return fetch(`${NORMA_API}/ingredients`)
-     .then(res => checkResponse(res))
-     .catch(e => {
-        console.log(e)
-      });
+     .then(checkResponse)
 }
  

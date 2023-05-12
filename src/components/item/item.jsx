@@ -28,15 +28,8 @@ function Item({
 
   return (
     <>
-      <div
-        className={`${itemStyles.box} mb-8`}
-        onClick={handleOpenModal}
-      >
-        <img
-          className="pr-4 pl-4"
-          src={image}
-          alt={type}
-        />
+      <div className={`${itemStyles.box} mb-8`} onClick={handleOpenModal}>
+        <img className="pr-4 pl-4" src={image} alt={type} />
         <div className={`${itemStyles.price} mt-1 mb-1`}>
           <p className="text text_type_digits-default">{price}</p>
           <CurrencyIcon type="primary" />
@@ -48,10 +41,7 @@ function Item({
         </p>
       </div>
       {active && (
-        <Modal
-          header="Детали ингредиента"
-          onClose={handleCloseModal}
-        >
+        <Modal header="Детали ингредиента" onClose={handleCloseModal}>
           <IngredientDetails
             image={image_large}
             name={name}

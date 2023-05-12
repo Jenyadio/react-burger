@@ -15,24 +15,9 @@ function BurgerIngredients({ data }) {
         <Tabs />
       </header>
       <main className={burgerIngredientsStyles.box}>
-        <Ingredients
-          data={data}
-          name="Булки"
-          type="bun"
-          id="bun"
-        />
-        <Ingredients
-          data={data}
-          name="Соусы"
-          type="sauce"
-          id="sauce"
-        />
-        <Ingredients
-          data={data}
-          name="Начинки"
-          type="main"
-          id="main"
-        />
+        <Ingredients data={data} name="Булки" type="bun" id="bun" />
+        <Ingredients data={data} name="Соусы" type="sauce" id="sauce" />
+        <Ingredients data={data} name="Начинки" type="main" id="main" />
       </main>
     </section>
   );

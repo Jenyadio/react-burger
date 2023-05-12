@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import Item from "../item/item";
 import ingredientsStyles from "../../components/ingredients/ingredients.module.css";
 import dataStructure from "../../utils/data-proptype-structure";
 function Ingredients({ data, name, type, id }) {
-  const list = data.filter((item) => item.type === type);
+  const list = useMemo(() => data.filter((item) => item.type === type), [data]);
 
   return (
     <article>
@@ -16,10 +16,7 @@ function Ingredients({ data, name, type, id }) {
       </h2>
       <div className={`${ingredientsStyles.box} mt-6 ml-4 mr-4`}>
         {list.map((item, index) => (
-          <Item
-            key={index}
-            {...item}
-          />
+          <Item key={index} {...item} />
         ))}
       </div>
     </article>

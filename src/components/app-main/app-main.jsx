@@ -14,11 +14,15 @@ function AppMain() {
 
   useEffect(() => {
     const response = getIngredients();
-    response.then((data) =>
-      data
-        ? setState({ ...state, data, hasError: false, isLoading: false })
-        : setState({ ...state, hasError: true, isLoading: false })
-    );
+    response
+      .then((data) =>
+        data
+          ? setState({ ...state, data, hasError: false, isLoading: false })
+          : setState({ ...state, hasError: true, isLoading: false })
+      )
+      .catch((e) => {
+        setState({ ...state, hasError: true, isLoading: false });
+      });
   }, []);
 
   const handleOpenModal = () => {

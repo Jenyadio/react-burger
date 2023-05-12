@@ -41,11 +41,7 @@ function BurgerConstructor({ data, active, onClose, onOpen }) {
           thumbnail={data[0].image}
         />
       </div>
-      <OrderTotal
-        active={active}
-        onClose={onClose}
-        onOpen={onOpen}
-      />
+      <OrderTotal active={active} onClose={onClose} onOpen={onOpen} />
     </section>
   );
 }
