@@ -3,6 +3,7 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import mainStyles from "../../components/app-main/app-main.module.css";
 import getIngredients from "../../utils/burger-api";
+import { DataContext } from "../../services/data-context";
 
 function AppMain() {
   const [state, setState] = useState({
@@ -39,13 +40,14 @@ function AppMain() {
       {state.hasError && "Произошла ошибка"}
       {!state.isLoading && !state.hasError && state.data.data.length && (
         <>
-          <BurgerIngredients data={state.data.data} />
-          <BurgerConstructor
-            active={active}
-            onClose={handleCloseModal}
-            onOpen={handleOpenModal}
-            data={state.data.data}
-          />
+          <DataContext.Provider value={{ state, setState }}>
+            <BurgerIngredients />
+            <BurgerConstructor
+              active={active}
+              onClose={handleCloseModal}
+              onOpen={handleOpenModal}
+            />
+          </DataContext.Provider>
         </>
       )}
     </main>

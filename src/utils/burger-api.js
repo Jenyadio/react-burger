@@ -9,3 +9,15 @@ export default function getIngredients() {
      .then(checkResponse)
 }
  
+export async function sendRequest(method, body) {
+    return await fetch(`${NORMA_API}/orders`, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ingredients: body,
+      }),
+    })
+    .then(checkResponse)
+}

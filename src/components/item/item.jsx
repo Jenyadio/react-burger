@@ -6,6 +6,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 function Item({
+  _id,
   image,
   type,
   price,
@@ -28,7 +29,11 @@ function Item({
 
   return (
     <>
-      <div className={`${itemStyles.box} mb-8`} onClick={handleOpenModal}>
+      <div
+        className={`${itemStyles.box} mb-8`}
+        onClick={handleOpenModal}
+        data-id={_id}
+      >
         <img className="pr-4 pl-4" src={image} alt={type} />
         <div className={`${itemStyles.price} mt-1 mb-1`}>
           <p className="text text_type_digits-default">{price}</p>
@@ -58,15 +63,16 @@ function Item({
 }
 
 Item.propTypes = {
-  name: PropTypes.string,
-  type: PropTypes.string,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  calories: PropTypes.number,
-  price: PropTypes.number,
-  image: PropTypes.string,
-  image_large: PropTypes.string,
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  proteins: PropTypes.number.isRequired,
+  fat: PropTypes.number.isRequired,
+  carbohydrates: PropTypes.number.isRequired,
+  calories: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  image_large: PropTypes.string.isRequired,
 };
 
 export default Item;
