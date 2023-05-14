@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import mainStyles from "../../components/app-main/app-main.module.css";
@@ -12,6 +12,10 @@ function AppMain() {
     data: null,
   });
   const [active, setActive] = useState(false);
+
+  const contextValue = useMemo(() => {
+    return { state, setState };
+  }, [state, setState]);
 
   useEffect(() => {
     const response = getIngredients();
@@ -40,7 +44,7 @@ function AppMain() {
       {state.hasError && "Произошла ошибка"}
       {!state.isLoading && !state.hasError && state.data.data.length && (
         <>
-          <DataContext.Provider value={{ state, setState }}>
+          <DataContext.Provider value={contextValue}>
             <BurgerIngredients />
             <BurgerConstructor
               active={active}

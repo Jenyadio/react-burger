@@ -68,7 +68,7 @@ function OrderTotal({ ingredientsId, total, onOpen, onClose, active }) {
 }
 
 OrderTotal.propTypes = {
-  ingredientsId: PropTypes.array.isRequired,
+  ingredientsId: PropTypes.arrayOf(PropTypes.string).isRequired,
   total: PropTypes.number.isRequired,
   onOpen: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
