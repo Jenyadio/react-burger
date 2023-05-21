@@ -1,13 +1,15 @@
-import React, { useMemo, useContext } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import Item from "../item/item";
 import ingredientsStyles from "../../components/ingredients/ingredients.module.css";
-import { DataContext } from "../../services/data-context";
+import { useSelector } from "react-redux";
 function Ingredients({ name, type, id }) {
-  const { state, setState } = useContext(DataContext);
-  const data = state.data.data;
+  const items = useSelector((store) => store.burgerIngredients.items);
 
-  const list = useMemo(() => data.filter((item) => item.type === type), [data]);
+  const list = useMemo(
+    () => items.filter((item) => item.type === type),
+    [items]
+  );
 
   return (
     <article>

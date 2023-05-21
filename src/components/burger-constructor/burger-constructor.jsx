@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import {
   ConstructorElement,
@@ -6,18 +6,17 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "../../components/burger-constructor/burger-constructor.module.css";
 import OrderTotal from "../order-total/order-total";
-import { DataContext } from "../../services/data-context";
+import { useSelector } from "react-redux";
 
 function BurgerConstructor({ active, onClose, onOpen }) {
-  const { state } = useContext(DataContext);
-  const data = state.data.data;
+  const items = useSelector((store) => store.burgerIngredients.items);
 
   const ingredients = useMemo(
-    () => data.filter((item) => item.type === "main" || item.type === "sauce"),
-    [data]
+    () => items.filter((item) => item.type === "main" || item.type === "sauce"),
+    [items]
   );
 
-  const [selectedBun, setSelectedBun] = useState(data[0]);
+  const [selectedBun, setSelectedBun] = useState(items[0]);
   const [ingredientsData, setIngredientsData] = useState(ingredients);
   const [totalPrice, setTotalPrice] = useState(0);
   const [ingredientsId, setIngredientsId] = useState([]);
@@ -25,7 +24,7 @@ function BurgerConstructor({ active, onClose, onOpen }) {
   // не очень поняла, как нужно прописать ограничения внутри конструктора бургера, поэтому написала такую логику
   const handleConstructorData = (e) => {
     const id = e.currentTarget.dataset.id;
-    const selectedItem = data.filter((item) => item.id === id);
+    const selectedItem = items.filter((item) => item.id === id);
     if (selectedItem.type === "bun") {
       setSelectedBun(selectedItem);
     } else {
@@ -53,9 +52,9 @@ function BurgerConstructor({ active, onClose, onOpen }) {
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={data[0].name}
-          price={data[0].price}
-          thumbnail={data[0].image}
+          text={items[0].name}
+          price={items[0].price}
+          thumbnail={items[0].image}
         />
         <div className={`${constructorStyles.boxInside} pr-2`}>
           {ingredientsData.map((item, index) => (
@@ -72,9 +71,9 @@ function BurgerConstructor({ active, onClose, onOpen }) {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={data[0].name}
-          price={data[0].price}
-          thumbnail={data[0].image}
+          text={items[0].name}
+          price={items[0].price}
+          thumbnail={items[0].image}
         />
       </div>
       <OrderTotal
