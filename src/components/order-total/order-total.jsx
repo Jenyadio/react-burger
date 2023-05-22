@@ -7,35 +7,17 @@ import {
 import orderStyles from "../../components/order-total/order-total.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { sendRequest } from "../../utils/burger-api";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderNumber } from "../../services/actions/order-details";
 
 function OrderTotal({ ingredientsId, total, onOpen, onClose, active }) {
-  const [orderNumber, setOrderNumber] = useState({
-    isLoading: true,
-    hasError: false,
-    data: null,
-  });
+  const { orderNumber, dataRequest, dataFailed } = useSelector(
+    (store) => store.orderDetails
+  );
+  const dispatch = useDispatch();
 
   const sendOrder = () => {
-    const result = sendRequest("POST", ingredientsId);
-    result
-      .then((data) => {
-        data.success
-          ? setOrderNumber({
-              ...orderNumber,
-              data: data.order.number,
-              isLoading: false,
-              hasError: false,
-            })
-          : setOrderNumber({
-              ...orderNumber,
-              isLoading: false,
-              hasError: true,
-            });
-      })
-      .catch((e) => {
-        setOrderNumber({ ...orderNumber, isLoading: false, hasError: true });
-      });
+    dispatch(getOrderNumber("POST", ingredientsId));
   };
 
   return (
@@ -56,11 +38,9 @@ function OrderTotal({ ingredientsId, total, onOpen, onClose, active }) {
       </div>
       {active && (
         <Modal onClose={onClose}>
-          {orderNumber.isLoading && "Загрузка..."}
-          {orderNumber.hasError && "Произошла ошибка"}
-          {!orderNumber.isLoading &&
-            !orderNumber.hasError &&
-            orderNumber.data && <OrderDetails order={orderNumber.data} />}
+          {dataRequest && "Загрузка..."}
+          {dataFailed && "Произошла ошибка"}
+          {!dataRequest && !dataFailed && orderNumber && <OrderDetails />}
         </Modal>
       )}
     </>

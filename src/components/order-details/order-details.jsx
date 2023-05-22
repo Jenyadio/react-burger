@@ -1,12 +1,14 @@
 import React from "react";
 import img from "../../images/check-icon.svg";
 import orderStyles from "../../components/order-details/order-details.module.css";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-function OrderDetails({ order }) {
+function OrderDetails() {
+  const number = useSelector((store) => store.orderDetails.orderNumber);
+
   return (
     <div className={orderStyles.box}>
-      <p className="text text_type_digits-large pt-10 mb-8">{order}</p>
+      <p className="text text_type_digits-large pt-10 mb-8">{number}</p>
       <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
       <img className="mb-15" src={img} alt="check icon" />
       <p className="text text_type_main-default mb-2">
@@ -18,9 +20,5 @@ function OrderDetails({ order }) {
     </div>
   );
 }
-
-OrderDetails.propTypes = {
-  order: PropTypes.number.isRequired,
-};
 
 export default OrderDetails;
