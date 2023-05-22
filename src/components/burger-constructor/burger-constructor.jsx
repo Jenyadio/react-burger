@@ -21,7 +21,6 @@ function BurgerConstructor({ active, onClose, onOpen }) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [ingredientsId, setIngredientsId] = useState([]);
 
-  // не очень поняла, как нужно прописать ограничения внутри конструктора бургера, поэтому написала такую логику
   const handleConstructorData = (e) => {
     const id = e.currentTarget.dataset.id;
     const selectedItem = items.filter((item) => item.id === id);
