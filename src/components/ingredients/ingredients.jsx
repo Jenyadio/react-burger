@@ -12,9 +12,9 @@ function Ingredients({ name, type, id }) {
   );
 
   return (
-    <article>
+    <article data-section id={id}>
       <h2
-        className={`${ingredientsStyles.header} mt-10 text text_type_main-medium`}
+        className={`${ingredientsStyles.header} pt-10 text text_type_main-medium`}
         id={id}
       >
         {name}
