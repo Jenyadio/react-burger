@@ -12,6 +12,7 @@ import {
   ADD_DATA,
   DELETE_DATA,
 } from "../../services/actions/ingredient-details";
+import { useDrag } from "react-dnd";
 
 function Item({
   _id,
@@ -27,6 +28,11 @@ function Item({
 }) {
   const [active, setActive] = useState(false);
   const dispatch = useDispatch();
+
+  const [, dragRef] = useDrag({
+    type: "ingredient",
+    item: { _id },
+  });
 
   const handleOpenModal = () => {
     setActive(true);
@@ -56,9 +62,9 @@ function Item({
       <div
         className={`${itemStyles.box} mb-8`}
         onClick={handleOpenModal}
-        data-id={_id}
+        ref={dragRef}
       >
-        <Counter count={1} size="default" extraClass="m-1" />
+        <Counter count={0} size="default" extraClass="m-1" />
         <img className="pr-4 pl-4" src={image} alt={type} />
         <div className={`${itemStyles.price} mt-1 mb-1`}>
           <p className="text text_type_digits-default">{price}</p>

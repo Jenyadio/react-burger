@@ -8,12 +8,13 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderNumber } from "../../services/actions/order-details";
-
-function OrderTotal({ ingredientsId, total, onOpen, onClose, active }) {
+import { totalPriceSelector } from "../../utils/selectors";
+function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
   const { orderNumber, dataRequest, dataFailed } = useSelector(
     (store) => store.orderDetails
   );
   const dispatch = useDispatch();
+  const total = useSelector(totalPriceSelector);
 
   const sendOrder = () => {
     dispatch(getOrderNumber("POST", ingredientsId));
@@ -48,7 +49,6 @@ function OrderTotal({ ingredientsId, total, onOpen, onClose, active }) {
 
 OrderTotal.propTypes = {
   ingredientsId: PropTypes.arrayOf(PropTypes.string).isRequired,
-  total: PropTypes.number.isRequired,
   onOpen: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   active: PropTypes.bool.isRequired,

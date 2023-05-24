@@ -4,6 +4,8 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import mainStyles from "../../components/app-main/app-main.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { getItems } from "../../services/actions/burger-ingredients";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function AppMain() {
   const { items, itemsRequest, itemsFailed } = useSelector(
@@ -30,14 +32,14 @@ function AppMain() {
       {itemsRequest && "Загрузка..."}
       {itemsFailed && "Произошла ошибка"}
       {!itemsRequest && !itemsFailed && items.length && (
-        <>
+        <DndProvider backend={HTML5Backend}>
           <BurgerIngredients />
           <BurgerConstructor
             active={active}
             onClose={handleCloseModal}
             onOpen={handleOpenModal}
           />
-        </>
+        </DndProvider>
       )}
     </main>
   );

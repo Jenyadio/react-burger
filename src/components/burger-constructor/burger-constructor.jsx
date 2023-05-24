@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   ConstructorElement,
@@ -6,44 +6,48 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "../../components/burger-constructor/burger-constructor.module.css";
 import OrderTotal from "../order-total/order-total";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
+import {
+  SET_INGREDIENTS,
+  ADD_DRAGGED_INGREDIENT,
+  SET_BUN,
+} from "../../services/actions/constructor-ingredients";
 
 function BurgerConstructor({ active, onClose, onOpen }) {
+  const dispatch = useDispatch();
   const items = useSelector((store) => store.burgerIngredients.items);
 
-  const ingredients = useMemo(
-    () => items.filter((item) => item.type === "main" || item.type === "sauce"),
-    [items]
+  const [ingredientsId, setIngredientsId] = useState([]);
+  const { draggedIngredients, selectedBun } = useSelector(
+    (store) => store.constructorIngredients
   );
 
-  const [selectedBun, setSelectedBun] = useState(items[0]);
-  const [ingredientsData, setIngredientsData] = useState(ingredients);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [ingredientsId, setIngredientsId] = useState([]);
+  useEffect(() => {
+    dispatch({
+      type: SET_INGREDIENTS,
+      ingredients: items,
+    });
+    dispatch({
+      type: SET_BUN,
+      bun: items[0],
+    });
+  }, []);
 
-  const handleConstructorData = (e) => {
-    const id = e.currentTarget.dataset.id;
-    const selectedItem = items.filter((item) => item.id === id);
-    if (selectedItem.type === "bun") {
-      setSelectedBun(selectedItem);
-    } else {
-      setIngredientsData(ingredientsData.push(selectedItem));
-    }
-  };
-
-  useMemo(() => {
-    const ingredientsPrice = ingredientsData.reduce(
-      (acc, item) => acc + item.price,
-      0
-    );
-    const total = selectedBun.price * 2 + ingredientsPrice;
-    setTotalPrice(total);
-  }, [ingredientsData, selectedBun]);
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(itemId) {
+      dispatch({
+        type: ADD_DRAGGED_INGREDIENT,
+        ...itemId,
+      });
+    },
+  });
 
   useMemo(() => {
-    const id = ingredientsData.map((item) => item._id);
+    const id = draggedIngredients.map((item) => item._id);
     setIngredientsId(id);
-  }, [ingredientsData]);
+  }, [draggedIngredients]);
 
   return (
     <section>
@@ -51,32 +55,35 @@ function BurgerConstructor({ active, onClose, onOpen }) {
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={items[0].name}
-          price={items[0].price}
-          thumbnail={items[0].image}
+          text={selectedBun.name}
+          price={selectedBun.price}
+          thumbnail={selectedBun.image}
         />
-        <div className={`${constructorStyles.boxInside} pr-2`}>
-          {ingredientsData.map((item, index) => (
-            <div key={index}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-              />
-            </div>
-          ))}
+        <div className={`${constructorStyles.boxInside} pr-2`} ref={dropTarget}>
+          {draggedIngredients.length ? (
+            draggedIngredients.map((item, index) => (
+              <div key={index}>
+                <DragIcon type="primary" />
+                <ConstructorElement
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              </div>
+            ))
+          ) : (
+            <p>Перетащите сюда ингредиенты бургера</p>
+          )}
         </div>
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={items[0].name}
-          price={items[0].price}
-          thumbnail={items[0].image}
+          text={selectedBun.name}
+          price={selectedBun.price}
+          thumbnail={selectedBun.image}
         />
       </div>
       <OrderTotal
-        total={totalPrice}
         ingredientsId={ingredientsId}
         active={active}
         onClose={onClose}
