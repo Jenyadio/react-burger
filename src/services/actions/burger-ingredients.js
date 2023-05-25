@@ -12,7 +12,10 @@ export function getItems() {
         if (res && res.success) {
           dispatch({
             type: GET_ITEMS_SUCCESS,
-            items: res.data
+            items: res.data.map(item => {
+              item.count = 0
+              return item
+            })
           });
         } else {
           dispatch({

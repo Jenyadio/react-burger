@@ -1,8 +1,10 @@
-import { SET_INGREDIENTS, ADD_DRAGGED_INGREDIENT, DELETE_INGREDIENT, SET_BUN } from "../actions/constructor-ingredients";
+import { SET_INGREDIENTS, ADD_DRAGGED_INGREDIENT, DELETE_DRUGGED_INGREDIENT, SET_BUN, SET_TOTAL_INGREDIENTS } from "../actions/constructor-ingredients";
 
 const initialState = {
     ingredients: [],
     draggedIngredients: [],
+    totalConstructorIngredients: [],
+
     ingredientsId: [],
 
     selectedBun: [],
@@ -30,10 +32,22 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
                 }
             }
         }
+        case DELETE_DRUGGED_INGREDIENT: {
+            return {
+                ...state,
+                draggedIngredients: [...state.draggedIngredients].filter((ingredient, index) => index !== action.id)
+            }
+        }
         case SET_BUN: {
             return {
                 ...state,
                 selectedBun: action.bun
+            }
+        }
+        case SET_TOTAL_INGREDIENTS: {
+            return {
+                ...state,
+                totalConstructorIngredients: [...state.draggedIngredients, ...[state.selectedBun]]
             }
         }
         default: {

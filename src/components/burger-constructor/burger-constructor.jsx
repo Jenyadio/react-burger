@@ -12,6 +12,8 @@ import {
   SET_INGREDIENTS,
   ADD_DRAGGED_INGREDIENT,
   SET_BUN,
+  SET_TOTAL_INGREDIENTS,
+  DELETE_DRUGGED_INGREDIENT,
 } from "../../services/actions/constructor-ingredients";
 
 function BurgerConstructor({ active, onClose, onOpen }) {
@@ -32,6 +34,9 @@ function BurgerConstructor({ active, onClose, onOpen }) {
       type: SET_BUN,
       bun: items[0],
     });
+    dispatch({
+      type: SET_TOTAL_INGREDIENTS,
+    });
   }, []);
 
   const [, dropTarget] = useDrop({
@@ -41,8 +46,24 @@ function BurgerConstructor({ active, onClose, onOpen }) {
         type: ADD_DRAGGED_INGREDIENT,
         ...itemId,
       });
+      dispatch({
+        type: SET_TOTAL_INGREDIENTS,
+      });
     },
   });
+
+  useEffect(() => {
+    dispatch({
+      type: SET_TOTAL_INGREDIENTS,
+    });
+  }, [draggedIngredients, selectedBun]);
+
+  const deleteIngredient = (id) => {
+    dispatch({
+      type: DELETE_DRUGGED_INGREDIENT,
+      id,
+    });
+  };
 
   useMemo(() => {
     const id = draggedIngredients.map((item) => item._id);
@@ -68,6 +89,7 @@ function BurgerConstructor({ active, onClose, onOpen }) {
                   text={item.name}
                   price={item.price}
                   thumbnail={item.image}
+                  handleClose={() => deleteIngredient(index)}
                 />
               </div>
             ))

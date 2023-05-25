@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   CurrencyIcon,
@@ -13,6 +13,7 @@ import {
   DELETE_DATA,
 } from "../../services/actions/ingredient-details";
 import { useDrag } from "react-dnd";
+import { useSelector } from "react-redux";
 
 function Item({
   _id,
@@ -25,9 +26,26 @@ function Item({
   proteins,
   fat,
   carbohydrates,
+  count,
 }) {
   const [active, setActive] = useState(false);
   const dispatch = useDispatch();
+  const { totalConstructorIngredients } = useSelector(
+    (store) => store.constructorIngredients
+  );
+
+  useMemo(() => {
+    const quantity = totalConstructorIngredients.filter(
+      (item) => item._id === _id
+    ).length;
+    totalConstructorIngredients.find((item) =>
+      item._id === _id && item.type === "bun"
+        ? (count = 2)
+        : item._id === _id && item.type !== "bun"
+        ? (count = quantity)
+        : (count = 0)
+    );
+  }, [totalConstructorIngredients]);
 
   const [, dragRef] = useDrag({
     type: "ingredient",
@@ -64,7 +82,9 @@ function Item({
         onClick={handleOpenModal}
         ref={dragRef}
       >
-        <Counter count={0} size="default" extraClass="m-1" />
+        {count !== 0 && (
+          <Counter count={count} size="default" extraClass="m-1" />
+        )}
         <img className="pr-4 pl-4" src={image} alt={type} />
         <div className={`${itemStyles.price} mt-1 mb-1`}>
           <p className="text text_type_digits-default">{price}</p>
