@@ -83,7 +83,7 @@ function BurgerConstructor({ active, onClose, onOpen }) {
         <div className={`${constructorStyles.boxInside} pr-2`} ref={dropTarget}>
           {draggedIngredients.length ? (
             draggedIngredients.map((item, index) => (
-              <div key={index}>
+              <div key={index} className={constructorStyles.container}>
                 <DragIcon type="primary" />
                 <ConstructorElement
                   text={item.name}
@@ -94,7 +94,9 @@ function BurgerConstructor({ active, onClose, onOpen }) {
               </div>
             ))
           ) : (
-            <p>Перетащите сюда ингредиенты бургера</p>
+            <p className="pl-15 pt-8 pb-8">
+              Перетащите сюда ингредиенты бургера
+            </p>
           )}
         </div>
         <ConstructorElement

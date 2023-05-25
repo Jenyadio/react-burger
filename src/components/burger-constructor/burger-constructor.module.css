@@ -1,5 +1,6 @@
 .box {
     max-height: 62vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,6 +8,7 @@
 }
 
 .boxInside {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -24,4 +26,10 @@
  
 .boxInside::-webkit-scrollbar-thumb {
     background-color: #8585AD;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
