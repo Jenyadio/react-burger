@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import {
   CurrencyIcon,
@@ -47,9 +47,12 @@ function Item({
     );
   }, [totalConstructorIngredients]);
 
-  const [, dragRef] = useDrag({
+  const [{ opacity }, dragRef] = useDrag({
     type: "ingredient",
     item: { _id },
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
   });
 
   const handleOpenModal = () => {
@@ -81,6 +84,7 @@ function Item({
         className={`${itemStyles.box} mb-8`}
         onClick={handleOpenModal}
         ref={dragRef}
+        style={{ opacity }}
       >
         {count !== 0 && (
           <Counter count={count} size="default" extraClass="m-1" />

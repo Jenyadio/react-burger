@@ -24,7 +24,9 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
     <>
       <div className={orderStyles.order} onClick={onOpen}>
         <div className={`${orderStyles.price} mr-10`}>
-          <p className="text text_type_digits-medium mr-2">{total}</p>
+          <p className="text text_type_digits-medium mr-2">
+            {total ? total : 0}
+          </p>
           <CurrencyIcon type="primary" />
         </div>
         <Button

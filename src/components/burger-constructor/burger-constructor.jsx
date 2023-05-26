@@ -1,9 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
-import {
-  ConstructorElement,
-  DragIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "../../components/burger-constructor/burger-constructor.module.css";
 import OrderTotal from "../order-total/order-total";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,17 +10,15 @@ import {
   ADD_DRAGGED_INGREDIENT,
   SET_BUN,
   SET_TOTAL_INGREDIENTS,
-  DELETE_DRUGGED_INGREDIENT,
 } from "../../services/actions/constructor-ingredients";
-
+import ConstructorElementWrapper from "../constructor-element-wrapper/constructor-element-wrapper";
 function BurgerConstructor({ active, onClose, onOpen }) {
   const dispatch = useDispatch();
   const items = useSelector((store) => store.burgerIngredients.items);
 
   const [ingredientsId, setIngredientsId] = useState([]);
-  const { draggedIngredients, selectedBun } = useSelector(
-    (store) => store.constructorIngredients
-  );
+  const { draggedIngredients, selectedBun, totalConstructorIngredients } =
+    useSelector((store) => store.constructorIngredients);
 
   useEffect(() => {
     dispatch({
@@ -32,10 +27,11 @@ function BurgerConstructor({ active, onClose, onOpen }) {
     });
     dispatch({
       type: SET_BUN,
-      bun: items[0],
-    });
-    dispatch({
-      type: SET_TOTAL_INGREDIENTS,
+      bun: {
+        name: "Булка",
+        price: 0,
+        image: items[0].image,
+      },
     });
   }, []);
 
@@ -56,22 +52,15 @@ function BurgerConstructor({ active, onClose, onOpen }) {
     dispatch({
       type: SET_TOTAL_INGREDIENTS,
     });
-  }, [draggedIngredients, selectedBun]);
-
-  const deleteIngredient = (id) => {
-    dispatch({
-      type: DELETE_DRUGGED_INGREDIENT,
-      id,
-    });
-  };
+  }, [draggedIngredients, selectedBun, dispatch]);
 
   useMemo(() => {
-    const id = draggedIngredients.map((item) => item._id);
+    const id = totalConstructorIngredients.map((item) => item._id);
     setIngredientsId(id);
-  }, [draggedIngredients]);
+  }, [totalConstructorIngredients]);
 
   return (
-    <section>
+    <section ref={dropTarget}>
       <div className={`${constructorStyles.box} mt-25 mb-10`}>
         <ConstructorElement
           type="top"
@@ -80,18 +69,14 @@ function BurgerConstructor({ active, onClose, onOpen }) {
           price={selectedBun.price}
           thumbnail={selectedBun.image}
         />
-        <div className={`${constructorStyles.boxInside} pr-2`} ref={dropTarget}>
+        <div className={`${constructorStyles.boxInside} pr-2`}>
           {draggedIngredients.length ? (
             draggedIngredients.map((item, index) => (
-              <div key={index} className={constructorStyles.container}>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                  handleClose={() => deleteIngredient(index)}
-                />
-              </div>
+              <ConstructorElementWrapper
+                key={index}
+                index={index}
+                item={item}
+              />
             ))
           ) : (
             <p className="pl-15 pt-8 pb-8">
