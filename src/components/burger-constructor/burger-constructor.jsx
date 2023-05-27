@@ -12,6 +12,7 @@ import {
   SET_TOTAL_INGREDIENTS,
 } from "../../services/actions/constructor-ingredients";
 import ConstructorElementWrapper from "../constructor-element-wrapper/constructor-element-wrapper";
+import uuid from "react-uuid";
 function BurgerConstructor({ active, onClose, onOpen }) {
   const dispatch = useDispatch();
   const items = useSelector((store) => store.burgerIngredients.items);
@@ -37,10 +38,13 @@ function BurgerConstructor({ active, onClose, onOpen }) {
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(itemId) {
+    drop(item) {
       dispatch({
         type: ADD_DRAGGED_INGREDIENT,
-        ...itemId,
+        item: {
+          ...item,
+          dragId: uuid(),
+        },
       });
       dispatch({
         type: SET_TOTAL_INGREDIENTS,
@@ -73,7 +77,7 @@ function BurgerConstructor({ active, onClose, onOpen }) {
           {draggedIngredients.length ? (
             draggedIngredients.map((item, index) => (
               <ConstructorElementWrapper
-                key={index}
+                key={item.dragId}
                 index={index}
                 item={item}
               />

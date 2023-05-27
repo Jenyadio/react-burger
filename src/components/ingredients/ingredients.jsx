@@ -21,7 +21,7 @@ function Ingredients({ name, type, id }) {
       </h2>
       <div className={`${ingredientsStyles.box} mt-6 ml-4 mr-4`}>
         {list.map((item, index) => (
-          <Item key={index} {...item} />
+          <Item key={index} item={item} />
         ))}
       </div>
     </article>

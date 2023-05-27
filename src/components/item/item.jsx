@@ -14,20 +14,9 @@ import {
 } from "../../services/actions/ingredient-details";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
+import dataStructure from "../../utils/data-proptype-structure";
 
-function Item({
-  _id,
-  image,
-  type,
-  price,
-  name,
-  image_large,
-  calories,
-  proteins,
-  fat,
-  carbohydrates,
-  count,
-}) {
+function Item({ item }) {
   const [active, setActive] = useState(false);
   const dispatch = useDispatch();
   const { totalConstructorIngredients } = useSelector(
@@ -36,20 +25,20 @@ function Item({
 
   useMemo(() => {
     const quantity = totalConstructorIngredients.filter(
-      (item) => item._id === _id
+      (elem) => elem._id === item._id
     ).length;
-    totalConstructorIngredients.find((item) =>
-      item._id === _id && item.type === "bun"
-        ? (count = 2)
-        : item._id === _id && item.type !== "bun"
-        ? (count = quantity)
-        : (count = 0)
+    totalConstructorIngredients.find((elem) =>
+      elem._id === item._id && elem.type === "bun"
+        ? (item.count = 2)
+        : elem._id === item._id && elem.type !== "bun"
+        ? (item.count = quantity)
+        : (item.count = 0)
     );
   }, [totalConstructorIngredients]);
 
   const [{ opacity }, dragRef] = useDrag({
     type: "ingredient",
-    item: { _id },
+    item: { ...item },
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
@@ -60,13 +49,13 @@ function Item({
     dispatch({
       type: ADD_DATA,
       data: {
-        image: image_large,
-        name,
-        calories,
-        proteins,
-        fat,
-        carbohydrates,
-        type,
+        image: item.image_large,
+        name: item.name,
+        calories: item.calories,
+        proteins: item.proteins,
+        fat: item.fat,
+        carbohydrates: item.carbohydrates,
+        type: item.type,
       },
     });
   };
@@ -86,18 +75,18 @@ function Item({
         ref={dragRef}
         style={{ opacity }}
       >
-        {count !== 0 && (
-          <Counter count={count} size="default" extraClass="m-1" />
+        {item.count !== 0 && (
+          <Counter count={item.count} size="default" extraClass="m-1" />
         )}
-        <img className="pr-4 pl-4" src={image} alt={type} />
+        <img className="pr-4 pl-4" src={item.image} alt={item.type} />
         <div className={`${itemStyles.price} mt-1 mb-1`}>
-          <p className="text text_type_digits-default">{price}</p>
+          <p className="text text_type_digits-default">{item.price}</p>
           <CurrencyIcon type="primary" />
         </div>
         <p
           className={`${itemStyles.description} text text_type_main-default mb-6`}
         >
-          {name}
+          {item.name}
         </p>
       </div>
       {active && (
@@ -110,16 +99,7 @@ function Item({
 }
 
 Item.propTypes = {
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
-  calories: PropTypes.number.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_large: PropTypes.string.isRequired,
+  item: PropTypes.shape(dataStructure).isRequired,
 };
 
 export default Item;

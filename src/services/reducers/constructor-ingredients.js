@@ -20,15 +20,15 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
           };
         }
         case ADD_DRAGGED_INGREDIENT: {
-            if(state.ingredients.filter(ingredient => ingredient._id === action._id && ingredient.type === "bun").length) {
+            if(state.ingredients.filter(ingredient => ingredient._id === action.item._id && ingredient.type === "bun").length) {
                 return {
                     ...state,
-                  selectedBun: state.ingredients.filter(ingredient => ingredient._id === action._id)[0]
+                  selectedBun: state.ingredients.filter(ingredient => ingredient._id === action.item._id)[0]
                 }
             } else {
                 return {
                     ...state,
-                    draggedIngredients: [...state.draggedIngredients, ...state.ingredients.filter(ingredient => ingredient._id === action._id)]
+                    draggedIngredients: [...state.draggedIngredients, ...state.ingredients.filter(ingredient => ingredient._id === action.item._id)]
                 }
             }
         }
