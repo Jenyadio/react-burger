@@ -6,7 +6,6 @@ import OrderTotal from "../order-total/order-total";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import {
-  SET_INGREDIENTS,
   ADD_DRAGGED_INGREDIENT,
   SET_BUN,
   SET_TOTAL_INGREDIENTS,
@@ -22,10 +21,6 @@ function BurgerConstructor({ active, onClose, onOpen }) {
     useSelector((store) => store.constructorIngredients);
 
   useEffect(() => {
-    dispatch({
-      type: SET_INGREDIENTS,
-      ingredients: items,
-    });
     dispatch({
       type: SET_BUN,
       bun: {
