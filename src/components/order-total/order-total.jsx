@@ -13,6 +13,15 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
   const { orderNumber, dataRequest, dataFailed } = useSelector(
     (store) => store.orderDetails
   );
+
+  const totalConstructorIngredients = useSelector(
+    (store) => store.constructorIngredients.totalConstructorIngredients
+  );
+
+  const isBunAdded = totalConstructorIngredients.find(
+    (item) => item.type === "bun"
+  );
+
   const dispatch = useDispatch();
   const total = useSelector(totalPriceSelector);
 
@@ -22,7 +31,7 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
 
   return (
     <>
-      <div className={orderStyles.order} onClick={onOpen}>
+      <div className={orderStyles.order} onClick={isBunAdded ? onOpen : null}>
         <div className={`${orderStyles.price} mr-10`}>
           <p className="text text_type_digits-medium mr-2">
             {total ? total : 0}
@@ -34,11 +43,13 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
           type="primary"
           size="large"
           onClick={sendOrder}
+          disabled={!isBunAdded}
+          on
         >
           Оформить заказ
         </Button>
       </div>
-      {active && (
+      {isBunAdded && active && (
         <Modal onClose={onClose}>
           {dataRequest && "Загрузка..."}
           {dataFailed && "Произошла ошибка"}

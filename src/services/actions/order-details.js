@@ -19,6 +19,11 @@ export function getOrderNumber(method, body) {
             type: GET_ORDER_FAILED
           });
         }
-      });
+      })
+      .catch(() => {
+        dispatch({
+          type: GET_ORDER_FAILED
+        });
+      })
     };
   }
