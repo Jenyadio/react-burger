@@ -2,9 +2,10 @@ import React from "react";
 import detailsStyles from "../../components/ingredient-details/ingredient-details.module.css";
 import CaloriesItem from "../calories-item/calories-item";
 import { useSelector } from "react-redux";
+import { ingredientDetailsData } from "../../selectors/selectors";
 
 function IngredientDetails() {
-  const data = useSelector((store) => store.ingredientDetails.data);
+  const data = useSelector(ingredientDetailsData);
 
   return (
     <main className={detailsStyles.main}>

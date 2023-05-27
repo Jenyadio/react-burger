@@ -13,14 +13,13 @@ import {
 import { useDrop, useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import dataStructure from "../../utils/data-proptype-structure";
+import { draggedConstructorIngredients } from "../../selectors/selectors";
 
 const ConstructorElementWrapper = ({ index, item }) => {
   const dispatch = useDispatch();
   const ref = useRef();
 
-  const draggedIngredients = useSelector(
-    (store) => store.constructorIngredients.draggedIngredients
-  );
+  const draggedIngredients = useSelector(draggedConstructorIngredients);
 
   const moveCard = useCallback(
     (dragIndex, hoverIndex) => {

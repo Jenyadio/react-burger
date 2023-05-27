@@ -6,11 +6,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { getItems } from "../../services/actions/burger-ingredients";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { burgerIngredients } from "../../selectors/selectors";
 
 function AppMain() {
-  const { items, itemsRequest, itemsFailed } = useSelector(
-    (store) => store.burgerIngredients
-  );
+  const { items, itemsRequest, itemsFailed } = useSelector(burgerIngredients);
   const dispatch = useDispatch();
 
   const [active, setActive] = useState(false);

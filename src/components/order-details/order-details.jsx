@@ -2,9 +2,10 @@ import React from "react";
 import img from "../../images/check-icon.svg";
 import orderStyles from "../../components/order-details/order-details.module.css";
 import { useSelector } from "react-redux";
+import { orderNumber } from "../../selectors/selectors";
 
 function OrderDetails() {
-  const number = useSelector((store) => store.orderDetails.orderNumber);
+  const number = useSelector(orderNumber);
 
   return (
     <div className={orderStyles.box}>

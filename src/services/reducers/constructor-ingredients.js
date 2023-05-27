@@ -1,4 +1,4 @@
-import { ADD_DRAGGED_INGREDIENT, DELETE_DRUGGED_INGREDIENT, SET_BUN, SET_TOTAL_INGREDIENTS, MOVE_INGREDIENT } from "../actions/constructor-ingredients";
+import { ADD_DRAGGED_INGREDIENT, DELETE_DRUGGED_INGREDIENT, SET_BUN, SET_TOTAL_INGREDIENTS, MOVE_INGREDIENT, CLEAR_CONSTRUCTOR } from "../actions/constructor-ingredients";
 
 const initialState = {
     draggedIngredients: [],
@@ -7,7 +7,6 @@ const initialState = {
     ingredientsId: [],
 
     selectedBun: [],
-    totalPrice: null
 }
 
 export const constructorIngredientsReducer = (state = initialState, action) => {
@@ -47,6 +46,12 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 totalConstructorIngredients: [...state.draggedIngredients, ...[state.selectedBun]]
+            }
+        }
+        case CLEAR_CONSTRUCTOR: {
+            return {
+                ...state,
+                draggedIngredients: initialState.draggedIngredients
             }
         }
         default: {

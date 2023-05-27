@@ -12,13 +12,13 @@ import {
 } from "../../services/actions/constructor-ingredients";
 import ConstructorElementWrapper from "../constructor-element-wrapper/constructor-element-wrapper";
 import uuid from "react-uuid";
+import { constructorIngredients, burgerItems } from "../../selectors/selectors";
 function BurgerConstructor({ active, onClose, onOpen }) {
   const dispatch = useDispatch();
-  const items = useSelector((store) => store.burgerIngredients.items);
-
-  const [ingredientsId, setIngredientsId] = useState([]);
+  const items = useSelector(burgerItems);
   const { draggedIngredients, selectedBun, totalConstructorIngredients } =
-    useSelector((store) => store.constructorIngredients);
+    useSelector(constructorIngredients);
+  const [ingredientsId, setIngredientsId] = useState([]);
 
   useEffect(() => {
     dispatch({

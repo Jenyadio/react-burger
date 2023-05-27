@@ -15,13 +15,12 @@ import {
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import dataStructure from "../../utils/data-proptype-structure";
+import { totalIngredients } from "../../selectors/selectors";
 
 function Item({ item }) {
   const [active, setActive] = useState(false);
   const dispatch = useDispatch();
-  const { totalConstructorIngredients } = useSelector(
-    (store) => store.constructorIngredients
-  );
+  const totalConstructorIngredients = useSelector(totalIngredients);
 
   useMemo(() => {
     const quantity = totalConstructorIngredients.filter(

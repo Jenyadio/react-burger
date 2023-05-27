@@ -8,22 +8,29 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderNumber } from "../../services/actions/order-details";
-import { totalPriceSelector } from "../../utils/selectors";
+import { useMemo } from "react";
+import {
+  orderDetails,
+  constructorIngredients,
+} from "../../selectors/selectors";
 function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
-  const { orderNumber, dataRequest, dataFailed } = useSelector(
-    (store) => store.orderDetails
-  );
+  const dispatch = useDispatch();
+  const { orderNumber, dataRequest, dataFailed } = useSelector(orderDetails);
+  const { totalConstructorIngredients, selectedBun, draggedIngredients } =
+    useSelector(constructorIngredients);
 
-  const totalConstructorIngredients = useSelector(
-    (store) => store.constructorIngredients.totalConstructorIngredients
-  );
+  const total = useMemo(() => {
+    const ingredientsPrice = draggedIngredients.reduce(
+      (acc, item) => acc + item.price,
+      0
+    );
+    const total = selectedBun.price * 2 + ingredientsPrice;
+    return total;
+  }, [draggedIngredients, selectedBun]);
 
   const isBunAdded = totalConstructorIngredients.find(
     (item) => item.type === "bun"
   );
-
-  const dispatch = useDispatch();
-  const total = useSelector(totalPriceSelector);
 
   const sendOrder = () => {
     dispatch(getOrderNumber("POST", ingredientsId));

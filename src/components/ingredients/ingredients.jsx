@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import Item from "../item/item";
 import ingredientsStyles from "../../components/ingredients/ingredients.module.css";
 import { useSelector } from "react-redux";
+import { burgerItems } from "../../selectors/selectors";
 function Ingredients({ name, type, id }) {
-  const items = useSelector((store) => store.burgerIngredients.items);
+  const items = useSelector(burgerItems);
 
   const list = useMemo(
     () => items.filter((item) => item.type === type),
