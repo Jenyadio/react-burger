@@ -1,84 +1,97 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
-import {
-  ConstructorElement,
-  DragIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "../../components/burger-constructor/burger-constructor.module.css";
 import OrderTotal from "../order-total/order-total";
-import { DataContext } from "../../services/data-context";
-
+import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
+import {
+  ADD_DRAGGED_INGREDIENT,
+  SET_BUN,
+  SET_TOTAL_INGREDIENTS,
+} from "../../services/actions/constructor-ingredients";
+import ConstructorElementWrapper from "../constructor-element-wrapper/constructor-element-wrapper";
+import uuid from "react-uuid";
+import { constructorIngredients, burgerItems } from "../../selectors/selectors";
 function BurgerConstructor({ active, onClose, onOpen }) {
-  const { state } = useContext(DataContext);
-  const data = state.data.data;
-
-  const ingredients = useMemo(
-    () => data.filter((item) => item.type === "main" || item.type === "sauce"),
-    [data]
-  );
-
-  const [selectedBun, setSelectedBun] = useState(data[0]);
-  const [ingredientsData, setIngredientsData] = useState(ingredients);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const dispatch = useDispatch();
+  const items = useSelector(burgerItems);
+  const { draggedIngredients, selectedBun, totalConstructorIngredients } =
+    useSelector(constructorIngredients);
   const [ingredientsId, setIngredientsId] = useState([]);
 
-  // не очень поняла, как нужно прописать ограничения внутри конструктора бургера, поэтому написала такую логику
-  const handleConstructorData = (e) => {
-    const id = e.currentTarget.dataset.id;
-    const selectedItem = data.filter((item) => item.id === id);
-    if (selectedItem.type === "bun") {
-      setSelectedBun(selectedItem);
-    } else {
-      setIngredientsData(ingredientsData.push(selectedItem));
-    }
-  };
+  useEffect(() => {
+    dispatch({
+      type: SET_BUN,
+      bun: {
+        name: "Булка",
+        price: 0,
+        image: items[0].image,
+      },
+    });
+  }, []);
+
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      dispatch({
+        type: ADD_DRAGGED_INGREDIENT,
+        item: {
+          ...item,
+          dragId: uuid(),
+        },
+      });
+      dispatch({
+        type: SET_TOTAL_INGREDIENTS,
+      });
+    },
+  });
+
+  useEffect(() => {
+    dispatch({
+      type: SET_TOTAL_INGREDIENTS,
+    });
+  }, [draggedIngredients, selectedBun, dispatch]);
 
   useMemo(() => {
-    const ingredientsPrice = ingredientsData.reduce(
-      (acc, item) => acc + item.price,
-      0
-    );
-    const total = selectedBun.price * 2 + ingredientsPrice;
-    setTotalPrice(total);
-  }, [ingredientsData, selectedBun]);
-
-  useMemo(() => {
-    const id = ingredientsData.map((item) => item._id);
+    const id = totalConstructorIngredients.map((item) => item._id);
     setIngredientsId(id);
-  }, [ingredientsData]);
+  }, [totalConstructorIngredients]);
 
   return (
-    <section>
+    <section ref={dropTarget}>
       <div className={`${constructorStyles.box} mt-25 mb-10`}>
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={data[0].name}
-          price={data[0].price}
-          thumbnail={data[0].image}
+          text={selectedBun.name}
+          price={selectedBun.price}
+          thumbnail={selectedBun.image}
         />
         <div className={`${constructorStyles.boxInside} pr-2`}>
-          {ingredientsData.map((item, index) => (
-            <div key={index}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
+          {draggedIngredients.length ? (
+            draggedIngredients.map((item, index) => (
+              <ConstructorElementWrapper
+                key={item.dragId}
+                index={index}
+                item={item}
               />
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="pl-15 pt-8 pb-8">
+              Перетащите сюда ингредиенты бургера
+            </p>
+          )}
         </div>
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={data[0].name}
-          price={data[0].price}
-          thumbnail={data[0].image}
+          text={selectedBun.name}
+          price={selectedBun.price}
+          thumbnail={selectedBun.image}
         />
       </div>
       <OrderTotal
-        total={totalPrice}
         ingredientsId={ingredientsId}
         active={active}
         onClose={onClose}
