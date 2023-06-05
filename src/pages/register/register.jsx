@@ -7,11 +7,25 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./register.module.css";
+import { Link, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getNewUser } from "../../services/actions/user";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { userEmail, userName } = useSelector((store) => store.userInfo);
+  const dispatch = useDispatch();
+
+  const registerUser = () => {
+    dispatch(getNewUser(email, password, name));
+  };
+
+  if (userEmail && userName) {
+    alert("Вы успешно зарегистрированы");
+    return <Navigate to={"/login"} />;
+  }
 
   return (
     <div>
@@ -43,14 +57,13 @@ const RegisterPage = () => {
           type="primary"
           size="medium"
           extraClass="mb-20"
+          onClick={registerUser}
         >
           Зарегистрироваться
         </Button>
         <div className={`${styles.text} text text_type_main-default`}>
           <p className="pr-2">Уже зарегистрированы?</p>
-          <p>
-            <a href="#!">Войти</a>
-          </p>
+          <Link to="/login">Войти</Link>
         </div>
       </section>
     </div>

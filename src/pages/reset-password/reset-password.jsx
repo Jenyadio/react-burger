@@ -6,10 +6,24 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./reset-password.module.css";
+import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { resetPassword } from "../../services/actions/user";
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
+  const message = useSelector((store) => store.userInfo.message);
+  const dispatch = useDispatch();
+
+  const getPassword = () => {
+    dispatch(resetPassword(password, code));
+  };
+
+  if (message) {
+    alert(message);
+    return <Navigate to={"/login"} />;
+  }
 
   return (
     <div>
@@ -37,6 +51,7 @@ const ResetPasswordPage = () => {
           type="primary"
           size="medium"
           extraClass="mb-20"
+          onClick={getPassword}
         >
           Сохранить
         </Button>

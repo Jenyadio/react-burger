@@ -6,10 +6,24 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
+import { Link, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getOldUser } from "../../services/actions/user";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { userEmail, userName } = useSelector((store) => store.userInfo);
+  const dispatch = useDispatch();
+
+  const LogIn = () => {
+    dispatch(getOldUser(email, password));
+  };
+
+  if (userEmail && userName) {
+    alert(`Добро пожаловать, ${userName}`);
+    return <Navigate to={"/"} />;
+  }
 
   return (
     <div>
@@ -33,20 +47,17 @@ const LoginPage = () => {
           type="primary"
           size="medium"
           extraClass="mb-20"
+          onClick={LogIn}
         >
           Войти
         </Button>
         <div className={`${styles.text} text text_type_main-default`}>
           <p className="pr-2">Вы - новый пользователь?</p>
-          <p>
-            <a href="#!">Зарегистрироваться</a>
-          </p>
+          <Link to="/register">Зарегистрироваться</Link>
         </div>
         <div className={`${styles.text} text text_type_main-default`}>
           <p className="pr-2">Забыли пароль?</p>
-          <p>
-            <a href="#!">Восстановить пароль</a>
-          </p>
+          <Link to="/forgot-password">Восстановить пароль</Link>
         </div>
       </section>
     </div>
