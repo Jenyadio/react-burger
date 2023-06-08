@@ -9,7 +9,7 @@ import {
 import styles from "./register.module.css";
 import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getNewUser } from "../../services/actions/user";
+import { registerUser } from "../../services/actions/auth";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -19,7 +19,7 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
 
   const registerUser = () => {
-    dispatch(getNewUser(email, password, name));
+    dispatch(registerUser(email, password, name));
   };
 
   if (userEmail && userName) {

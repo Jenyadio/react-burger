@@ -1,17 +1,11 @@
-import { GET_USER_SUCCESS, GET_USER_REQUEST, GET_USER_FAILED, AUTHORIZE_USER, RENEW_PASSWORD_REQUEST, RENEW_PASSWORD_SUCCESS, RENEW_PASSWORD_FAILED } from "../actions/user";
+import { GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_FAILED, UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILED } from "../actions/user";
 
 const initialState = {
-    userEmail: null,
-    userName: null,
+    getUserRequest: false,
+    getUserFailed: false,
 
-    userRequest: false,
-    userFailed: false,
-
-    passwordRequest: false,
-    passwordFailed: false,
-
-    isAuthorized: false,
-    message: null,
+    updateUserRequest: false,
+    updateUserFailed: false,
 }
 
 export const userInfoReducer = (state = initialState, action) => {
@@ -19,29 +13,26 @@ export const userInfoReducer = (state = initialState, action) => {
         case GET_USER_REQUEST: {
           return {
             ...state,
-            userRequest: true
+            getUserRequest: true
           };
         }
         case GET_USER_SUCCESS: {
-          return { ...state, userFailed: false, userEmail: action.email, userName: action.name, userRequest: false };
+          return { ...state, getUserFailed: false, getUserRequest: false };
         }
         case GET_USER_FAILED: {
-          return { ...state, userFailed: true, userRequest: false };
+          return { ...state, getUserFailed: true, getUserRequest: false };
         }
-        case AUTHORIZE_USER: {
-            return { ...state, isAuthorized: true };
-          }
-        case RENEW_PASSWORD_REQUEST: {
-            return {
-              ...state,
-              passwordRequest: true
-            };
+        case UPDATE_USER_REQUEST: {
+          return {
+            ...state,
+            updateUserRequest: true
+          };
         }
-        case RENEW_PASSWORD_SUCCESS: {
-            return { ...state, passwordFailed: false, message: action.message, passwordRequest: false };
+        case UPDATE_USER_SUCCESS: {
+          return { ...state, updateUserFailed: false, updateUserRequest: false };
         }
-        case RENEW_PASSWORD_FAILED: {
-            return { ...state, passwordFailed: true, passwordRequest: false };
+        case UPDATE_USER_FAILED: {
+          return { ...state, updateUserFailed: true, updateUserRequest: false };
         }
         default: {
             return state;

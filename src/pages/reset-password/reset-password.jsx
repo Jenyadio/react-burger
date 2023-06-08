@@ -8,7 +8,7 @@ import {
 import styles from "./reset-password.module.css";
 import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { resetPassword } from "../../services/actions/user";
+import { resetPassword } from "../../services/actions/auth";
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");

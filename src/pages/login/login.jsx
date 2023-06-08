@@ -8,20 +8,19 @@ import {
 import styles from "./login.module.css";
 import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getOldUser } from "../../services/actions/user";
+import { loginUser } from "../../services/actions/auth";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { userEmail, userName } = useSelector((store) => store.userInfo);
   const dispatch = useDispatch();
+  const loginSuccess = useSelector((store) => store.auth.loginSuccess);
 
-  const LogIn = () => {
-    dispatch(getOldUser(email, password));
+  const login = () => {
+    dispatch(loginUser(email, password));
   };
 
-  if (userEmail && userName) {
-    alert(`Добро пожаловать, ${userName}`);
+  if (loginSuccess) {
     return <Navigate to={"/"} />;
   }
 
@@ -47,7 +46,7 @@ const LoginPage = () => {
           type="primary"
           size="medium"
           extraClass="mb-20"
-          onClick={LogIn}
+          onClick={login}
         >
           Войти
         </Button>

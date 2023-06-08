@@ -7,7 +7,7 @@ import {
 import { Navigate } from "react-router-dom";
 import styles from "./forgot-password.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getCodeToRenewPassword } from "../../services/actions/user";
+import { restorePassword } from "../../services/actions/auth";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
 
   const getCode = () => {
-    dispatch(getCodeToRenewPassword(email));
+    dispatch(restorePassword(email));
   };
 
   if (message) {
