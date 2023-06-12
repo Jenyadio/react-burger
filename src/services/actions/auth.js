@@ -1,5 +1,5 @@
 import {registerRequest, loginRequest, restorePasswordRequest, resetPasswordRequest, logoutRequest } from "../../utils/burger-api";
-import { setCookie } from "../../utils/cookie";
+import { setCookie, deleteCookie } from "../../utils/cookie";
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILED = 'REGISTER_FAILED';
@@ -17,12 +17,12 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILED = 'LOGOUT_FAILED';
 
-export function registerUser(userEmail, userPassword, userName) {
+export function registerUser({email, password, name, route}) {
     return function(dispatch) {
       dispatch({
         type: REGISTER_REQUEST
       }); 
-      registerRequest(userEmail, userPassword, userName).then(res => {
+      registerRequest({email, password, name}).then(res => {
         console.log(res)
         if (res && res.success) {
           dispatch({
@@ -32,6 +32,7 @@ export function registerUser(userEmail, userPassword, userName) {
          let refreshToken = res.refreshToken;
          setCookie('accessToken', accessToken);
          localStorage.setItem('refreshToken', refreshToken);
+         route();
         } else {
           dispatch({
             type: REGISTER_FAILED
@@ -40,34 +41,34 @@ export function registerUser(userEmail, userPassword, userName) {
       })
       .catch((e) => {
         dispatch({
-          type: REGISTER_FAILED
+          type: REGISTER_FAILED,
+          message: e.message
         });
       })
     };
   }
 
-  export function loginUser(userEmail, userPassword) {
+  export function loginUser({email, password, route}) {
     return function(dispatch) {
       dispatch({
         type: LOGIN_REQUEST
       });
-      loginRequest(userEmail, userPassword).then(res => {
+      loginRequest({email, password}).then(res => {
         console.log(res)
         if (res && res.success) {
           dispatch({
             type: LOGIN_SUCCESS,
-          });
-          dispatch({
-            type: AUTHORIZE_USER,
           });
          let accessToken = res.accessToken;
          let refreshToken = res.refreshToken;
          let userEmail = res.user.email;
          let userName = res.user.name;
          setCookie('accessToken', accessToken);
+         setCookie("password", password);
          localStorage.setItem('refreshToken', refreshToken);
          localStorage.setItem('userEmail', userEmail);
          localStorage.setItem('userName', userName);
+         route();
         } else {
           dispatch({
             type: LOGIN_FAILED
@@ -76,24 +77,26 @@ export function registerUser(userEmail, userPassword, userName) {
       })
       .catch((e) => {
         dispatch({
-          type: LOGIN_FAILED
+          type: LOGIN_FAILED,
+          message: e.message
         });
       })
     };
   }
 
-  export function restorePassword(userEmail) {
+  export function restorePassword({email, route}) {
     return function(dispatch) {
       dispatch({
         type: RESTORE_PASSWORD_REQUEST
       });
-      restorePasswordRequest(userEmail).then(res => {
+      restorePasswordRequest({email}).then(res => {
         console.log(res)
         if (res && res.success) {
           dispatch({
             type: RESTORE_PASSWORD_SUCCESS,
             message: res.message,
           });
+          route();
         } else {
           dispatch({
             type: RESTORE_PASSWORD_FAILED
@@ -102,24 +105,26 @@ export function registerUser(userEmail, userPassword, userName) {
       })
       .catch((e) => {
         dispatch({
-          type: RESTORE_PASSWORD_FAILED
+          type: RESTORE_PASSWORD_FAILED,
+          message: e.message
         });
       })
     };
   }
 
-  export function resetPassword(userPassword, userToken) {
+  export function resetPassword({password, token, route}) {
     return function(dispatch) {
       dispatch({
         type: RESET_PASSWORD_REQUEST
       });
-      resetPasswordRequest(userPassword, userToken).then(res => {
+      resetPasswordRequest({password, token}).then(res => {
         console.log(res)
         if (res && res.success) {
           dispatch({
             type: RESET_PASSWORD_SUCCESS,
             message: res.message,
           });
+          route();
         } else {
           dispatch({
             type: RESET_PASSWORD_FAILED
@@ -128,13 +133,14 @@ export function registerUser(userEmail, userPassword, userName) {
       })
       .catch((e) => {
         dispatch({
-          type: RESET_PASSWORD_FAILED
+          type: RESET_PASSWORD_FAILED,
+         message: e.message
         });
       })
     };
   }
 
-  export function logoutUser() {
+  export function logoutUser({route}) {
     return function(dispatch) {
       dispatch({
         type: LOGOUT_REQUEST,
@@ -148,6 +154,10 @@ export function registerUser(userEmail, userPassword, userName) {
           });
           localStorage.removeItem('userEmail');
           localStorage.removeItem('userName');
+          localStorage.removeItem('refreshToken');
+          deleteCookie('password');
+          deleteCookie('accessToken');
+          route();
         } else {
           dispatch({
             type: LOGOUT_FAILED
@@ -155,9 +165,9 @@ export function registerUser(userEmail, userPassword, userName) {
         }
       })
       .catch((e) => {
-        console.log(e)
         dispatch({
-          type: LOGOUT_FAILED
+          type: LOGOUT_FAILED,
+          message: e.message
         });
       })
     };

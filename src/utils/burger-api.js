@@ -24,7 +24,7 @@ export async function sendRequest(method, body) {
     .then(checkResponse)
 }
 
-export async function registerRequest(userEmail, userPassword, userName) {
+export async function registerRequest({email, password, name,}) {
   return await fetch(`${NORMA_API}/auth/register`, {
     method: 'POST',
     mode: 'cors',
@@ -36,15 +36,15 @@ export async function registerRequest(userEmail, userPassword, userName) {
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
     body: JSON.stringify({
-        email: userEmail, 
-        password: userPassword, 
-        name: userName 
+      email, 
+      password, 
+      name,
     })
   })
   .then(checkResponse)
 };
 
-export async function loginRequest(userEmail, userPassword) {
+export async function loginRequest({email, password}) {
   return await fetch(`${NORMA_API}/auth/login`, {
     method: 'POST',
     mode: 'cors',
@@ -56,14 +56,14 @@ export async function loginRequest(userEmail, userPassword) {
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
     body: JSON.stringify({
-        email: userEmail, 
-        password: userPassword, 
+        email, 
+        password, 
     }) 
   })
   .then(checkResponse)
 };
 
-export async function restorePasswordRequest(userEmail) {
+export async function restorePasswordRequest({email}) {
   return await fetch(`${NORMA_API}/password-reset`, {
     method: 'POST',
     mode: 'cors',
@@ -75,13 +75,13 @@ export async function restorePasswordRequest(userEmail) {
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
     body: JSON.stringify({
-        email: userEmail, 
+        email 
     }) 
   })
   .then(checkResponse)
 };
 
-export async function resetPasswordRequest(userPassword, userToken) {
+export async function resetPasswordRequest({password, token}) {
   return await fetch(`${NORMA_API}/password-reset/reset`, {
     method: 'POST',
     mode: 'cors',
@@ -93,8 +93,8 @@ export async function resetPasswordRequest(userPassword, userToken) {
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
     body: JSON.stringify({
-        password: userPassword, 
-        token: userToken,
+        password, 
+        token,
     }) 
   })
   .then(checkResponse)
@@ -150,7 +150,7 @@ export async function getUserDataRequest() {
    .then(checkResponse)
 }
 
-export async function updateUserDataRequest(userName, userEmail, userPassword) {
+export async function updateUserDataRequest({name, email, password}) {
   return await fetch(`${NORMA_API}/auth/user`, {
     method: 'PATCH',
     mode: 'cors',
@@ -161,9 +161,9 @@ export async function updateUserDataRequest(userName, userEmail, userPassword) {
       authorization: getCookie("accessToken"),
     },
     body: JSON.stringify({
-      name: userName,
-      email: userEmail,
-      password: userPassword
+      name,
+      email,
+      password
      })
   })
    .then(checkResponse)

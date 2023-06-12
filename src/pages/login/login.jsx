@@ -6,7 +6,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../services/actions/auth";
 
@@ -14,42 +14,54 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const loginSuccess = useSelector((store) => store.auth.loginSuccess);
+  const navigate = useNavigate();
+  const { loginFailed, message } = useSelector((store) => store.auth);
 
-  const login = () => {
-    dispatch(loginUser(email, password));
+  const login = (e) => {
+    e.preventDefault();
+    if (email && password) {
+      dispatch(
+        loginUser({
+          email,
+          password,
+          route: () => navigate("/", { replace: true }),
+        })
+      );
+    }
   };
 
-  if (loginSuccess) {
-    return <Navigate to={"/"} />;
+  if (loginFailed) {
+    alert(`Ошибка: ${message}. Попробуйте еще раз.`);
   }
 
   return (
     <div>
       <section className={styles.box}>
         <h2 className="mb-6 text text_type_main-medium">Вход</h2>
-        <EmailInput
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          name={"email"}
-          isIcon={false}
-          extraClass="mb-6"
-        />
-        <PasswordInput
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          name={"password"}
-          extraClass="mb-6"
-        />
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          extraClass="mb-20"
-          onClick={login}
-        >
-          Войти
-        </Button>
+        <form className={styles.form} onSubmit={login}>
+          <EmailInput
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            name={"email"}
+            isIcon={false}
+            extraClass="mb-6"
+          />
+          <PasswordInput
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            name={"password"}
+            extraClass="mb-6"
+          />
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="medium"
+            extraClass="mb-20"
+            onClick={login}
+          >
+            Войти
+          </Button>
+        </form>
         <div className={`${styles.text} text text_type_main-default`}>
           <p className="pr-2">Вы - новый пользователь?</p>
           <Link to="/register">Зарегистрироваться</Link>

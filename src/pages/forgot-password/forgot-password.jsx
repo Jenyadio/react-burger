@@ -8,19 +8,30 @@ import { Navigate } from "react-router-dom";
 import styles from "./forgot-password.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { restorePassword } from "../../services/actions/auth";
+import { Link, useNavigate } from "react-router-dom";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
-  const message = useSelector((store) => store.userInfo.message);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { restoreSuccess, restoreFailed, message } = useSelector(
+    (store) => store.auth
+  );
 
-  const getCode = () => {
-    dispatch(restorePassword(email));
+  const restore = (e) => {
+    e.preventDefault();
+    if (email) {
+      dispatch(
+        restorePassword({
+          email,
+          route: () => navigate("/reset-password", { replace: true }),
+        })
+      );
+    }
   };
 
-  if (message) {
+  if (restoreSuccess || restoreFailed) {
     alert(message);
-    return <Navigate to={"/reset-password"} />;
   }
 
   return (
@@ -29,27 +40,28 @@ const ForgotPasswordPage = () => {
         <h2 className="mb-6 text text_type_main-medium">
           Восстановление пароля
         </h2>
-        <EmailInput
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={"Укажите e-mail"}
-          value={email}
-          name={"email"}
-          isIcon={false}
-          extraClass="mb-6"
-        />
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          extraClass="mb-20"
-          onClick={getCode}
-        >
-          Восстановить
-        </Button>
+        <form className={styles.form} onSubmit={restore}>
+          <EmailInput
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={"Укажите e-mail"}
+            value={email}
+            name={"email"}
+            isIcon={false}
+            extraClass="mb-6"
+          />
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="medium"
+            extraClass="mb-20"
+          >
+            Восстановить
+          </Button>
+        </form>
         <div className={`${styles.text} text text_type_main-default`}>
           <p className="pr-2">Вспомнили пароль?</p>
           <p>
-            <a href="#!">Войти</a>
+            <Link to="/login">Войти</Link>
           </p>
         </div>
       </section>

@@ -7,32 +7,52 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./profile.module.css";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserData } from "../../services/actions/user";
+import { updateUserData } from "../../services/actions/user";
+import { getCookie } from "../../utils/cookie";
 
 const ProfilePage = () => {
   const userEmail = localStorage.getItem("userEmail");
   const userName = localStorage.getItem("userName");
+  const userPassword = getCookie("password");
   const [name, setName] = useState(userName);
   const [email, setEmail] = useState(userEmail);
-  const [password, setPassword] = useState("*******");
+  const [password, setPassword] = useState(userPassword);
   const [show, setShow] = useState(false);
-  const logoutSuccess = useSelector((store) => store.auth.logoutSuccess);
-
+  const { logoutFailed, message } = useSelector((store) => store.auth);
+  const { getUserFailed, updateUserFailed, errMessage } = useSelector(
+    (store) => store.userInfo
+  );
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userLogout = () => {
-    dispatch(logoutUser());
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(
+      logoutUser({ route: () => navigate("/login", { replace: true }) })
+    );
   };
 
   useEffect(() => {
     dispatch(getUserData);
   }, [dispatch]);
 
-  if (logoutSuccess) {
-    return <Navigate to={"/login"} />;
+  const update = (e) => {
+    e.preventDefault();
+    if (name && email && password) {
+      dispatch(updateUserData({ name, email, password }));
+    }
+  };
+
+  if (logoutFailed) {
+    alert(`Ошибка: ${message}. Попробуйте еще раз.`);
+  }
+
+  if (getUserFailed || updateUserFailed) {
+    alert(`Ошибка: ${errMessage}. Попробуйте еще раз.`);
   }
 
   const handleName = (e) => {
@@ -48,6 +68,13 @@ const ProfilePage = () => {
   const handlePassword = (e) => {
     setPassword(e.target.value);
     setShow(true);
+  };
+
+  const reset = () => {
+    setName(userName);
+    setEmail(userEmail);
+    setPassword(userPassword);
+    setShow(false);
   };
 
   return (
@@ -86,7 +113,7 @@ const ProfilePage = () => {
                   color: isActive ? "#F2F2F3" : "#8585AD",
                 };
               }}
-              onClick={userLogout}
+              onClick={logout}
             >
               Выход
             </NavLink>
@@ -96,7 +123,7 @@ const ProfilePage = () => {
           В этом разделе вы можете <br /> изменить свои персональные данные
         </p>
       </div>
-      <div className={styles.form}>
+      <form className={styles.form} onSubmit={update}>
         <Input
           type={"text"}
           placeholder={"Имя"}
@@ -125,7 +152,7 @@ const ProfilePage = () => {
         {show && (
           <div>
             <Button
-              htmlType="button"
+              htmlType="submit"
               type="primary"
               size="small"
               extraClass="ml-2 mt-3"
@@ -133,16 +160,17 @@ const ProfilePage = () => {
               Сохранить
             </Button>
             <Button
-              htmlType="button"
+              htmlType="reset"
               type="primary"
               size="small"
               extraClass="ml-2 mt-3"
+              onClick={reset}
             >
               Отмена
             </Button>
           </div>
         )}
-      </div>
+      </form>
     </div>
   );
 };
