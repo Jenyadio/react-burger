@@ -4,7 +4,6 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Navigate } from "react-router-dom";
 import styles from "./forgot-password.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { restorePassword } from "../../services/actions/auth";

@@ -10,6 +10,7 @@ import ProfilePage from '../pages/profile/profile';
 import OrdersPage from '../pages/orders/orders';
 import ProtectedRouteElement from './protected-route-element/protected-route-element';
 import IngredientPage from '../pages/ingredient/ingredient';
+import NotFound404Page from '../pages/404-not-found/404-not-found';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/ingredient" element={<IngredientPage/>}>
             <Route path=":id" element={<IngredientPage />} />
         </Route>
+        <Route path="*" element={<NotFound404Page/>}/>
       </Routes>
     </div>
   </BrowserRouter>
