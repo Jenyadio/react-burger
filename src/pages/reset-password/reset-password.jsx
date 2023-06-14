@@ -9,15 +9,14 @@ import styles from "./reset-password.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetPassword } from "../../services/actions/auth";
+import { auth } from "../../selectors/selectors";
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { resetSuccess, resetFailed, message } = useSelector(
-    (store) => store.auth
-  );
+  const { resetSuccess, resetFailed, message } = useSelector(auth);
 
   const reset = (e) => {
     e.preventDefault();

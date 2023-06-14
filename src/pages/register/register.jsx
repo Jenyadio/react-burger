@@ -10,6 +10,7 @@ import styles from "./register.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../services/actions/auth";
+import { auth } from "../../selectors/selectors";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -17,7 +18,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { registerFailed, message } = useSelector((store) => store.auth);
+  const { registerFailed, message } = useSelector(auth);
 
   const register = (e) => {
     e.preventDefault();

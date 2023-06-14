@@ -1,23 +1,29 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { ingredientDetailsData } from "../../selectors/selectors";
-import CaloriesItem from "../../components/calories-item/calories-item";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./ingredient.module.css";
+import { useParams } from "react-router-dom";
+import IngredientDetails from "../../components/ingredient-details/ingredient-details";
+import { getItems } from "../../services/actions/burger-ingredients";
 
 const IngredientPage = () => {
-  const data = useSelector(ingredientDetailsData);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getItems());
+  }, []);
+
+  const items = useSelector((store) => store.burgerIngredients.items);
 
   return (
-    <main className={styles.main}>
-      <img src={data.image} alt={data.type} />
-      <p className="text text_type_main-medium mt-4 mb-8">{data.name}</p>
-      <div className={styles.calories}>
-        <CaloriesItem name="Калории, ккал" value={data.calories} />
-        <CaloriesItem name="Белки, г" value={data.proteins} />
-        <CaloriesItem name="Жиры, г" value={data.fat} />
-        <CaloriesItem name="Углеводы, г" value={data.carbohydrates} />
-      </div>
-    </main>
+    <section className={styles.main}>
+      <h2 className="text text_type_main-large mb-6">Детали ингредиента</h2>
+      {items
+        .filter((item) => item._id === id)
+        .map((item) => (
+          <IngredientDetails ingredient={item} key={id} />
+        ))}
+    </section>
   );
 };
 

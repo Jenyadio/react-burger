@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserData } from "../../services/actions/user";
 import { updateUserData } from "../../services/actions/user";
 import { getCookie } from "../../utils/cookie";
+import { auth, userInfo } from "../../selectors/selectors";
 
 const ProfilePage = () => {
   const userEmail = localStorage.getItem("userEmail");
@@ -22,10 +23,8 @@ const ProfilePage = () => {
   const [email, setEmail] = useState(userEmail);
   const [password, setPassword] = useState(userPassword);
   const [show, setShow] = useState(false);
-  const { logoutFailed, message } = useSelector((store) => store.auth);
-  const { getUserFailed, updateUserFailed, errMessage } = useSelector(
-    (store) => store.userInfo
-  );
+  const { logoutFailed, message } = useSelector(auth);
+  const { getUserFailed, updateUserFailed, errMessage } = useSelector(userInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
