@@ -131,6 +131,8 @@ const ProfilePage = () => {
           name={"name"}
           extraClass="mb-6"
           icon={"EditIcon"}
+          required
+          maxLength={20}
         />
         <EmailInput
           onChange={handleEmail}
@@ -140,6 +142,7 @@ const ProfilePage = () => {
           isIcon={false}
           extraClass="mb-6"
           icon={"EditIcon"}
+          required
         />
         <PasswordInput
           onChange={handlePassword}
@@ -147,6 +150,8 @@ const ProfilePage = () => {
           name={"password"}
           extraClass="mb-6"
           icon={"EditIcon"}
+          required
+          minLength={6}
         />
         {show && (
           <div>

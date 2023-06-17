@@ -48,7 +48,7 @@ export function registerUser({email, password, name, route}) {
     };
   }
 
-  export function loginUser({email, password, route}) {
+  export function loginUser({email, password}) {
     return function(dispatch) {
       dispatch({
         type: LOGIN_REQUEST
@@ -68,7 +68,6 @@ export function registerUser({email, password, name, route}) {
          localStorage.setItem('refreshToken', refreshToken);
          localStorage.setItem('userEmail', userEmail);
          localStorage.setItem('userName', userName);
-         route();
         } else {
           dispatch({
             type: LOGIN_FAILED
@@ -95,6 +94,7 @@ export function registerUser({email, password, name, route}) {
           dispatch({
             type: RESTORE_PASSWORD_SUCCESS,
             message: res.message,
+            password_step: 2,
           });
           route();
         } else {

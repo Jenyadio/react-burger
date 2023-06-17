@@ -58,7 +58,6 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
           size="large"
           onClick={sendOrder}
           disabled={!isBunAdded}
-          on
         >
           Оформить заказ
         </Button>

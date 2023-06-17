@@ -6,7 +6,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../services/actions/auth";
 import { auth } from "../../selectors/selectors";
@@ -15,7 +15,6 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { loginFailed, message } = useSelector(auth);
 
   const login = (e) => {
@@ -25,7 +24,6 @@ const LoginPage = () => {
         loginUser({
           email,
           password,
-          route: () => navigate("/", { replace: true }),
         })
       );
     }

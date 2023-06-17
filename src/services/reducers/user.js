@@ -1,14 +1,14 @@
 import { GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_FAILED, UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILED } from "../actions/user";
 
 const initialState = {
-    user: {},
+    user: null,
     getUserRequest: false,
     getUserFailed: false,
 
     updateUserRequest: false,
     updateUserFailed: false,
 
-    errMessage: null
+    errMessage: null,
 }
 
 export const userInfoReducer = (state = initialState, action) => {

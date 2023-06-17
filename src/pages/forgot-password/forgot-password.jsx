@@ -23,7 +23,10 @@ const ForgotPasswordPage = () => {
       dispatch(
         restorePassword({
           email,
-          route: () => navigate("/reset-password", { replace: true }),
+          route: () =>
+            navigate("/reset-password", {
+              replace: true,
+            }),
         })
       );
     }

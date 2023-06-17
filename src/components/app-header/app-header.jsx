@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import NavItem from "../nav-item/nav-item";
 import headerStyles from "../app-header/app-header.module.css";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function AppHeader() {
   const location = useLocation();
@@ -22,7 +22,9 @@ function AppHeader() {
         <nav className={headerStyles.nav}>
           <NavItem name="Конструктор" icon={burger} link="/" />
           <NavItem name="Лента заказов" icon={list} link="/orders" />
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
           <NavItem name="Личный кабинет" icon={profile} link="/profile" />
         </nav>
       </div>

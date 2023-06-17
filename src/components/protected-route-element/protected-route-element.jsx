@@ -1,28 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getUserData } from "../../services/actions/user";
-import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate, useLocation } from "react-router-dom";
 
-const ProtectedRouteElement = ({ element }) => {
-  const [isUserLoaded, setUserLoaded] = useState(false);
-  const userEmail = localStorage.getItem("userEmail");
-  const userName = localStorage.getItem("userName");
-  const dispatch = useDispatch();
+const ProtectedRouteElement = ({ anonymous = false, element }) => {
+  const loginSuccess = useSelector((store) => store.auth.loginSuccess);
+  const token = localStorage.getItem("refreshToken");
+  const location = useLocation();
 
-  const init = () => {
-    dispatch(getUserData());
-    setUserLoaded(true);
-  };
+  const from = location.state?.from || "/";
 
-  useEffect(() => {
-    init();
-  }, []);
-
-  if (!isUserLoaded) {
-    return null;
+  if (anonymous && token && loginSuccess) {
+    return <Navigate to={from} />;
+  } else if (anonymous && token) {
+    return <Navigate to={from} />;
   }
 
-  return userEmail && userName ? element : <Navigate to="/login" replace />;
+  if (!anonymous && !token) {
+    return <Navigate to="/login" state={{ from: location }} />;
+  }
+
+  return element;
 };
 
 export default ProtectedRouteElement;

@@ -5,6 +5,7 @@ const initialState = {
     registerFailed: false,
 
     loginRequest: false,
+    loginSuccess: false,
     loginFailed: false,
 
     restoreRequest: false,
@@ -20,6 +21,7 @@ const initialState = {
     logoutFailed: false,
 
     message: null,
+    step: 1,
 }
 
 export const authReducer = (state = initialState, action) => {
@@ -43,7 +45,7 @@ export const authReducer = (state = initialState, action) => {
           };
         }
         case LOGIN_SUCCESS: {
-          return { ...state, loginFailed: false, loginRequest: false };
+          return { ...state, loginFailed: false, loginRequest: false, loginSuccess: true };
         }
         case LOGIN_FAILED: {
           return { ...state, loginFailed: true, message: action.message, loginRequest: false };
@@ -55,7 +57,7 @@ export const authReducer = (state = initialState, action) => {
             };
         }
         case RESTORE_PASSWORD_SUCCESS: {
-            return { ...state, restoreFailed: false, message: action.message, restoreRequest: false, restoreSuccess: true };
+            return { ...state, restoreFailed: false, message: action.message, restoreRequest: false, restoreSuccess: true, step: action.password_step };
         }
         case RESTORE_PASSWORD_FAILED: {
             return { ...state, restoreFailed: true, restoreRequest: false, message: action.message };

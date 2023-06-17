@@ -16,7 +16,7 @@ export function getUserData() {
         if (res && res.success) {
           dispatch({
             type: GET_USER_SUCCESS,
-            payload: res.user
+            payload: res.user,
           });
          localStorage.setItem('userEmail', res.user.email);
          localStorage.setItem('userName', res.user.name);
@@ -61,7 +61,7 @@ export function getUserData() {
       })
       .catch((e) => {
         if (e.message === 'jwt expired') {
-          dispatch(refreshToken(updateUserData()));
+          dispatch(refreshToken(updateUserData({name, email, password})));
          } else {
           dispatch({
             type: UPDATE_USER_FAILED,
