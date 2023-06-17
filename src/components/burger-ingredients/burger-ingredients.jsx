@@ -1,4 +1,3 @@
-import React, { useEffect, useRef } from "react";
 import Tabs from "../tabs/tabs";
 import Ingredients from "../ingredients/ingredients";
 import burgerIngredientsStyles from "../../components/burger-ingredients/burger-ingredients.module.css";

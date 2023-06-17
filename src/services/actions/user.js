@@ -13,18 +13,12 @@ export function getUserData() {
       });
       getUserDataRequest().then(res => {
         console.log(res)
-        if (res && res.success) {
           dispatch({
             type: GET_USER_SUCCESS,
             payload: res.user,
           });
          localStorage.setItem('userEmail', res.user.email);
          localStorage.setItem('userName', res.user.name);
-        } else {
-          dispatch({
-            type: GET_USER_FAILED
-          });
-        }
       })
       .catch((e) => {
         if (e.message === 'jwt expired') {
@@ -46,18 +40,12 @@ export function getUserData() {
       });
       updateUserDataRequest({name, email, password}).then(res => {
         console.log(res)
-        if (res && res.success) {
           dispatch({
             type: UPDATE_USER_SUCCESS,
             payload: res.user
           });
          localStorage.setItem('userEmail', res.user.email);
          localStorage.setItem('userName', res.user.name);
-        } else {
-          dispatch({
-            type: UPDATE_USER_FAILED
-          });
-        }
       })
       .catch((e) => {
         if (e.message === 'jwt expired') {
@@ -75,7 +63,6 @@ export function getUserData() {
   const refreshToken = (afterRefresh) => (dispatch) => {
     refreshTokenRequest()
      .then((res) => {
-      console.log(res)
       saveTokens(res.refreshToken, res.accessToken);
       dispatch(afterRefresh);
      })

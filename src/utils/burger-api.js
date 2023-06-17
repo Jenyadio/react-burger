@@ -6,14 +6,26 @@ const checkResponse = (res) => {
     return res.ok ? res.json() : res.json().then((e) => Promise.reject(e))
 };
 
-export default async function getIngredients() {
-    return await fetch(`${NORMA_API}/ingredients`)
-     .then(checkResponse)
+const checkSuccess = (res) => {
+  if (res && res.success) {
+    return res;
+  }
+  return Promise.reject(`Ответ не success: ${res}`);
+};
+
+const request = (endpoint, options) => {
+  return fetch(`${NORMA_API}${endpoint}`, options)
+    .then(checkResponse)
+    .then(checkSuccess);
+};
+
+export const getIngredients = () => {
+    return request('/ingredients')
 }
  
-export async function sendRequest(method, body) {
-    return await fetch(`${NORMA_API}/orders`, {
-      method: method,
+export const sendRequest = (body) => {
+    return request(`/orders`, {
+      method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },
@@ -21,101 +33,70 @@ export async function sendRequest(method, body) {
         ingredients: body,
       }),
     })
-    .then(checkResponse)
 }
 
-export async function registerRequest({email, password, name,}) {
-  return await fetch(`${NORMA_API}/auth/register`, {
+export const registerRequest = ({email, password, name,}) => {
+  return request(`/auth/register`, {
     method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
     },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
     body: JSON.stringify({
       email, 
       password, 
       name,
     })
   })
-  .then(checkResponse)
 };
 
-export async function loginRequest({email, password}) {
-  return await fetch(`${NORMA_API}/auth/login`, {
+export const loginRequest = ({email, password}) => {
+  return request(`/auth/login`, {
     method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
     },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
     body: JSON.stringify({
         email, 
         password, 
     }) 
   })
-  .then(checkResponse)
 };
 
-export async function restorePasswordRequest({email}) {
-  return await fetch(`${NORMA_API}/password-reset`, {
+export const restorePasswordRequest = ({email}) => {
+  return request(`/password-reset`, {
     method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
     },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
     body: JSON.stringify({
         email 
     }) 
   })
-  .then(checkResponse)
 };
 
-export async function resetPasswordRequest({password, token}) {
-  return await fetch(`${NORMA_API}/password-reset/reset`, {
+export const resetPasswordRequest = ({password, token}) => {
+  return request(`/password-reset/reset`, {
     method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
     },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
     body: JSON.stringify({
         password, 
         token,
     }) 
   })
-  .then(checkResponse)
 };
 
-export async function logoutRequest() {
-  return await fetch(`${NORMA_API}/auth/logout`, {
+export const logoutRequest = () => {
+  return request(`/auth/logout`, {
     method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
     },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
     body: JSON.stringify({
       token: localStorage.getItem("refreshToken"), 
     }) 
   })
-  .then(checkResponse)
 };
 
 export const saveTokens = (refreshToken, accessToken) => {
@@ -124,7 +105,7 @@ export const saveTokens = (refreshToken, accessToken) => {
 }
 
 export const refreshTokenRequest = () => {
-  return fetch(`${NORMA_API}/auth/token`, {
+  return request(`/auth/token`, {
    method: 'POST',
    headers: {
     'Content-Type': 'application/json;charset=utf-8'
@@ -133,29 +114,21 @@ export const refreshTokenRequest = () => {
     token: localStorage.getItem('refreshToken')
    })
   })
-   .then(checkResponse)
  }
 
-export async function getUserDataRequest() {
-  return await fetch(`${NORMA_API}/auth/user`, {
+export const getUserDataRequest = () => {
+  return request(`/auth/user`, {
     method: 'GET',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
       authorization: getCookie("accessToken"),
     },
   })
-   .then(checkResponse)
 }
 
-export async function updateUserDataRequest({name, email, password}) {
-  return await fetch(`${NORMA_API}/auth/user`, {
+export const updateUserDataRequest = ({name, email, password}) => {
+  return request(`/auth/user`, {
     method: 'PATCH',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
       authorization: getCookie("accessToken"),
@@ -166,5 +139,4 @@ export async function updateUserDataRequest({name, email, password}) {
       password
      })
   })
-   .then(checkResponse)
 }

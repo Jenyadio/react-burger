@@ -37,7 +37,7 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
 
   const sendOrder = () => {
     if (getCookie("accessToken")) {
-      dispatch(getOrderNumber("POST", ingredientsId));
+      dispatch(getOrderNumber(ingredientsId));
     } else {
       navigate("/login");
     }

@@ -24,7 +24,6 @@ export function registerUser({email, password, name, route}) {
       }); 
       registerRequest({email, password, name}).then(res => {
         console.log(res)
-        if (res && res.success) {
           dispatch({
             type: REGISTER_SUCCESS,
           });
@@ -33,11 +32,6 @@ export function registerUser({email, password, name, route}) {
          setCookie('accessToken', accessToken);
          localStorage.setItem('refreshToken', refreshToken);
          route();
-        } else {
-          dispatch({
-            type: REGISTER_FAILED
-          });
-        }
       })
       .catch((e) => {
         dispatch({
@@ -55,10 +49,9 @@ export function registerUser({email, password, name, route}) {
       });
       loginRequest({email, password}).then(res => {
         console.log(res)
-        if (res && res.success) {
-          dispatch({
-            type: LOGIN_SUCCESS,
-          });
+        dispatch({
+          type: LOGIN_SUCCESS,
+        });
          let accessToken = res.accessToken;
          let refreshToken = res.refreshToken;
          let userEmail = res.user.email;
@@ -68,11 +61,6 @@ export function registerUser({email, password, name, route}) {
          localStorage.setItem('refreshToken', refreshToken);
          localStorage.setItem('userEmail', userEmail);
          localStorage.setItem('userName', userName);
-        } else {
-          dispatch({
-            type: LOGIN_FAILED
-          });
-        }
       })
       .catch((e) => {
         dispatch({
@@ -90,18 +78,12 @@ export function registerUser({email, password, name, route}) {
       });
       restorePasswordRequest({email}).then(res => {
         console.log(res)
-        if (res && res.success) {
           dispatch({
             type: RESTORE_PASSWORD_SUCCESS,
             message: res.message,
             password_step: 2,
           });
           route();
-        } else {
-          dispatch({
-            type: RESTORE_PASSWORD_FAILED
-          });
-        }
       })
       .catch((e) => {
         dispatch({
@@ -119,17 +101,11 @@ export function registerUser({email, password, name, route}) {
       });
       resetPasswordRequest({password, token}).then(res => {
         console.log(res)
-        if (res && res.success) {
           dispatch({
             type: RESET_PASSWORD_SUCCESS,
             message: res.message,
           });
           route();
-        } else {
-          dispatch({
-            type: RESET_PASSWORD_FAILED
-          });
-        }
       })
       .catch((e) => {
         dispatch({
@@ -147,7 +123,6 @@ export function registerUser({email, password, name, route}) {
       });
       logoutRequest().then(res => {
         console.log(res)
-        if (res && res.success) {
           dispatch({
             type: LOGOUT_SUCCESS,
             message: res.message,
@@ -158,11 +133,6 @@ export function registerUser({email, password, name, route}) {
           deleteCookie('password');
           deleteCookie('accessToken');
           route();
-        } else {
-          dispatch({
-            type: LOGOUT_FAILED
-          });
-        }
       })
       .catch((e) => {
         dispatch({
