@@ -1,3 +1,7 @@
+.link {
+    text-decoration: none;
+    color: #F2F2F3;
+}
 .box {
     position: relative;
     width: 272px;

@@ -1,0 +1,51 @@
+.container {
+    display: flex;
+    margin-top: 7%;
+    justify-content: center;
+    margin-right: 360px;
+}
+
+.form {
+    max-width: 480px;
+    max-height: 430px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input {
+    margin-bottom: 24px;
+}
+
+.text {
+    display: flex;
+}
+
+.text p {
+    margin: 0;
+}
+
+.text a {
+    text-decoration: none;
+}
+
+.menu {
+    width: 320px;
+    margin-right: 40px;
+    
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+ul a {
+    text-decoration: none;
+    color: inherit;
+}

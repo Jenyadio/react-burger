@@ -8,3 +8,6 @@ export const totalIngredients = store => store.constructorIngredients.totalConst
 
 export const orderDetails = store => store.orderDetails;
 export const orderNumber = store => store.orderDetails.orderNumber;
+
+export const auth = store => store.auth;
+export const userInfo = store => store.userInfo;

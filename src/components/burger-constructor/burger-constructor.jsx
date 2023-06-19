@@ -7,29 +7,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import {
   ADD_DRAGGED_INGREDIENT,
-  SET_BUN,
   SET_TOTAL_INGREDIENTS,
 } from "../../services/actions/constructor-ingredients";
 import ConstructorElementWrapper from "../constructor-element-wrapper/constructor-element-wrapper";
 import uuid from "react-uuid";
-import { constructorIngredients, burgerItems } from "../../selectors/selectors";
+import { constructorIngredients } from "../../selectors/selectors";
 function BurgerConstructor({ active, onClose, onOpen }) {
   const dispatch = useDispatch();
-  const items = useSelector(burgerItems);
   const { draggedIngredients, selectedBun, totalConstructorIngredients } =
     useSelector(constructorIngredients);
   const [ingredientsId, setIngredientsId] = useState([]);
-
-  useEffect(() => {
-    dispatch({
-      type: SET_BUN,
-      bun: {
-        name: "Булка",
-        price: 0,
-        image: items[0].image,
-      },
-    });
-  }, []);
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
@@ -61,13 +48,15 @@ function BurgerConstructor({ active, onClose, onOpen }) {
   return (
     <section ref={dropTarget}>
       <div className={`${constructorStyles.box} mt-25 mb-10`}>
-        <ConstructorElement
-          type="top"
-          isLocked={true}
-          text={selectedBun.name}
-          price={selectedBun.price}
-          thumbnail={selectedBun.image}
-        />
+        {selectedBun.type ? (
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text={`${selectedBun.name} (верх)`}
+            price={selectedBun.price}
+            thumbnail={selectedBun.image}
+          />
+        ) : null}
         <div className={`${constructorStyles.boxInside} pr-2`}>
           {draggedIngredients.length ? (
             draggedIngredients.map((item, index) => (
@@ -79,17 +68,19 @@ function BurgerConstructor({ active, onClose, onOpen }) {
             ))
           ) : (
             <p className="pl-15 pt-8 pb-8">
-              Перетащите сюда ингредиенты бургера
+              Перетащите сюда булку и ингредиенты бургера
             </p>
           )}
         </div>
-        <ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text={selectedBun.name}
-          price={selectedBun.price}
-          thumbnail={selectedBun.image}
-        />
+        {selectedBun.type ? (
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={`${selectedBun.name} (низ)`}
+            price={selectedBun.price}
+            thumbnail={selectedBun.image}
+          />
+        ) : null}
       </div>
       <OrderTotal
         ingredientsId={ingredientsId}

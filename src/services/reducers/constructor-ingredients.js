@@ -51,7 +51,8 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
         case CLEAR_CONSTRUCTOR: {
             return {
                 ...state,
-                draggedIngredients: initialState.draggedIngredients
+                draggedIngredients: initialState.draggedIngredients,
+                //selectedBun: initialState.selectedBun
             }
         }
         default: {

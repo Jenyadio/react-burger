@@ -5,22 +5,16 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import itemStyles from "../../components/item/item.module.css";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-import { useDispatch } from "react-redux";
-import {
-  ADD_DATA,
-  DELETE_DATA,
-} from "../../services/actions/ingredient-details";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import dataStructure from "../../utils/data-proptype-structure";
 import { totalIngredients } from "../../selectors/selectors";
+import { useLocation, Link } from "react-router-dom";
 
 function Item({ item }) {
-  const [active, setActive] = useState(false);
-  const dispatch = useDispatch();
   const totalConstructorIngredients = useSelector(totalIngredients);
+  const location = useLocation();
+  const id = item._id;
 
   useMemo(() => {
     const quantity = totalConstructorIngredients.filter(
@@ -43,34 +37,16 @@ function Item({ item }) {
     }),
   });
 
-  const handleOpenModal = () => {
-    setActive(true);
-    dispatch({
-      type: ADD_DATA,
-      data: {
-        image: item.image_large,
-        name: item.name,
-        calories: item.calories,
-        proteins: item.proteins,
-        fat: item.fat,
-        carbohydrates: item.carbohydrates,
-        type: item.type,
-      },
-    });
-  };
-
-  const handleCloseModal = () => {
-    setActive(false);
-    dispatch({
-      type: DELETE_DATA,
-    });
-  };
-
   return (
-    <>
+    <Link
+      to={{
+        pathname: `/ingredient/${id}`,
+      }}
+      state={{ background: location, item }}
+      className={itemStyles.link}
+    >
       <div
         className={`${itemStyles.box} mb-8`}
-        onClick={handleOpenModal}
         ref={dragRef}
         style={{ opacity }}
       >
@@ -88,12 +64,7 @@ function Item({ item }) {
           {item.name}
         </p>
       </div>
-      {active && (
-        <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-          <IngredientDetails />
-        </Modal>
-      )}
-    </>
+    </Link>
   );
 }
 

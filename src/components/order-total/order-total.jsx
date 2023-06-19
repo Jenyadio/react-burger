@@ -13,11 +13,14 @@ import {
   orderDetails,
   constructorIngredients,
 } from "../../selectors/selectors";
+import { useNavigate } from "react-router-dom";
+import { getCookie } from "../../utils/cookie";
 function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
   const dispatch = useDispatch();
   const { orderNumber, dataRequest, dataFailed } = useSelector(orderDetails);
   const { totalConstructorIngredients, selectedBun, draggedIngredients } =
     useSelector(constructorIngredients);
+  const navigate = useNavigate();
 
   const total = useMemo(() => {
     const ingredientsPrice = draggedIngredients.reduce(
@@ -33,7 +36,11 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
   );
 
   const sendOrder = () => {
-    dispatch(getOrderNumber("POST", ingredientsId));
+    if (getCookie("accessToken")) {
+      dispatch(getOrderNumber(ingredientsId));
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -51,12 +58,11 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
           size="large"
           onClick={sendOrder}
           disabled={!isBunAdded}
-          on
         >
           Оформить заказ
         </Button>
       </div>
-      {isBunAdded && active && (
+      {getCookie("accessToken") && isBunAdded && active && (
         <Modal onClose={onClose}>
           {dataRequest && "Загрузка..."}
           {dataFailed && "Произошла ошибка"}
