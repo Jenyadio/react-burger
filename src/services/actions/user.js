@@ -1,4 +1,5 @@
 import { getUserDataRequest, updateUserDataRequest, saveTokens, refreshTokenRequest} from "../../utils/burger-api";
+import { getCookie, setCookie } from "../../utils/cookie";
 export const GET_USER_REQUEST = 'GET_USER_REQUEST';
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const GET_USER_FAILED = 'GET_USER_FAILED';
@@ -15,7 +16,11 @@ export function getUserData() {
         console.log(res)
           dispatch({
             type: GET_USER_SUCCESS,
-            payload: res.user,
+            payload: {
+              name: res.user.name,
+              email: res.user.email,
+              password: getCookie('password')
+            },
           });
          localStorage.setItem('userEmail', res.user.email);
          localStorage.setItem('userName', res.user.name);
@@ -42,10 +47,15 @@ export function getUserData() {
         console.log(res)
           dispatch({
             type: UPDATE_USER_SUCCESS,
-            payload: res.user
+            payload: {
+              name: res.user.name,
+              email: res.user.email,
+              password: password
+            }
           });
          localStorage.setItem('userEmail', res.user.email);
          localStorage.setItem('userName', res.user.name);
+         setCookie("password", password);
       })
       .catch((e) => {
         if (e.message === 'jwt expired') {

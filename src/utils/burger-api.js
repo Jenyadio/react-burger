@@ -120,7 +120,6 @@ export const getUserDataRequest = () => {
   return request(`/auth/user`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
       authorization: getCookie("accessToken"),
     },
   })

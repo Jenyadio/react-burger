@@ -12,21 +12,23 @@ import { logoutUser } from "../../services/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserData } from "../../services/actions/user";
 import { updateUserData } from "../../services/actions/user";
-import { getCookie } from "../../utils/cookie";
 import { auth, userInfo } from "../../selectors/selectors";
+import { useForm } from "../../hooks/use-form";
 
 const ProfilePage = () => {
-  const userEmail = localStorage.getItem("userEmail");
-  const userName = localStorage.getItem("userName");
-  const userPassword = getCookie("password");
-  const [name, setName] = useState(userName);
-  const [email, setEmail] = useState(userEmail);
-  const [password, setPassword] = useState(userPassword);
   const [show, setShow] = useState(false);
   const { logoutFailed, message } = useSelector(auth);
   const { getUserFailed, updateUserFailed, errMessage } = useSelector(userInfo);
+  const {values, handleChange, resetForm} = useForm({});
+  const { name, email, password } = values;
+  const user = useSelector(store => store.userInfo.user);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserData());
+  }, [dispatch]);
 
   const logout = (e) => {
     e.preventDefault();
@@ -35,14 +37,14 @@ const ProfilePage = () => {
     );
   };
 
-  useEffect(() => {
-    dispatch(getUserData);
-  }, [dispatch]);
-
   const update = (e) => {
     e.preventDefault();
-    if (name && email && password) {
-      dispatch(updateUserData({ name, email, password }));
+    if (user) {
+      dispatch(updateUserData({ 
+        name: name ?? user.name, 
+        email: email ?? user.email, 
+        password: password ?? user.password 
+      }));
     }
   };
 
@@ -54,25 +56,8 @@ const ProfilePage = () => {
     alert(`Ошибка: ${errMessage}. Попробуйте еще раз.`);
   }
 
-  const handleName = (e) => {
-    setName(e.target.value);
-    setShow(true);
-  };
-
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-    setShow(true);
-  };
-
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-    setShow(true);
-  };
-
   const reset = () => {
-    setName(userName);
-    setEmail(userEmail);
-    setPassword(userPassword);
+    resetForm()
     setShow(false);
   };
 
@@ -122,12 +107,12 @@ const ProfilePage = () => {
           В этом разделе вы можете <br /> изменить свои персональные данные
         </p>
       </div>
-      <form className={styles.form} onSubmit={update}>
+      <form className={styles.form} onSubmit={update} onFocus={() => setShow(true)}>
         <Input
           type={"text"}
           placeholder={"Имя"}
-          onChange={handleName}
-          value={name}
+          onChange={handleChange}
+          value={name ?? user?.name ?? ''}
           name={"name"}
           extraClass="mb-6"
           icon={"EditIcon"}
@@ -135,9 +120,9 @@ const ProfilePage = () => {
           maxLength={20}
         />
         <EmailInput
-          onChange={handleEmail}
+          onChange={handleChange}
           placeholder={"Логин"}
-          value={email}
+          value={email ?? user?.email ?? ''}
           name={"email"}
           isIcon={false}
           extraClass="mb-6"
@@ -145,8 +130,8 @@ const ProfilePage = () => {
           required
         />
         <PasswordInput
-          onChange={handlePassword}
-          value={password}
+          onChange={handleChange}
+          value={password ?? user?.password ?? ''}
           name={"password"}
           extraClass="mb-6"
           icon={"EditIcon"}
