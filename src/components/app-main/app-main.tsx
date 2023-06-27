@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
+import { BurgerConstructor } from "../burger-constructor/burger-constructor";
 import mainStyles from "../../components/app-main/app-main.module.css";
 import { useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";

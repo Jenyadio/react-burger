@@ -1,9 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import detailsStyles from "../../components/ingredient-details/ingredient-details.module.css";
-import CaloriesItem from "../calories-item/calories-item";
-import PropTypes from "prop-types";
-import dataStructure from "../../utils/data-proptype-structure";
-function IngredientDetails({ ingredient }) {
+import { CaloriesItem } from "../calories-item/calories-item";
+import { Card } from "../item/item";
+
+type IngredientDetailsProps = {
+  ingredient: Card;
+}
+
+export const IngredientDetails: FC<IngredientDetailsProps> = ({ ingredient }) => {
   return (
     <main className={detailsStyles.main}>
       <img src={ingredient.image_large} alt={ingredient.type} />
@@ -17,9 +21,3 @@ function IngredientDetails({ ingredient }) {
     </main>
   );
 }
-
-IngredientDetails.propTypes = {
-  ingredient: PropTypes.shape(dataStructure).isRequired,
-};
-
-export default IngredientDetails;

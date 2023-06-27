@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useMemo } from "react";
 import {
   CurrencyIcon,
   Counter,
@@ -7,20 +6,39 @@ import {
 import itemStyles from "../../components/item/item.module.css";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
-import dataStructure from "../../utils/data-proptype-structure";
 import { totalIngredients } from "../../selectors/selectors";
 import { useLocation, Link } from "react-router-dom";
 
-function Item({ item }) {
+export type Card = {
+    _id: string,
+    name: string,
+    type: string,
+    proteins: number,
+    fat: number,
+    carbohydrates: number,
+    calories: number,
+    price: number,
+    image: string,
+    image_mobile: string,
+    image_large: string,
+    __v: number,
+    count: number,
+}
+
+type ItemProps = {
+  item: Card,
+}
+
+export const Item: FC<ItemProps> = ({ item }) => {
   const totalConstructorIngredients = useSelector(totalIngredients);
   const location = useLocation();
   const id = item._id;
 
   useMemo(() => {
     const quantity = totalConstructorIngredients.filter(
-      (elem) => elem._id === item._id
+      (elem: Card) => elem._id === item._id
     ).length;
-    totalConstructorIngredients.find((elem) =>
+    totalConstructorIngredients.find((elem: Card) =>
       elem._id === item._id && elem.type === "bun"
         ? (item.count = 2)
         : elem._id === item._id && elem.type !== "bun"
@@ -67,9 +85,3 @@ function Item({ item }) {
     </Link>
   );
 }
-
-Item.propTypes = {
-  item: PropTypes.shape(dataStructure).isRequired,
-};
-
-export default Item;

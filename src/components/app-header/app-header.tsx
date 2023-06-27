@@ -1,17 +1,16 @@
-import React, { useState } from "react";
 import {
   Logo,
   BurgerIcon,
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import NavItem from "../nav-item/nav-item";
+import {NavItem} from "../nav-item/nav-item";
 import headerStyles from "../app-header/app-header.module.css";
 import { Link, useLocation } from "react-router-dom";
 
 function AppHeader() {
   const location = useLocation();
-  const type = (path) => (location.pathname === path ? "primary" : "secondary");
+  const type = (path: string) => (location.pathname === path ? "primary" : "secondary");
   const burger = <BurgerIcon type={type("/")} />;
   const list = <ListIcon type={type("/orders")} />;
   const profile = <ProfileIcon type={type("/profile")} />;

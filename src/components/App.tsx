@@ -15,13 +15,14 @@ import ForgotPasswordPage from "../pages/forgot-password/forgot-password";
 import ResetPasswordPage from "../pages/reset-password/reset-password";
 import ProfilePage from "../pages/profile/profile";
 import OrdersPage from "../pages/orders/orders";
-import ProtectedRouteElement from "./protected-route-element/protected-route-element";
+import {ProtectedRouteElement} from "./protected-route-element/protected-route-element";
 import IngredientPage from "../pages/ingredient/ingredient";
 import NotFound404Page from "../pages/404-not-found/404-not-found";
-import Modal from "./modal/modal";
-import IngredientDetails from "./ingredient-details/ingredient-details";
+import {Modal} from "./modal/modal";
+import {IngredientDetails} from "./ingredient-details/ingredient-details";
 import { getItems } from "../services/actions/burger-ingredients";
 import { useDispatch, useSelector } from "react-redux";
+import { authStep } from "../selectors/selectors";
 
 function App() {
   const ModalSwitch = () => {
@@ -30,14 +31,14 @@ function App() {
     let background = location.state && location.state.background;
     let item = location.state && location.state.item;
     const dispatch = useDispatch();
-    const step = useSelector((store) => store.auth.step);
+    const step = useSelector(authStep);
 
     const handleModalClose = () => {
       navigate(-1);
     };
 
     useEffect(() => {
-      dispatch(getItems());
+      dispatch<any>(getItems());
     }, []);
 
     return (

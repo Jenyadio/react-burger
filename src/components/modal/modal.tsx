@@ -1,14 +1,19 @@
-import React, { useCallback, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { FC, ReactNode, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
-import ModalHeader from "../modal-header/modal-header";
-import ModalOverlay from "../modal-overlay/modal-overlay";
+import {ModalHeader} from "../modal-header/modal-header";
+import {ModalOverlay} from "../modal-overlay/modal-overlay";
 import modalStyles from "../modal/modal.module.css";
-const modalRoot = document.getElementById("react-modals");
+const modalRoot = document.getElementById("react-modals") as HTMLDivElement;
 
-function Modal({ onClose, header, children }) {
+type ModalProps = {
+  onClose: () => void;
+  header?: string;
+  children?: ReactNode;
+}
+
+export const Modal: FC<ModalProps> = ({ onClose, header, children }) => {
   const escModal = useCallback(
-    (event) => {
+    (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
       }
@@ -35,12 +40,3 @@ function Modal({ onClose, header, children }) {
     modalRoot
   );
 }
-
-Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  header: PropTypes.string,
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array])
-    .isRequired,
-};
-
-export default Modal;

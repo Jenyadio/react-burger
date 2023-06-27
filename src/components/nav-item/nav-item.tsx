@@ -1,9 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC, ReactNode } from "react";
 import navStyles from "../nav-item/nav-item.module.css";
 import { NavLink } from "react-router-dom";
 
-function NavItem({ icon, name, link }) {
+type NavItemProps = {
+  icon: ReactNode;
+  name: string;
+  link: string;
+}
+
+export const NavItem: FC<NavItemProps> = ({ icon, name, link }) => {
   return (
     <NavLink
       style={({ isActive }) => {
@@ -19,10 +24,3 @@ function NavItem({ icon, name, link }) {
     </NavLink>
   );
 }
-
-NavItem.propTypes = {
-  icon: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired,
-};
-
-export default NavItem;

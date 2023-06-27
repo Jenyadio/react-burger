@@ -1,19 +1,27 @@
-import React, { useMemo } from "react";
-import PropTypes from "prop-types";
-import Item from "../item/item";
+import React, { FC, useMemo } from "react";
+import { Item } from "../item/item";
 import ingredientsStyles from "../../components/ingredients/ingredients.module.css";
 import { useSelector } from "react-redux";
 import { burgerItems } from "../../selectors/selectors";
-function Ingredients({ name, type, id }) {
+import { Card } from "../item/item";
+
+type IngredientsProps = {
+  name: string;
+  type: string;
+  id: string;
+  tabsRef: (node?: Element | null | undefined) => void;
+}
+
+export const Ingredients: FC<IngredientsProps> = ({ name, type, id, tabsRef }) => {
   const items = useSelector(burgerItems);
 
   const list = useMemo(
-    () => items.filter((item) => item.type === type),
+    () => items.filter((item: Card) => item.type === type),
     [items]
   );
 
   return (
-    <article data-section id={id}>
+    <article id={id} ref={tabsRef}>
       <h2
         className={`${ingredientsStyles.header} pt-10 text text_type_main-medium`}
         id={id}
@@ -21,18 +29,10 @@ function Ingredients({ name, type, id }) {
         {name}
       </h2>
       <div className={`${ingredientsStyles.box} mt-6 ml-4 mr-4`}>
-        {list.map((item, index) => (
+        {list.map((item: Card, index: number) => (
           <Item key={index} item={item} />
         ))}
       </div>
     </article>
   );
 }
-
-Ingredients.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-};
-
-export default Ingredients;

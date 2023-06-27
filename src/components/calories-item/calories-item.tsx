@@ -1,8 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 import caloriesStyles from "../../components/calories-item/calories-item.module.css";
 
-function CaloriesItem({ name, value }) {
+type CaloriesProps = {
+  name: string;
+  value: number;
+}
+
+export const CaloriesItem: FC<CaloriesProps> = ({ name, value }) => {
   return (
     <div className={caloriesStyles.box}>
       <p className="text text_type_main-default text_color_inactive">{name}</p>
@@ -12,10 +16,3 @@ function CaloriesItem({ name, value }) {
     </div>
   );
 }
-
-CaloriesItem.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-export default CaloriesItem;
