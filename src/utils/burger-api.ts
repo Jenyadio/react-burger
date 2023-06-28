@@ -1,29 +1,36 @@
 import { setCookie, getCookie } from "./cookie";
 
+type UserData = {
+  email?: string;
+  password?: number;
+  name?: string;
+  token?: string;
+}
+
 const NORMA_API = "https://norma.nomoreparties.space/api";
 
-const checkResponse = (res) => {
-    return res.ok ? res.json() : res.json().then((e) => Promise.reject(e))
+const checkResponse = (res: Response) => {
+    return res.ok ? res.json() : res.json().then((e: Error) => Promise.reject(e))
 };
 
-const checkSuccess = (res) => {
+const checkSuccess = (res: { success: boolean } & any) => {
   if (res && res.success) {
     return res;
   }
   return Promise.reject(`Ответ не success: ${res}`);
 };
 
-const request = (endpoint, options) => {
+const request = async (endpoint: string, options?: RequestInit) => {
   return fetch(`${NORMA_API}${endpoint}`, options)
     .then(checkResponse)
-    .then(checkSuccess);
+    .then(checkSuccess)
 };
 
 export const getIngredients = () => {
     return request('/ingredients')
 }
  
-export const sendRequest = (body) => {
+export const sendRequest = (body: string[]) => {
     return request(`/orders`, {
       method: 'POST',
       headers: {
@@ -35,7 +42,7 @@ export const sendRequest = (body) => {
     })
 }
 
-export const registerRequest = ({email, password, name,}) => {
+export const registerRequest = ({email, password, name,}: UserData) => {
   return request(`/auth/register`, {
     method: 'POST',
     headers: {
@@ -49,7 +56,7 @@ export const registerRequest = ({email, password, name,}) => {
   })
 };
 
-export const loginRequest = ({email, password}) => {
+export const loginRequest = ({email, password}: UserData) => {
   return request(`/auth/login`, {
     method: 'POST',
     headers: {
@@ -62,7 +69,7 @@ export const loginRequest = ({email, password}) => {
   })
 };
 
-export const restorePasswordRequest = ({email}) => {
+export const restorePasswordRequest = ({email}: UserData) => {
   return request(`/password-reset`, {
     method: 'POST',
     headers: {
@@ -74,7 +81,7 @@ export const restorePasswordRequest = ({email}) => {
   })
 };
 
-export const resetPasswordRequest = ({password, token}) => {
+export const resetPasswordRequest = ({password, token}: UserData) => {
   return request(`/password-reset/reset`, {
     method: 'POST',
     headers: {
@@ -99,7 +106,7 @@ export const logoutRequest = () => {
   })
 };
 
-export const saveTokens = (refreshToken, accessToken) => {
+export const saveTokens = (refreshToken: string, accessToken: string) => {
   setCookie('accessToken', accessToken);
   localStorage.setItem('refreshToken', refreshToken);
 }
@@ -118,19 +125,18 @@ export const refreshTokenRequest = () => {
 
 export const getUserDataRequest = () => {
   return request(`/auth/user`, {
-    method: 'GET',
     headers: {
-      authorization: getCookie("accessToken"),
+      authorization: String(getCookie("accessToken")),
     },
   })
 }
 
-export const updateUserDataRequest = ({name, email, password}) => {
+export const updateUserDataRequest = ({name, email, password}: UserData) => {
   return request(`/auth/user`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      authorization: getCookie("accessToken"),
+      authorization: String(getCookie("accessToken")),
     },
     body: JSON.stringify({
       name,
