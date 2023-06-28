@@ -19,9 +19,9 @@ const ProfilePage = () => {
   const [show, setShow] = useState(false);
   const { logoutFailed, message } = useSelector(auth);
   const { getUserFailed, updateUserFailed, errMessage } = useSelector(userInfo);
+  const user = useSelector(userData);
   const {values, handleChange, resetForm} = useForm({});
   const { name, email, password } = values;
-  const user = useSelector(userData);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

@@ -1,5 +1,4 @@
 import React, { FormEvent } from "react";
-import { useState } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -11,14 +10,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../services/actions/auth";
 import { auth } from "../../selectors/selectors";
+import { useForm } from "../../hooks/use-form";
 
 const RegisterPage = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { registerFailed, message } = useSelector(auth);
+  const {values, handleChange} = useForm({});
+  const { name, email, password } = values;
 
   const register = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,21 +45,21 @@ const RegisterPage = () => {
           <Input
             type={"text"}
             placeholder={"Имя"}
-            onChange={(e) => setName(e.target.value)}
-            value={name}
+            onChange={handleChange}
+            value={name ?? ""}
             name={"name"}
             extraClass="mb-6"
           />
           <EmailInput
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
+            onChange={handleChange}
+            value={email ?? ""}
             name={"email"}
             isIcon={false}
             extraClass="mb-6"
           />
           <PasswordInput
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            onChange={handleChange}
+            value={password?.toString() ?? ""}
             name={"password"}
             extraClass="mb-6"
           />

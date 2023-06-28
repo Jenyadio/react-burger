@@ -4,6 +4,7 @@ type InputValues = {
   name?: string;
   email?: string;
   password?: number;
+  token?: string;
 }
 
 export function useForm(inputValues={}) {
