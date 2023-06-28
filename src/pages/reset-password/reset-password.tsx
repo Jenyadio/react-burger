@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { useState } from "react";
 import {
   PasswordInput,
@@ -18,10 +18,10 @@ const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const { resetSuccess, resetFailed, message } = useSelector(auth);
 
-  const reset = (e) => {
-    e.preventDefault();
+  const reset = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (password && token) {
-      dispatch(
+      dispatch<any>(
         resetPassword({
           password,
           token,

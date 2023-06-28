@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { FormEvent, SyntheticEvent, useEffect } from "react";
 import { useState } from "react";
 import {
-  EmailInput,
   PasswordInput,
   Input,
   Button,
@@ -14,6 +13,7 @@ import { getUserData } from "../../services/actions/user";
 import { updateUserData } from "../../services/actions/user";
 import { auth, userInfo } from "../../selectors/selectors";
 import { useForm } from "../../hooks/use-form";
+import { userData } from "../../selectors/selectors";
 
 const ProfilePage = () => {
   const [show, setShow] = useState(false);
@@ -21,26 +21,26 @@ const ProfilePage = () => {
   const { getUserFailed, updateUserFailed, errMessage } = useSelector(userInfo);
   const {values, handleChange, resetForm} = useForm({});
   const { name, email, password } = values;
-  const user = useSelector(store => store.userInfo.user);
+  const user = useSelector(userData);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserData());
+    dispatch<any>(getUserData());
   }, [dispatch]);
 
-  const logout = (e) => {
-    e.preventDefault();
-    dispatch(
+  const logout = (event: SyntheticEvent ) => {
+    event.preventDefault();
+    dispatch<any>(
       logoutUser({ route: () => navigate("/login", { replace: true }) })
     );
   };
 
-  const update = (e) => {
-    e.preventDefault();
+  const update = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (user) {
-      dispatch(updateUserData({ 
+      dispatch<any>(updateUserData({ 
         name: name ?? user.name, 
         email: email ?? user.email, 
         password: password ?? user.password 
@@ -119,12 +119,12 @@ const ProfilePage = () => {
           required
           maxLength={20}
         />
-        <EmailInput
+        <Input
+          type={"email"}
           onChange={handleChange}
           placeholder={"Логин"}
           value={email ?? user?.email ?? ''}
           name={"email"}
-          isIcon={false}
           extraClass="mb-6"
           icon={"EditIcon"}
           required

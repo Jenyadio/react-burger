@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { useState } from "react";
 import {
   EmailInput,
@@ -17,10 +17,10 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const { loginFailed, message } = useSelector(auth);
 
-  const login = (e) => {
-    e.preventDefault();
+  const login = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (email && password) {
-      dispatch(
+      dispatch<any>(
         loginUser({
           email,
           password,
@@ -56,7 +56,6 @@ const LoginPage = () => {
             type="primary"
             size="medium"
             extraClass="mb-20"
-            onClick={login}
           >
             Войти
           </Button>

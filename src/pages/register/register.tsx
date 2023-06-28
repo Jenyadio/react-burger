@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { useState } from "react";
 import {
   EmailInput,
@@ -20,10 +20,10 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const { registerFailed, message } = useSelector(auth);
 
-  const register = (e) => {
-    e.preventDefault();
+  const register = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (name && email && password) {
-      dispatch(
+      dispatch<any>(
         registerUser({
           email,
           password,

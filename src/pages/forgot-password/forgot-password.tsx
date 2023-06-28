@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { useState } from "react";
 import {
   EmailInput,
@@ -8,19 +8,18 @@ import styles from "./forgot-password.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { restorePassword } from "../../services/actions/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../../selectors/selectors";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { restoreSuccess, restoreFailed, message } = useSelector(
-    (store) => store.auth
-  );
+  const { restoreSuccess, restoreFailed, message } = useSelector(auth);
 
-  const restore = (e) => {
-    e.preventDefault();
+  const restore = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (email) {
-      dispatch(
+      dispatch<any>(
         restorePassword({
           email,
           route: () =>

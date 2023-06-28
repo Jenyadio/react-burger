@@ -1,9 +1,15 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, ChangeEvent } from "react";
+
+type InputValues = {
+  name?: string;
+  email?: string;
+  password?: number;
+}
 
 export function useForm(inputValues={}) {
-    const [values, setValues] = useState(inputValues);
+    const [values, setValues] = useState<InputValues>(inputValues);
   
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
       const {value, name} = event.target;
       setValues({...values, [name]: value});
     };
