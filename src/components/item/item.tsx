@@ -8,22 +8,7 @@ import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import { totalIngredients } from "../../selectors/selectors";
 import { useLocation, Link } from "react-router-dom";
-
-export type Card = {
-    _id: string,
-    name: string,
-    type: string,
-    proteins: number,
-    fat: number,
-    carbohydrates: number,
-    calories: number,
-    price: number,
-    image: string,
-    image_mobile: string,
-    image_large: string,
-    __v: number,
-    count: number,
-}
+import { Card } from '../../types/ingredient'
 
 type ItemProps = {
   item: Card,
@@ -45,7 +30,7 @@ export const Item: FC<ItemProps> = ({ item }) => {
         ? (item.count = quantity)
         : (item.count = 0)
     );
-  }, [totalConstructorIngredients]);
+  }, [totalConstructorIngredients, item]);
 
   const [{ opacity }, dragRef] = useDrag({
     type: "ingredient",

@@ -14,7 +14,7 @@ import {
 } from "../../selectors/selectors";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
-import { Card } from "../item/item";
+import { Card } from '../../types/ingredient'
 
 type OrderTotalProps = {
   ingredientsId: string[];

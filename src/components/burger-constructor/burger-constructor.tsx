@@ -11,7 +11,7 @@ import {
 import { ConstructorElementWrapper } from "../constructor-element-wrapper/constructor-element-wrapper";
 import uuid from "react-uuid";
 import { constructorIngredients } from "../../selectors/selectors";
-import { Card } from "../item/item";
+import { Card } from '../../types/ingredient'
 
 type BurgerConstructorProps = {
   active: boolean;

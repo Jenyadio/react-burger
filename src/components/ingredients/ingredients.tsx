@@ -3,7 +3,7 @@ import { Item } from "../item/item";
 import ingredientsStyles from "../../components/ingredients/ingredients.module.css";
 import { useSelector } from "react-redux";
 import { burgerItems } from "../../selectors/selectors";
-import { Card } from "../item/item";
+import { Card } from '../../types/ingredient'
 
 type IngredientsProps = {
   name: string;
@@ -17,7 +17,7 @@ export const Ingredients: FC<IngredientsProps> = ({ name, type, id, tabsRef }) =
 
   const list = useMemo(
     () => items.filter((item: Card) => item.type === type),
-    [items]
+    [items]                                                 // eslint-disable-line
   );
 
   return (

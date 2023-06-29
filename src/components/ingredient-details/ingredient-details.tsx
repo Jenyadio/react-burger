@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import detailsStyles from "../../components/ingredient-details/ingredient-details.module.css";
 import { CaloriesItem } from "../calories-item/calories-item";
-import { Card } from "../item/item";
+import { Card } from '../../types/ingredient'
 
 type IngredientDetailsProps = {
   ingredient: Card;

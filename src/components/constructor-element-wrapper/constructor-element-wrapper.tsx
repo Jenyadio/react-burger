@@ -13,7 +13,7 @@ import { XYCoord } from "dnd-core";
 import { useDrop, useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import { draggedConstructorIngredients } from "../../selectors/selectors";
-import { Card } from "../item/item";
+import { Card } from '../../types/ingredient'
 
 type ConstructorElementProps = {
   index: number;

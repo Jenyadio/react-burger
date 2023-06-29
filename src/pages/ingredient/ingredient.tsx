@@ -3,7 +3,7 @@ import styles from "./ingredient.module.css";
 import { useParams } from "react-router-dom";
 import {IngredientDetails} from "../../components/ingredient-details/ingredient-details";
 import { burgerItems } from "../../selectors/selectors";
-import { Card } from "../../components/item/item";
+import { Card } from '../../types/ingredient'
 
 const IngredientPage = () => {
   const { id } = useParams();
