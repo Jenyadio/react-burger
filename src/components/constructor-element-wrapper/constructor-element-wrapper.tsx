@@ -1,28 +1,38 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, FC } from "react";
 import wrapperStyles from "../../components/constructor-element-wrapper/constructor-element-wrapper.module.css";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import {
   DELETE_DRUGGED_INGREDIENT,
   MOVE_INGREDIENT,
 } from "../../services/actions/constructor-ingredients";
+import { XYCoord } from "dnd-core";
 import { useDrop, useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
-import dataStructure from "../../utils/data-proptype-structure";
 import { draggedConstructorIngredients } from "../../selectors/selectors";
+import { Card } from '../../types/ingredient'
 
-const ConstructorElementWrapper = ({ index, item }) => {
+type ConstructorElementProps = {
+  index: number;
+  item: Card;
+}
+
+type DragItem = {
+  id: string;
+  index: number;
+}
+
+export const ConstructorElementWrapper: FC<ConstructorElementProps> = ({ index, item }) => {
   const dispatch = useDispatch();
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
 
   const draggedIngredients = useSelector(draggedConstructorIngredients);
 
   const moveCard = useCallback(
-    (dragIndex, hoverIndex) => {
+    (dragIndex: number, hoverIndex: number) => {
       const dragCard = draggedIngredients[dragIndex];
       const newCards = [...draggedIngredients];
       newCards.splice(dragIndex, 1);
@@ -36,14 +46,9 @@ const ConstructorElementWrapper = ({ index, item }) => {
     [draggedIngredients, dispatch]
   );
 
-  const [{ handlerId }, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: "component",
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      };
-    },
-    hover(item, monitor) {
+    hover(item: DragItem, monitor) {
       if (!ref.current) {
         return;
       }
@@ -57,7 +62,7 @@ const ConstructorElementWrapper = ({ index, item }) => {
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
@@ -82,7 +87,7 @@ const ConstructorElementWrapper = ({ index, item }) => {
 
   const opacity = isDragging ? 0 : 1;
 
-  const deleteIngredient = (id) => {
+  const deleteIngredient = (id: number) => {
     dispatch({
       type: DELETE_DRUGGED_INGREDIENT,
       id,
@@ -91,15 +96,12 @@ const ConstructorElementWrapper = ({ index, item }) => {
 
   drag(drop(ref));
 
-  const preventDefault = (e) => e.preventDefault();
-
   return (
     <div
       key={index}
       className={wrapperStyles.container}
       ref={ref}
-      onDrop={preventDefault}
-      data-handler-id={handlerId}
+      onDrop={e => e.preventDefault()}
       style={{ opacity }}
     >
       <DragIcon type="primary" />
@@ -112,10 +114,3 @@ const ConstructorElementWrapper = ({ index, item }) => {
     </div>
   );
 };
-
-ConstructorElementWrapper.propTypes = {
-  item: PropTypes.shape(dataStructure).isRequired,
-  index: PropTypes.number.isRequired,
-};
-
-export default ConstructorElementWrapper;

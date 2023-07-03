@@ -1,21 +1,29 @@
-import PropTypes from "prop-types";
 import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import orderStyles from "../../components/order-total/order-total.module.css";
-import Modal from "../modal/modal";
+import {Modal} from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderNumber } from "../../services/actions/order-details";
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import {
   orderDetails,
   constructorIngredients,
 } from "../../selectors/selectors";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
-function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
+import { Card } from '../../types/ingredient'
+
+type OrderTotalProps = {
+  ingredientsId: string[];
+  onOpen: () => void;
+  onClose: () => void;
+  active: boolean;
+}
+
+export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose, active }) => {
   const dispatch = useDispatch();
   const { orderNumber, dataRequest, dataFailed } = useSelector(orderDetails);
   const { totalConstructorIngredients, selectedBun, draggedIngredients } =
@@ -24,7 +32,7 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
 
   const total = useMemo(() => {
     const ingredientsPrice = draggedIngredients.reduce(
-      (acc, item) => acc + item.price,
+      (acc: number, item: Card) => acc + item.price,
       0
     );
     const total = selectedBun.price * 2 + ingredientsPrice;
@@ -32,12 +40,12 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
   }, [draggedIngredients, selectedBun]);
 
   const isBunAdded = totalConstructorIngredients.find(
-    (item) => item.type === "bun"
+    (item: Card) => item.type === "bun"
   );
 
   const sendOrder = () => {
     if (getCookie("accessToken")) {
-      dispatch(getOrderNumber(ingredientsId));
+      dispatch<any>(getOrderNumber(ingredientsId));
     } else {
       navigate("/login");
     }
@@ -45,7 +53,7 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
 
   return (
     <>
-      <div className={orderStyles.order} onClick={isBunAdded ? onOpen : null}>
+      <div className={orderStyles.order} onClick={isBunAdded ? onOpen : onClose}>
         <div className={`${orderStyles.price} mr-10`}>
           <p className="text text_type_digits-medium mr-2">
             {total ? total : 0}
@@ -72,12 +80,3 @@ function OrderTotal({ ingredientsId, onOpen, onClose, active }) {
     </>
   );
 }
-
-OrderTotal.propTypes = {
-  ingredientsId: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onOpen: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-  active: PropTypes.bool.isRequired,
-};
-
-export default OrderTotal;

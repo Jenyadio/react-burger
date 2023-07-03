@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { FormEvent } from "react";
 import {
   EmailInput,
   Button,
@@ -8,19 +7,20 @@ import styles from "./forgot-password.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { restorePassword } from "../../services/actions/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../../selectors/selectors";
+import { useForm } from "../../hooks/use-form";
 
 const ForgotPasswordPage = () => {
-  const [email, setEmail] = useState("");
+  const {values, handleChange} = useForm({});
+  const { email } = values;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { restoreSuccess, restoreFailed, message } = useSelector(
-    (store) => store.auth
-  );
+  const { restoreSuccess, restoreFailed, message } = useSelector(auth);
 
-  const restore = (e) => {
-    e.preventDefault();
+  const restore = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (email) {
-      dispatch(
+      dispatch<any>(
         restorePassword({
           email,
           route: () =>
@@ -44,9 +44,9 @@ const ForgotPasswordPage = () => {
         </h2>
         <form className={styles.form} onSubmit={restore}>
           <EmailInput
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleChange}
             placeholder={"Укажите e-mail"}
-            value={email}
+            value={email ?? ""}
             name={"email"}
             isIcon={false}
             extraClass="mb-6"

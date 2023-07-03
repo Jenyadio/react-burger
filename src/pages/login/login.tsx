@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { FormEvent } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -10,17 +9,18 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../services/actions/auth";
 import { auth } from "../../selectors/selectors";
+import { useForm } from "../../hooks/use-form";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const { loginFailed, message } = useSelector(auth);
+  const {values, handleChange} = useForm({});
+  const { email, password } = values;
 
-  const login = (e) => {
-    e.preventDefault();
+  const login = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (email && password) {
-      dispatch(
+      dispatch<any>(
         loginUser({
           email,
           password,
@@ -39,15 +39,15 @@ const LoginPage = () => {
         <h2 className="mb-6 text text_type_main-medium">Вход</h2>
         <form className={styles.form} onSubmit={login}>
           <EmailInput
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
+            onChange={handleChange}
+            value={email ?? ""}
             name={"email"}
             isIcon={false}
             extraClass="mb-6"
           />
           <PasswordInput
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            onChange={handleChange}
+            value={password?.toString() ?? ""}
             name={"password"}
             extraClass="mb-6"
           />
@@ -56,7 +56,6 @@ const LoginPage = () => {
             type="primary"
             size="medium"
             extraClass="mb-20"
-            onClick={login}
           >
             Войти
           </Button>

@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { FormEvent } from "react";
 import {
   PasswordInput,
   Button,
@@ -10,18 +9,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetPassword } from "../../services/actions/auth";
 import { auth } from "../../selectors/selectors";
+import { useForm } from "../../hooks/use-form";
 
 const ResetPasswordPage = () => {
-  const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { resetSuccess, resetFailed, message } = useSelector(auth);
+  const {values, handleChange} = useForm({});
+  const { password, token } = values;
 
-  const reset = (e) => {
-    e.preventDefault();
+  const reset = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (password && token) {
-      dispatch(
+      dispatch<any>(
         resetPassword({
           password,
           token,
@@ -43,17 +43,17 @@ const ResetPasswordPage = () => {
         </h2>
         <form className={styles.form} onSubmit={reset}>
           <PasswordInput
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleChange}
             placeholder={"Введите новый пароль"}
-            value={password}
+            value={password?.toString() ?? ""}
             name={"password"}
             extraClass="mb-6"
           />
           <Input
             type={"text"}
             placeholder={"Введите код из письма"}
-            onChange={(e) => setToken(e.target.value)}
-            value={token}
+            onChange={handleChange}
+            value={token ?? ""}
             name={"code"}
             extraClass="mb-6"
           />

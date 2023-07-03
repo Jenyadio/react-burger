@@ -1,18 +1,27 @@
-import React, { useState, useMemo, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useMemo, useEffect, FC } from "react";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "../../components/burger-constructor/burger-constructor.module.css";
-import OrderTotal from "../order-total/order-total";
+import {OrderTotal} from "../order-total/order-total";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import {
   ADD_DRAGGED_INGREDIENT,
   SET_TOTAL_INGREDIENTS,
 } from "../../services/actions/constructor-ingredients";
-import ConstructorElementWrapper from "../constructor-element-wrapper/constructor-element-wrapper";
+import { ConstructorElementWrapper } from "../constructor-element-wrapper/constructor-element-wrapper";
 import uuid from "react-uuid";
 import { constructorIngredients } from "../../selectors/selectors";
-function BurgerConstructor({ active, onClose, onOpen }) {
+import { Card } from '../../types/ingredient'
+
+type BurgerConstructorProps = {
+  active: boolean;
+  onClose: () => void;
+  onOpen: () => void;
+}
+
+type draggingItem = { dragId: string } & Card;
+
+export const BurgerConstructor: FC<BurgerConstructorProps> = ({ active, onClose, onOpen }) => {
   const dispatch = useDispatch();
   const { draggedIngredients, selectedBun, totalConstructorIngredients } =
     useSelector(constructorIngredients);
@@ -20,7 +29,7 @@ function BurgerConstructor({ active, onClose, onOpen }) {
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item) {
+    drop(item: object) {
       dispatch({
         type: ADD_DRAGGED_INGREDIENT,
         item: {
@@ -41,7 +50,7 @@ function BurgerConstructor({ active, onClose, onOpen }) {
   }, [draggedIngredients, selectedBun, dispatch]);
 
   useMemo(() => {
-    const id = totalConstructorIngredients.map((item) => item._id);
+    const id = totalConstructorIngredients.map((item: draggingItem) => item._id);
     setIngredientsId(id);
   }, [totalConstructorIngredients]);
 
@@ -59,7 +68,7 @@ function BurgerConstructor({ active, onClose, onOpen }) {
         ) : null}
         <div className={`${constructorStyles.boxInside} pr-2`}>
           {draggedIngredients.length ? (
-            draggedIngredients.map((item, index) => (
+            draggedIngredients.map((item: draggingItem, index: number) => (
               <ConstructorElementWrapper
                 key={item.dragId}
                 index={index}
@@ -91,11 +100,3 @@ function BurgerConstructor({ active, onClose, onOpen }) {
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  active: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onOpen: PropTypes.func.isRequired,
-};
-
-export default BurgerConstructor;

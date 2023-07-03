@@ -10,7 +10,6 @@ export function getOrderNumber(method, body) {
         type: GET_ORDER_REQUEST
       });
       sendRequest(method, body).then(res => {
-        if (res && res.success) {
           dispatch({
             type: GET_ORDER_SUCCESS,
             number: res.order.number
@@ -18,13 +17,9 @@ export function getOrderNumber(method, body) {
           dispatch({
             type: CLEAR_CONSTRUCTOR,
           });
-        } else {
-          dispatch({
-            type: GET_ORDER_FAILED
-          });
-        }
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e);
         dispatch({
           type: GET_ORDER_FAILED
         });
