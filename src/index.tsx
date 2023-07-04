@@ -7,6 +7,13 @@ import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 import { rootReducer } from '../src/services/reducers/index'
 import thunk from 'redux-thunk';
+import { GetItemsActions } from "../src/services/actions/burger-ingredients";
+import { AuthActions } from './services/actions/auth';
+import { GetOrderActions } from './services/actions/order-details';
+import { ConstructorIngredientsActions } from './services/actions/constructor-ingredients';
+import { UserActions } from './services/actions/user';
+import { ThunkAction } from 'redux-thunk';
+import { Action, ActionCreator } from 'redux';
 
 declare global {
   interface Window {
@@ -38,4 +45,11 @@ root.render(
 reportWebVitals();
 
 export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+
+type ApplicationActions = GetItemsActions | AuthActions | GetOrderActions | ConstructorIngredientsActions | UserActions;
+
+export type AppThunk<TReturn = void> = ActionCreator<
+  ThunkAction<TReturn, Action, RootState, ApplicationActions>
+>; 
+
+export type AppDispatch = typeof store.dispatch;

@@ -1,6 +1,31 @@
 import { REGISTER_SUCCESS, REGISTER_REQUEST, REGISTER_FAILED, LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILED, RESTORE_PASSWORD_REQUEST, RESTORE_PASSWORD_SUCCESS, RESTORE_PASSWORD_FAILED, RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAILED, LOGOUT_SUCCESS, LOGOUT_FAILED, LOGOUT_REQUEST } from "../actions/auth";
+import { AuthActions } from "../actions/auth";
 
-const initialState = {
+type AuthState = {
+  registerRequest: boolean,
+  registerFailed: boolean,
+
+  loginRequest: boolean,
+  loginSuccess: boolean,
+  loginFailed: boolean,
+
+  restoreRequest: boolean,
+  restoreSuccess: boolean,
+  restoreFailed: boolean,
+
+  resetRequest: boolean,
+  resetSuccess: boolean,
+  resetFailed: boolean,
+
+  logoutRequest: boolean,
+  logoutSuccess: boolean,
+  logoutFailed: boolean,
+
+  message: string | null,
+  step: number,
+}
+
+const initialState: AuthState = {
     registerRequest: false,
     registerFailed: false,
 
@@ -24,7 +49,7 @@ const initialState = {
     step: 1,
 }
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action: AuthActions): AuthState => {
     switch (action.type) {
         case REGISTER_REQUEST: {
           return {

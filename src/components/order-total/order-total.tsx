@@ -31,11 +31,16 @@ export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose
   const navigate = useNavigate();
 
   const total = useMemo(() => {
+    let total;
     const ingredientsPrice = draggedIngredients.reduce(
       (acc: number, item: Card) => acc + item.price,
       0
     );
-    const total = selectedBun.price * 2 + ingredientsPrice;
+    if (selectedBun.length) {
+      total = selectedBun[0].price * 2 + ingredientsPrice;
+    } else {
+      total = ingredientsPrice;
+    }
     return total;
   }, [draggedIngredients, selectedBun]);
 

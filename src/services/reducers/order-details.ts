@@ -3,6 +3,13 @@ import {
     GET_ORDER_FAILED,
     GET_ORDER_SUCCESS,
   } from '../actions/order-details';
+import { GetOrderActions } from '../actions/order-details';
+
+type OrderState = {
+  orderNumber: number | null,
+  dataRequest: boolean,
+  dataFailed: boolean,
+};
 
 const initialState = {
     orderNumber: null,
@@ -10,7 +17,7 @@ const initialState = {
     dataFailed: false,
 };
 
-export const orderDetailsReducer = (state = initialState, action) => {
+export const orderDetailsReducer = (state = initialState, action: GetOrderActions): OrderState => {
     switch (action.type) {
         case GET_ORDER_REQUEST: {
           return {

@@ -1,6 +1,17 @@
-import { ADD_DRAGGED_INGREDIENT, DELETE_DRUGGED_INGREDIENT, SET_BUN, SET_TOTAL_INGREDIENTS, MOVE_INGREDIENT, CLEAR_CONSTRUCTOR } from "../actions/constructor-ingredients";
+import { ADD_DRAGGED_INGREDIENT, DELETE_DRUGGED_INGREDIENT, SET_TOTAL_INGREDIENTS, MOVE_INGREDIENT, CLEAR_CONSTRUCTOR } from "../actions/constructor-ingredients";
+import { ConstructorIngredientsActions } from "../actions/constructor-ingredients";
+import { Card } from '../../types/ingredient';
 
-const initialState = {
+type ConstructorState = {
+    draggedIngredients: Card[],
+    totalConstructorIngredients: Card[],
+
+    ingredientsId: string[],
+
+    selectedBun: Card[],
+}
+
+const initialState: ConstructorState = {
     draggedIngredients: [],
     totalConstructorIngredients: [],
 
@@ -9,13 +20,13 @@ const initialState = {
     selectedBun: [],
 }
 
-export const constructorIngredientsReducer = (state = initialState, action) => {
+export const constructorIngredientsReducer = (state = initialState, action: ConstructorIngredientsActions): ConstructorState => {
     switch (action.type) {
         case ADD_DRAGGED_INGREDIENT: {
             if(action.item.type === 'bun') {
                 return {
                     ...state,
-                    selectedBun: action.item
+                    selectedBun: [action.item]
                 }
             } else {
                 return {
@@ -36,16 +47,10 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
                 draggedIngredients: action.ingredients
             }
         }
-        case SET_BUN: {
-            return {
-                ...state,
-                selectedBun: action.bun
-            }
-        }
         case SET_TOTAL_INGREDIENTS: {
             return {
                 ...state,
-                totalConstructorIngredients: [...state.draggedIngredients, ...[state.selectedBun]]
+                totalConstructorIngredients: [...state.draggedIngredients, ...state.selectedBun]
             }
         }
         case CLEAR_CONSTRUCTOR: {

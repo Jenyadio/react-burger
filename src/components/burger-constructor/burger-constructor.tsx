@@ -57,13 +57,13 @@ export const BurgerConstructor: FC<BurgerConstructorProps> = ({ active, onClose,
   return (
     <section ref={dropTarget}>
       <div className={`${constructorStyles.box} mt-25 mb-10`}>
-        {selectedBun.type ? (
+        {selectedBun.length ? (
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={`${selectedBun.name} (верх)`}
-            price={selectedBun.price}
-            thumbnail={selectedBun.image}
+            text={`${selectedBun[0].name} (верх)`}
+            price={selectedBun[0].price}
+            thumbnail={selectedBun[0].image}
           />
         ) : null}
         <div className={`${constructorStyles.boxInside} pr-2`}>
@@ -81,13 +81,13 @@ export const BurgerConstructor: FC<BurgerConstructorProps> = ({ active, onClose,
             </p>
           )}
         </div>
-        {selectedBun.type ? (
+        {selectedBun.length ? (
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={`${selectedBun.name} (низ)`}
-            price={selectedBun.price}
-            thumbnail={selectedBun.image}
+            text={`${selectedBun[0].name} (низ)`}
+            price={selectedBun[0].price}
+            thumbnail={selectedBun[0].image}
           />
         ) : null}
       </div>
