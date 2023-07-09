@@ -20,7 +20,7 @@ function AppHeader() {
       <div className={headerStyles.wrapper}>
         <nav className={headerStyles.nav}>
           <NavItem name="Конструктор" icon={burger} link="/" />
-          <NavItem name="Лента заказов" icon={list} link="/orders" />
+          <NavItem name="Лента заказов" icon={list} link="/feed" />
           <Link to="/">
             <Logo />
           </Link>
