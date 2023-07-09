@@ -1,9 +1,9 @@
 import React, { FC, useMemo } from "react";
 import { Item } from "../item/item";
 import ingredientsStyles from "../../components/ingredients/ingredients.module.css";
-import { useSelector } from "react-redux";
 import { burgerItems } from "../../selectors/selectors";
 import { Card } from '../../types/ingredient'
+import { useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 type IngredientsProps = {
   name: string;
@@ -13,7 +13,7 @@ type IngredientsProps = {
 }
 
 export const Ingredients: FC<IngredientsProps> = ({ name, type, id, tabsRef }) => {
-  const items = useSelector(burgerItems);
+  const items = useAppSelector(burgerItems);
 
   const list = useMemo(
     () => items.filter((item: Card) => item.type === type),

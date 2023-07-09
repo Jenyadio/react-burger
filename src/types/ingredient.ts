@@ -12,4 +12,5 @@ export type Card = {
     image_large: string,
     __v: number,
     count: number,
+    dragId?: number | string;
 }

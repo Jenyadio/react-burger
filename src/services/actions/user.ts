@@ -1,12 +1,12 @@
 import { getUserDataRequest, updateUserDataRequest, saveTokens, refreshTokenRequest} from "../../utils/burger-api";
 import { getCookie, setCookie } from "../../utils/cookie";
-import { AppDispatch, AppThunk } from "../..";
+import { AppDispatch } from "../..";
 export const GET_USER_REQUEST: 'GET_USER_REQUEST' = 'GET_USER_REQUEST';
 export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = 'GET_USER_SUCCESS';
 export const GET_USER_FAILED: 'GET_USER_FAILED' = 'GET_USER_FAILED';
 export const UPDATE_USER_REQUEST: 'UPDATE_USER_REQUEST' = 'UPDATE_USER_REQUEST';
 export const UPDATE_USER_SUCCESS: 'UPDATE_USER_SUCCESS' = 'UPDATE_USER_SUCCESS';
-export const UPDATE_USER_FAILED: 'UPDATE_USER_FAILED' = 'UPDATE_USER_FAILED';
+export const UPDATE_USER_FAILED: 'UPDATE_USER_FAILED' = 'UPDATE_USER_FAILED'; 
 
 export type GetUserRequestAction = {
   readonly type: typeof GET_USER_REQUEST;
@@ -46,7 +46,7 @@ export type UpdateUserFailedAction = {
 
 export type UserActions = GetUserRequestAction | GetUserSuccessAction | GetUserFailedAction | UpdateUserRequestAction | UpdateUserSuccessAction | UpdateUserFailedAction;
 
-export const getUserData: AppThunk = () => {
+export const getUserData = () => {
     return function(dispatch: AppDispatch) {
       dispatch({
         type: GET_USER_REQUEST
@@ -77,7 +77,7 @@ export const getUserData: AppThunk = () => {
     };
   }
 
-  export const updateUserData: AppThunk = ({name, email, password}) => {
+  export const updateUserData = ({name, email, password}: {name: string; email: string; password: string | number}) => {
     return function(dispatch: AppDispatch) {
       dispatch({
         type: UPDATE_USER_REQUEST
@@ -109,7 +109,7 @@ export const getUserData: AppThunk = () => {
     };
   }
 
-  const refreshToken: any = (afterRefresh: any) => (dispatch: AppDispatch) => {
+  const refreshToken = (afterRefresh: { (dispatch: AppDispatch): void; (dispatch: AppDispatch): void; }) => (dispatch: AppDispatch) => {
     refreshTokenRequest()
      .then((res) => {
       saveTokens(res.refreshToken, res.accessToken);

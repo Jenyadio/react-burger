@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import { BurgerConstructor } from "../burger-constructor/burger-constructor";
 import mainStyles from "../../components/app-main/app-main.module.css";
-import { useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { burgerIngredients } from "../../selectors/selectors";
+import { useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 function AppMain() {
-  const { items, itemsRequest, itemsFailed } = useSelector(burgerIngredients);
+  const { items, itemsRequest, itemsFailed } = useAppSelector(burgerIngredients);
 
   const [active, setActive] = useState(false);
 

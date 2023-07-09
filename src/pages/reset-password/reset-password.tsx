@@ -6,22 +6,23 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./reset-password.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { resetPassword } from "../../services/actions/auth";
 import { auth } from "../../selectors/selectors";
 import { useForm } from "../../hooks/use-form";
+import { useAppDispatch, useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 const ResetPasswordPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { resetSuccess, resetFailed, message } = useSelector(auth);
+  const { resetSuccess, resetFailed, message } = useAppSelector(auth);
   const {values, handleChange} = useForm({});
   const { password, token } = values;
+  
 
   const reset = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (password && token) {
-      dispatch<any>(
+      dispatch(
         resetPassword({
           password,
           token,

@@ -3,7 +3,7 @@ import { Card } from "../types/ingredient";
 
 type UserData = {
   email?: string;
-  password?: number;
+  password?: number | string;
   name?: string;
   token?: string;
 }

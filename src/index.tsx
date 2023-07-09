@@ -12,9 +12,7 @@ import { AuthActions } from './services/actions/auth';
 import { GetOrderActions } from './services/actions/order-details';
 import { ConstructorIngredientsActions } from './services/actions/constructor-ingredients';
 import { UserActions } from './services/actions/user';
-import { ThunkAction } from 'redux-thunk';
-import { Action, ActionCreator } from 'redux';
-
+import { ThunkDispatch } from 'redux-thunk';
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
@@ -46,10 +44,6 @@ reportWebVitals();
 
 export type RootState = ReturnType<typeof store.getState>
 
-type ApplicationActions = GetItemsActions | AuthActions | GetOrderActions | ConstructorIngredientsActions | UserActions;
+export type ApplicationActions = GetItemsActions | AuthActions | GetOrderActions | ConstructorIngredientsActions | UserActions;
 
-export type AppThunk<TReturn = void> = ActionCreator<
-  ThunkAction<TReturn, Action, RootState, ApplicationActions>
->; 
-
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ThunkDispatch<RootState, never, ApplicationActions>

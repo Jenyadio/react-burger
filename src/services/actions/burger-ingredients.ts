@@ -1,6 +1,6 @@
 import { getIngredients } from "../../utils/burger-api";
 import { Card } from "../../types/ingredient";
-import { AppDispatch, AppThunk } from "../..";
+import { AppDispatch } from "../..";
 export const GET_ITEMS_REQUEST: 'GET_ITEMS_REQUEST' = 'GET_ITEMS_REQUEST';
 export const GET_ITEMS_SUCCESS: 'GET_ITEMS_SUCCESS' = 'GET_ITEMS_SUCCESS';
 export const GET_ITEMS_FAILED: 'GET_ITEMS_FAILED' = 'GET_ITEMS_FAILED';
@@ -20,7 +20,7 @@ export type GetItemsFailedAction = {
 
 export type GetItemsActions = GetItemsRequestAction | GetItemsSuccessAction | GetItemsFailedAction;
 
-export const getItems: AppThunk = () => {
+export const getItems = () => {
     return function(dispatch: AppDispatch) {
       dispatch({
         type: GET_ITEMS_REQUEST

@@ -4,6 +4,7 @@ import {
     GET_ORDER_SUCCESS,
   } from '../actions/order-details';
 import { GetOrderActions } from '../actions/order-details';
+import { Reducer } from 'redux';
 
 type OrderState = {
   orderNumber: number | null,
@@ -17,7 +18,7 @@ const initialState = {
     dataFailed: false,
 };
 
-export const orderDetailsReducer = (state = initialState, action: GetOrderActions): OrderState => {
+export const orderDetailsReducer: Reducer<OrderState,GetOrderActions> = (state = initialState, action: GetOrderActions) => {
     switch (action.type) {
         case GET_ORDER_REQUEST: {
           return {

@@ -1,6 +1,6 @@
 import { sendRequest } from "../../utils/burger-api";
 import { CLEAR_CONSTRUCTOR } from "./constructor-ingredients";
-import { AppDispatch, AppThunk } from "../..";
+import { AppDispatch } from "../..";
 export const GET_ORDER_REQUEST: 'GET_ORDER_REQUEST' = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS: 'GET_ORDER_SUCCESS' = 'GET_ORDER_SUCCESS';
 export const GET_ORDER_FAILED: 'GET_ORDER_FAILED' = 'GET_ORDER_FAILED';
@@ -21,7 +21,7 @@ export type GetOrderFailedAction = {
 export type GetOrderActions = GetOrderRequestAction | GetOrderSuccessAction | GetOrderFailedAction;
 
 
-export const getOrderNumber: AppThunk = (body) => {
+export const getOrderNumber = (body: string[]) => {
     return function(dispatch: AppDispatch) {
       dispatch({
         type: GET_ORDER_REQUEST

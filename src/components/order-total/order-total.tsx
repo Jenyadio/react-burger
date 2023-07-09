@@ -5,7 +5,6 @@ import {
 import orderStyles from "../../components/order-total/order-total.module.css";
 import {Modal} from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { useDispatch, useSelector } from "react-redux";
 import { getOrderNumber } from "../../services/actions/order-details";
 import { FC, useMemo } from "react";
 import {
@@ -14,7 +13,8 @@ import {
 } from "../../selectors/selectors";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
-import { Card } from '../../types/ingredient'
+import { Card } from '../../types/ingredient';
+import { useAppDispatch, useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 type OrderTotalProps = {
   ingredientsId: string[];
@@ -24,10 +24,10 @@ type OrderTotalProps = {
 }
 
 export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose, active }) => {
-  const dispatch = useDispatch();
-  const { orderNumber, dataRequest, dataFailed } = useSelector(orderDetails);
+  const dispatch = useAppDispatch();
+  const { orderNumber, dataRequest, dataFailed } = useAppSelector(orderDetails);
   const { totalConstructorIngredients, selectedBun, draggedIngredients } =
-    useSelector(constructorIngredients);
+  useAppSelector(constructorIngredients);
   const navigate = useNavigate();
 
   const total = useMemo(() => {
@@ -50,7 +50,7 @@ export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose
 
   const sendOrder = () => {
     if (getCookie("accessToken")) {
-      dispatch<any>(getOrderNumber(ingredientsId));
+      dispatch(getOrderNumber(ingredientsId));
     } else {
       navigate("/login");
     }

@@ -1,6 +1,6 @@
 import {registerRequest, loginRequest, restorePasswordRequest, resetPasswordRequest, logoutRequest } from "../../utils/burger-api";
 import { setCookie, deleteCookie } from "../../utils/cookie";
-import { AppDispatch, AppThunk } from "../..";
+import { AppDispatch } from "../..";
 export const REGISTER_REQUEST: 'REGISTER_REQUEST' = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS: 'REGISTER_SUCCESS' = 'REGISTER_SUCCESS';
 export const REGISTER_FAILED: 'REGISTER_FAILED' = 'REGISTER_FAILED';
@@ -16,6 +16,29 @@ export const RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED' = 'RESET_PASSWORD_FA
 export const LOGOUT_REQUEST: 'LOGOUT_REQUEST' = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS: 'LOGOUT_SUCCESS' = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILED: 'LOGOUT_FAILED' = 'LOGOUT_FAILED';
+
+type Register = {
+  email: string;
+  password: string | number;
+  name: string;
+  route: () => void;
+}
+
+type Login = {
+  email: string;
+  password: string | number;
+}
+
+type Restore = {
+  email: string;
+  route: () => void;
+}
+
+type Reset = {
+  password: string | number;
+  token: string;
+  route: () => void;
+}
 
 export type RegisterRequestAction = {
   readonly type: typeof REGISTER_REQUEST;
@@ -89,7 +112,7 @@ export type LogoutFailedAction = {
 export type AuthActions = RegisterRequestAction | RegisterSuccessAction | RegisterFailedAction | LoginRequestAction | LoginSuccessAction | LoginFailedAction | RestorePasswordRequestAction | RestorePasswordSuccessAction | RestorePasswordFailedAction | ResetPasswordRequestAction | ResetPasswordSuccessAction | ResetPasswordFailedAction | LogoutRequestAction | LogoutSuccessAction | LogoutFailedAction;
 
 
-export const registerUser: AppThunk = ({email, password, name, route}) => {
+export const registerUser = ({email, password, name, route}: Register) => {
     return function(dispatch: AppDispatch) {
       dispatch({
         type: REGISTER_REQUEST
@@ -114,7 +137,7 @@ export const registerUser: AppThunk = ({email, password, name, route}) => {
     };
   }
 
-  export const loginUser: AppThunk = ({email, password}) => {
+  export const loginUser = ({email, password}: Login) => {
     return function(dispatch: AppDispatch) {
       dispatch({
         type: LOGIN_REQUEST
@@ -143,7 +166,7 @@ export const registerUser: AppThunk = ({email, password, name, route}) => {
     };
   }
 
-  export const restorePassword: AppThunk = ({email, route}) => {
+  export const restorePassword = ({email, route}: Restore) => {
     return function(dispatch: AppDispatch) {
       dispatch({
         type: RESTORE_PASSWORD_REQUEST
@@ -166,7 +189,7 @@ export const registerUser: AppThunk = ({email, password, name, route}) => {
     };
   }
 
-  export const resetPassword: AppThunk = ({password, token, route}) => {
+  export const resetPassword = ({password, token, route}: Reset) => {
     return function(dispatch: AppDispatch) {
       dispatch({
         type: RESET_PASSWORD_REQUEST
@@ -188,7 +211,7 @@ export const registerUser: AppThunk = ({email, password, name, route}) => {
     };
   }
 
-  export const logoutUser: AppThunk = ({route}) => {
+  export const logoutUser = ({route}: {  route: () => void}) => {
     return function(dispatch: AppDispatch) {
       dispatch({
         type: LOGOUT_REQUEST,

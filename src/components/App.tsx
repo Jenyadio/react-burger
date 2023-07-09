@@ -14,15 +14,15 @@ import RegisterPage from "../pages/register/register";
 import ForgotPasswordPage from "../pages/forgot-password/forgot-password";
 import ResetPasswordPage from "../pages/reset-password/reset-password";
 import ProfilePage from "../pages/profile/profile";
-import OrdersPage from "../pages/orders/orders";
+import { FeedPage } from "../pages/feed/feed";
 import {ProtectedRouteElement} from "./protected-route-element/protected-route-element";
 import IngredientPage from "../pages/ingredient/ingredient";
 import NotFound404Page from "../pages/404-not-found/404-not-found";
 import {Modal} from "./modal/modal";
 import {IngredientDetails} from "./ingredient-details/ingredient-details";
 import { getItems } from "../services/actions/burger-ingredients";
-import { useDispatch, useSelector } from "react-redux";
 import { authStep } from "../selectors/selectors";
+import { useAppDispatch, useAppSelector } from "../hooks/dispatch-selector-hooks";
 
 function App() {
   const ModalSwitch = () => {
@@ -30,15 +30,15 @@ function App() {
     const navigate = useNavigate();
     let background = location.state && location.state.background;
     let item = location.state && location.state.item;
-    const dispatch = useDispatch();
-    const step = useSelector(authStep);
+    const dispatch = useAppDispatch();
+    const step = useAppSelector(authStep);
 
     const handleModalClose = () => {
       navigate(-1);
     };
 
     useEffect(() => {
-      dispatch<any>(getItems());
+      dispatch(getItems());
     }, [dispatch]);
 
     return (
@@ -86,8 +86,8 @@ function App() {
             element={<ProtectedRouteElement element={<ProfilePage />} />}
           />
           <Route
-            path="/orders"
-            element={<ProtectedRouteElement element={<OrdersPage />} />}
+            path="/feed"
+            element={<ProtectedRouteElement element={<FeedPage />} />}
           />
           <Route path="/ingredient/:id" element={<IngredientPage />} />
           <Route path="*" element={<NotFound404Page />} />

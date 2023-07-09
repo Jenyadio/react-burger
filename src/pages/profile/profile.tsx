@@ -8,31 +8,31 @@ import {
 import styles from "./profile.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/actions/auth";
-import { useDispatch, useSelector } from "react-redux";
 import { getUserData } from "../../services/actions/user";
 import { updateUserData } from "../../services/actions/user";
 import { auth, userInfo } from "../../selectors/selectors";
 import { useForm } from "../../hooks/use-form";
 import { userData } from "../../selectors/selectors";
+import { useAppDispatch, useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 const ProfilePage = () => {
   const [show, setShow] = useState(false);
-  const { logoutFailed, message } = useSelector(auth);
-  const { getUserFailed, updateUserFailed, errMessage } = useSelector(userInfo);
-  const user = useSelector(userData);
+  const { logoutFailed, message } = useAppSelector(auth);
+  const { getUserFailed, updateUserFailed, errMessage } = useAppSelector(userInfo);
+  const user = useAppSelector(userData);
   const {values, handleChange, resetForm} = useForm({});
   const { name, email, password } = values;
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch<any>(getUserData());
+    dispatch(getUserData());
   }, [dispatch]);
 
   const logout = (event: SyntheticEvent ) => {
     event.preventDefault();
-    dispatch<any>(
+    dispatch(
       logoutUser({ route: () => navigate("/login", { replace: true }) })
     );
   };
@@ -40,7 +40,7 @@ const ProfilePage = () => {
   const update = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (user) {
-      dispatch<any>(updateUserData({ 
+      dispatch(updateUserData({ 
         name: name ?? user.name, 
         email: email ?? user.email, 
         password: password ?? user.password 
@@ -131,7 +131,7 @@ const ProfilePage = () => {
         />
         <PasswordInput
           onChange={handleChange}
-          value={password ?? user?.password ?? ''}
+          value={String(password) ?? user?.password ?? ''}
           name={"password"}
           extraClass="mb-6"
           icon={"EditIcon"}

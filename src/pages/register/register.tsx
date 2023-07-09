@@ -7,22 +7,22 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./register.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../services/actions/auth";
 import { auth } from "../../selectors/selectors";
 import { useForm } from "../../hooks/use-form";
+import { useAppDispatch, useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { registerFailed, message } = useSelector(auth);
+  const { registerFailed, message } = useAppSelector(auth);
   const {values, handleChange} = useForm({});
   const { name, email, password } = values;
 
   const register = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (name && email && password) {
-      dispatch<any>(
+      dispatch(
         registerUser({
           email,
           password,
