@@ -13,6 +13,10 @@ import { GetOrderActions } from './services/actions/order-details';
 import { ConstructorIngredientsActions } from './services/actions/constructor-ingredients';
 import { UserActions } from './services/actions/user';
 import { ThunkDispatch } from 'redux-thunk';
+import { WsActions } from './services/actions/websocket';
+import { socketMiddleware } from './services/actions/websocket';
+import { wsUrl } from './services/actions/websocket';
+
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
@@ -25,7 +29,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl)));
 
 const store = createStore(rootReducer, enhancer);
 
@@ -44,6 +48,6 @@ reportWebVitals();
 
 export type RootState = ReturnType<typeof store.getState>
 
-export type ApplicationActions = GetItemsActions | AuthActions | GetOrderActions | ConstructorIngredientsActions | UserActions;
+export type ApplicationActions = GetItemsActions | AuthActions | GetOrderActions | ConstructorIngredientsActions | UserActions | WsActions;
 
 export type AppDispatch = ThunkDispatch<RootState, never, ApplicationActions>

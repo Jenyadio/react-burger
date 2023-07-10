@@ -10,7 +10,7 @@
 
 .orders_container {
     width: 600px;
-    max-height: 70vh;
+    max-height: 80vh;
     overflow: scroll; 
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -112,7 +112,13 @@
 .done_prep {
     width: 272px;
     max-width: 272px;
-    height: 206px;
+}
+
+.column {
+    max-height: 350px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .text {

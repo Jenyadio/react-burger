@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from "../feed/feed.module.css";
 import {
     CurrencyIcon,
   } from "@ya.praktikum/react-developer-burger-ui-components";
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../../services/actions/websocket';
+import { useAppDispatch, useAppSelector } from '../../hooks/dispatch-selector-hooks';
 
 const data = {
     success: true,
@@ -220,7 +222,19 @@ const data = {
   ]
 }
 
+
 export const FeedPage = () => {
+
+    const {orders , total, totalToday} = useAppSelector(store => store.websocket)
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch({ type: WS_CONNECTION_START });
+        return () => {
+          dispatch({ type: WS_CONNECTION_CLOSED });
+        };
+      }, [dispatch]);
+
   return (
     <main className={styles.main}>
         <h1>Лента заказов</h1>
@@ -408,17 +422,26 @@ export const FeedPage = () => {
                 <div className={styles.info_orders}>
                     <div className={styles.done_prep}>
                         <h3 className="text text_type_main-medium mb-6">Готовы:</h3>
-                        <div>
+                        <div className={styles.column}>
                             <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
                             <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
                             <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
                             <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
                             <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
+                            <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
+                            <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
+                            <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
+                            <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
+                            <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
+                            <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
+                            <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
+                            <p className="text text_type_digits-default mb-2" style={{color: '#00CCCC'}}>034533</p>
+                            
                         </div>
                     </div>
                     <div className={styles.done_prep}>
                         <h3 className="text text_type_main-medium mb-6">В работе:</h3>
-                        <div>
+                        <div className={styles.column}>
                             <p className="text text_type_digits-default mb-2">034533</p>
                             <p className="text text_type_digits-default mb-2">034533</p>
                             <p className="text text_type_digits-default mb-2">034533</p>
@@ -427,11 +450,11 @@ export const FeedPage = () => {
                 </div> 
                 <div className="mb-15">
                     <h3 className="text text_type_main-medium">Выполнено за все время:</h3>
-                    <p className={`${styles.text} text text_type_digits-large`}>28752</p>
+                    <p className={`${styles.text} text text_type_digits-large`}>{total}</p>
                 </div>
-                <div className="">
+                <div className="mb-15">
                     <h3 className="text text_type_main-medium">Выполнено за сегодня:</h3>
-                    <p className={`${styles.text} text text_type_digits-large`}>175</p>
+                    <p className={`${styles.text} text text_type_digits-large`}>{totalToday}</p>
                 </div>                 
             </section>
         </div>
