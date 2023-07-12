@@ -1,0 +1,24 @@
+.orders_container {
+    width: 600px;
+    max-height: 900px;
+    overflow: scroll; 
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.orders_container::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+.orders_container::-webkit-scrollbar-track {
+    background-color: #2F2F37;
+}
+ 
+.orders_container::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+}
+
+.orders {
+    display: flex;
+    flex-direction: column;
+}
