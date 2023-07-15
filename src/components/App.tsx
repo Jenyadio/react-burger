@@ -27,7 +27,9 @@ import {
   useAppSelector,
 } from "../hooks/dispatch-selector-hooks";
 import { FeedOrderDetails } from "./feed-order-details/feed-order-details";
-import { FeedOrderPage } from "../pages/feed-order/feed-order";
+import { OrderPage } from "../pages/order/order";
+import { ProfileForm } from "./profile-form/profile-form";
+import { ProfileOrders } from "./profile-orders/profile-orders";
 
 function App() {
   const ModalSwitch = () => {
@@ -95,13 +97,23 @@ function App() {
           <Route
             path="/profile"
             element={<ProtectedRouteElement element={<ProfilePage />} />}
-          ></Route>
-          <Route
-            path="/feed"
-            element={<ProtectedRouteElement element={<FeedPage />} />}
-          />
+          >
+            <Route
+              path="orders"
+              element={<ProtectedRouteElement element={<ProfileOrders />} />}
+            />
+            <Route
+              path="profile"
+              element={<ProtectedRouteElement element={<ProfileForm />} />}
+            />
+          </Route>
+          <Route path="/feed" element={<FeedPage />} />
           <Route path="/ingredient/:id" element={<IngredientPage />} />
-          <Route path="/feed/:id" element={<FeedOrderPage />} />
+          <Route path="/feed/:id" element={<OrderPage />} />
+          <Route
+            path="/profile/orders/:id"
+            element={<ProtectedRouteElement element={<OrderPage />} />}
+          />
           <Route path="*" element={<NotFound404Page />} />
         </Routes>
 
@@ -128,6 +140,25 @@ function App() {
                     totalPrice={totalPrice}
                   />
                 </Modal>
+              }
+            />
+            <Route
+              path="/profile/orders/:id"
+              element={
+                <ProtectedRouteElement
+                  element={
+                    <Modal onClose={handleModalClose}>
+                      <FeedOrderDetails
+                        name={name}
+                        ingredients={ingredients}
+                        number={number}
+                        createdAt={createdAt}
+                        status={status}
+                        totalPrice={totalPrice}
+                      />
+                    </Modal>
+                  }
+                />
               }
             />
           </Routes>

@@ -6,9 +6,12 @@ import { useAppSelector } from "../../hooks/dispatch-selector-hooks";
 type ProtectedRouteProps = {
   anonymous?: boolean;
   element: ReactElement;
-}
+};
 
-export const ProtectedRouteElement: FC<ProtectedRouteProps> = ({ anonymous = false, element }) => {
+export const ProtectedRouteElement: FC<ProtectedRouteProps> = ({
+  anonymous = false,
+  element,
+}) => {
   const loginSuccess = useAppSelector(authLoginSuccess);
   const token = localStorage.getItem("refreshToken");
   const location = useLocation();

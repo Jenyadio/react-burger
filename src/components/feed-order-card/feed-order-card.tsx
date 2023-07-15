@@ -33,7 +33,7 @@ export const FeedOrderCard: FC<FeedOrderCardProps> = ({ order }) => {
   return (
     <Link
       to={{
-        pathname: `/feed/${id}`,
+        pathname: `${location.pathname}/${id}`,
       }}
       state={{
         background: location,

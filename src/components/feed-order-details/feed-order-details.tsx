@@ -7,12 +7,12 @@ import styles from "../feed-order-details/feed-order-details.module.css";
 import { Card } from "../../types/ingredient";
 
 type FeedOrderDetailsProps = {
-  name: string;
-  ingredients: Card[];
-  number: number;
+  name: string | undefined;
+  ingredients: Card[] | undefined;
+  number: number | undefined;
   createdAt: string;
-  status: string;
-  totalPrice: number;
+  status: string | undefined;
+  totalPrice: number | undefined;
 };
 
 export const FeedOrderDetails: FC<FeedOrderDetailsProps> = ({
