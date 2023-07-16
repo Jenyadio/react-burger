@@ -19,7 +19,7 @@ import { UserActions } from "./services/actions/user";
 import { ThunkDispatch } from "redux-thunk";
 import { WsActions } from "./services/actions/websocket";
 import { socketMiddleware } from "./services/actions/websocket";
-import { wsUrl } from "./services/actions/websocket";
+import { wsActions } from "./services/actions/websocket";
 
 declare global {
   interface Window {
@@ -34,7 +34,7 @@ const root = ReactDOM.createRoot(
 );
 
 const enhancer = composeEnhancers(
-  applyMiddleware(thunk, socketMiddleware(wsUrl))
+  applyMiddleware(thunk, socketMiddleware(wsActions))
 );
 
 const store = createStore(rootReducer, enhancer);

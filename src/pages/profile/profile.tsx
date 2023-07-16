@@ -3,17 +3,13 @@ import styles from "./profile.module.css";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/actions/auth";
 import { getUserData } from "../../services/actions/user";
-import { auth, userInfo } from "../../selectors/selectors";
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_CLOSED,
 } from "../../services/actions/websocket";
 import { wsUrl } from "../../services/actions/websocket";
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../hooks/dispatch-selector-hooks";
+import { useAppDispatch } from "../../hooks/dispatch-selector-hooks";
 import { getCookie } from "../../utils/cookie";
 
 type ProfilePageProps = {

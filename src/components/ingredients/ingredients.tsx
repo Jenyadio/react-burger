@@ -2,7 +2,6 @@ import React, { FC, useMemo } from "react";
 import { Item } from "../item/item";
 import ingredientsStyles from "../../components/ingredients/ingredients.module.css";
 import { burgerItems } from "../../selectors/selectors";
-import { Card } from "../../types/ingredient";
 import { useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 type IngredientsProps = {

@@ -1,14 +1,9 @@
-import React, { FC, useMemo, useEffect } from "react";
+import React, { useMemo, useEffect } from "react";
 import styles from "./order.module.css";
 import { FeedOrderDetails } from "../../components/feed-order-details/feed-order-details";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/dispatch-selector-hooks";
 import { useAppDispatch } from "../../hooks/dispatch-selector-hooks";
-import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_CLOSED,
-} from "../../services/actions/websocket";
-import { wsUrl } from "../../services/actions/websocket";
 import { burgerItems } from "../../selectors/selectors";
 import { Card } from "../../types/ingredient";
 import { getOrderByNumber } from "../../services/actions/order-details";
