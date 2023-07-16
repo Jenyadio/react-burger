@@ -14,6 +14,10 @@ type FeedOrderCardProps = {
   order: WsOrders;
 };
 
+type Counter = {
+  [key: string]: number;
+};
+
 export const FeedOrderCard: FC<FeedOrderCardProps> = ({ order }) => {
   const { name, ingredients, number, createdAt, status } = order;
   const items = useAppSelector(burgerItems);
@@ -25,10 +29,6 @@ export const FeedOrderCard: FC<FeedOrderCardProps> = ({ order }) => {
       (item) => items.filter((ingredient) => ingredient._id === item)[0]
     );
   }, [ingredients, items]);
-
-  type Counter = {
-    [key: string]: number;
-  };
 
   const countIngredients = feedOrderIngredients?.reduce(
     (acc: Counter, item: Card) => {

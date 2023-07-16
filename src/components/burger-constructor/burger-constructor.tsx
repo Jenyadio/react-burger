@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, FC } from "react";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "../../components/burger-constructor/burger-constructor.module.css";
-import {OrderTotal} from "../order-total/order-total";
+import { OrderTotal } from "../order-total/order-total";
 import { useDrop } from "react-dnd";
 import {
   ADD_DRAGGED_INGREDIENT,
@@ -10,19 +10,26 @@ import {
 import { ConstructorElementWrapper } from "../constructor-element-wrapper/constructor-element-wrapper";
 import uuid from "react-uuid";
 import { constructorIngredients } from "../../selectors/selectors";
-import { Card } from '../../types/ingredient';
-import { useAppDispatch, useAppSelector } from "../../hooks/dispatch-selector-hooks";
+import { Card } from "../../types/ingredient";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/dispatch-selector-hooks";
 
 type BurgerConstructorProps = {
   active: boolean;
   onClose: () => void;
   onOpen: () => void;
-}
+};
 
-export const BurgerConstructor: FC<BurgerConstructorProps> = ({ active, onClose, onOpen }) => {
+export const BurgerConstructor: FC<BurgerConstructorProps> = ({
+  active,
+  onClose,
+  onOpen,
+}) => {
   const dispatch = useAppDispatch();
   const { draggedIngredients, selectedBun, totalConstructorIngredients } =
-  useAppSelector(constructorIngredients);
+    useAppSelector(constructorIngredients);
   const [ingredientsId, setIngredientsId] = useState<string[]>([]);
 
   const [, dropTarget] = useDrop({
@@ -48,7 +55,7 @@ export const BurgerConstructor: FC<BurgerConstructorProps> = ({ active, onClose,
   }, [draggedIngredients, selectedBun, dispatch]);
 
   useMemo(() => {
-    const id = totalConstructorIngredients.map((item: Card) => item._id);
+    const id = totalConstructorIngredients.map((item) => item._id);
     setIngredientsId(id);
   }, [totalConstructorIngredients]);
 
@@ -66,7 +73,7 @@ export const BurgerConstructor: FC<BurgerConstructorProps> = ({ active, onClose,
         ) : null}
         <div className={`${constructorStyles.boxInside} pr-2`}>
           {draggedIngredients.length ? (
-            draggedIngredients.map((item: Card, index: number) => (
+            draggedIngredients.map((item, index: number) => (
               <ConstructorElementWrapper
                 key={item.dragId}
                 index={index}
@@ -97,4 +104,4 @@ export const BurgerConstructor: FC<BurgerConstructorProps> = ({ active, onClose,
       />
     </section>
   );
-}
+};

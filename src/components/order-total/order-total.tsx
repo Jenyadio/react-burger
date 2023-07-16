@@ -3,7 +3,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import orderStyles from "../../components/order-total/order-total.module.css";
-import {Modal} from "../modal/modal";
+import { Modal } from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { getOrderNumber } from "../../services/actions/order-details";
 import { FC, useMemo } from "react";
@@ -13,27 +13,35 @@ import {
 } from "../../selectors/selectors";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
-import { Card } from '../../types/ingredient';
-import { useAppDispatch, useAppSelector } from "../../hooks/dispatch-selector-hooks";
+import { Card } from "../../types/ingredient";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/dispatch-selector-hooks";
 
 type OrderTotalProps = {
   ingredientsId: string[];
   onOpen: () => void;
   onClose: () => void;
   active: boolean;
-}
+};
 
-export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose, active }) => {
+export const OrderTotal: FC<OrderTotalProps> = ({
+  ingredientsId,
+  onOpen,
+  onClose,
+  active,
+}) => {
   const dispatch = useAppDispatch();
   const { orderNumber, dataRequest, dataFailed } = useAppSelector(orderDetails);
   const { totalConstructorIngredients, selectedBun, draggedIngredients } =
-  useAppSelector(constructorIngredients);
+    useAppSelector(constructorIngredients);
   const navigate = useNavigate();
 
   const total = useMemo(() => {
     let total;
     const ingredientsPrice = draggedIngredients.reduce(
-      (acc: number, item: Card) => acc + item.price,
+      (acc, item) => acc + item.price,
       0
     );
     if (selectedBun.length) {
@@ -45,7 +53,7 @@ export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose
   }, [draggedIngredients, selectedBun]);
 
   const isBunAdded = totalConstructorIngredients.find(
-    (item: Card) => item.type === "bun"
+    (item) => item.type === "bun"
   );
 
   const sendOrder = () => {
@@ -58,7 +66,10 @@ export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose
 
   return (
     <>
-      <div className={orderStyles.order} onClick={isBunAdded ? onOpen : onClose}>
+      <div
+        className={orderStyles.order}
+        onClick={isBunAdded ? onOpen : onClose}
+      >
         <div className={`${orderStyles.price} mr-10`}>
           <p className="text text_type_digits-medium mr-2">
             {total ? total : 0}
@@ -84,4 +95,4 @@ export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose
       )}
     </>
   );
-}
+};
