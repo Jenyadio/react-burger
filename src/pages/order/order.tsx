@@ -10,44 +10,52 @@ import {
 } from "../../services/actions/websocket";
 import { wsUrl } from "../../services/actions/websocket";
 import { burgerItems } from "../../selectors/selectors";
+import { Card } from "../../types/ingredient";
+import { getOrderByNumber } from "../../services/actions/order-details";
 
 export const OrderPage = () => {
   const { id } = useParams();
-  const { orders } = useAppSelector((store) => store.websocket);
+  const userOrder = useAppSelector((store) => store.orderDetails.userOrder);
   const items = useAppSelector(burgerItems);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START, payload: `${wsUrl}/all` });
-    return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED });
-    };
-  }, [dispatch]);
+    dispatch(getOrderByNumber(Number(id)));
+  }, [dispatch, id]);
 
-  const order = useMemo(() => {
-    return orders?.filter((item) => item._id === id)[0];
-  }, [orders, id]);
-
-  const ingredients = useMemo(() => {
-    return order?.ingredients.map(
+  const orderIngredients = useMemo(() => {
+    return userOrder?.ingredients.map(
       (item) => items.filter((ingredient) => ingredient._id === item)[0]
     );
-  }, [order, items]);
+  }, [items, userOrder]);
+
+  type Counter = {
+    [key: string]: number;
+  };
+
+  const countIngredients = orderIngredients?.reduce(
+    (acc: Counter, item: Card) => {
+      acc[item._id] = (acc[item._id] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
 
   const totalPrice = useMemo(() => {
-    return ingredients?.reduce((acc, item) => acc + item.price, 0);
-  }, [ingredients]);
+    return orderIngredients?.reduce((acc, item) => acc + item.price, 0);
+  }, [orderIngredients]);
 
   return (
     <section className={styles.main}>
       <FeedOrderDetails
-        name={order?.name}
-        ingredients={ingredients}
-        number={order?.number}
-        createdAt={String(order?.createdAt)}
-        status={order?.status}
+        name={userOrder?.name}
+        ingredients={orderIngredients}
+        number={userOrder?.number}
+        createdAt={String(userOrder?.createdAt)}
+        status={userOrder?.status}
         totalPrice={totalPrice}
+        countIngredients={countIngredients}
       />
     </section>
   );

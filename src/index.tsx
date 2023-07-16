@@ -13,7 +13,7 @@ import { rootReducer } from "../src/services/reducers/index";
 import thunk from "redux-thunk";
 import { GetItemsActions } from "../src/services/actions/burger-ingredients";
 import { AuthActions } from "./services/actions/auth";
-import { GetNumberActions } from "./services/actions/order-details";
+import { GetNumberAndOrderActions } from "./services/actions/order-details";
 import { ConstructorIngredientsActions } from "./services/actions/constructor-ingredients";
 import { UserActions } from "./services/actions/user";
 import { ThunkDispatch } from "redux-thunk";
@@ -57,7 +57,7 @@ export type RootState = ReturnType<typeof store.getState>;
 export type ApplicationActions =
   | GetItemsActions
   | AuthActions
-  | GetNumberActions
+  | GetNumberAndOrderActions
   | ConstructorIngredientsActions
   | UserActions
   | WsActions;

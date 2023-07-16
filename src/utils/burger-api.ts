@@ -1,5 +1,6 @@
 import { setCookie, getCookie } from "./cookie";
 import { Card } from "../types/ingredient";
+import { WsOrders } from "../types/websocket";
 
 type UserData = {
   email?: string;
@@ -41,6 +42,10 @@ type RefreshTokenResponse = ServerResponse<{
   refreshToken: string;
 }>;
 
+type UserOrderResponse = ServerResponse<{
+  orders: WsOrders;
+}>;
+
 const NORMA_API = "https://norma.nomoreparties.space/api";
 
 const checkResponse = <T>(res: Response): Promise<T> => {
@@ -78,6 +83,10 @@ export const orderRequest = (body: string[]) => {
       ingredients: body,
     }),
   });
+};
+
+export const orderByNumberRequest = (number: number) => {
+  return request<UserOrderResponse>(`/orders/${number}`);
 };
 
 export const registerRequest = ({ email, password, name }: UserData) => {

@@ -13,6 +13,7 @@ type FeedOrderDetailsProps = {
   createdAt: string;
   status: string | undefined;
   totalPrice: number | undefined;
+  countIngredients: { [key: string]: number } | undefined;
 };
 
 export const FeedOrderDetails: FC<FeedOrderDetailsProps> = ({
@@ -22,7 +23,16 @@ export const FeedOrderDetails: FC<FeedOrderDetailsProps> = ({
   createdAt,
   status,
   totalPrice,
+  countIngredients,
 }) => {
+  for (let key in countIngredients) {
+    ingredients?.forEach((item) =>
+      item._id === key ? (item.count = countIngredients[key]) : null
+    );
+  }
+
+  const ingredientsList = Array.from(new Set(ingredients));
+
   return (
     <div style={{ width: "100%" }}>
       <p
@@ -39,7 +49,7 @@ export const FeedOrderDetails: FC<FeedOrderDetailsProps> = ({
       </div>
       <p className="text text_type_main-medium mb-6">Состав:</p>
       <div className={styles.cards_list}>
-        {ingredients?.map((item, index) => (
+        {ingredientsList?.map((item, index) => (
           <div className={styles.card} key={index}>
             <div className={styles.image_container}>
               <img src={item.image_mobile} alt={item.name} />
@@ -47,7 +57,11 @@ export const FeedOrderDetails: FC<FeedOrderDetailsProps> = ({
             <p className="text text_type_main-default mr-4">{item.name}</p>
             <div className={styles.price}>
               <p className="text text_type_digits-default mr-2">
-                {item.type === "bun" ? `2 x ${item.price}` : item.price}
+                {item.type === "bun"
+                  ? `2 x ${item.price}`
+                  : item.count > 1
+                  ? `${item.count} x ${item.price}`
+                  : item.price}
               </p>
               <CurrencyIcon type="primary" />
             </div>

@@ -43,6 +43,7 @@ function App() {
     const createdAt = location.state && location.state.createdAt;
     const status = location.state && location.state.status;
     const totalPrice = location.state && location.state.totalPrice;
+    const countIngredients = location.state && location.state.countIngredients;
     const dispatch = useAppDispatch();
     const step = useAppSelector(authStep);
 
@@ -138,6 +139,7 @@ function App() {
                     createdAt={createdAt}
                     status={status}
                     totalPrice={totalPrice}
+                    countIngredients={countIngredients}
                   />
                 </Modal>
               }
@@ -155,6 +157,7 @@ function App() {
                         createdAt={createdAt}
                         status={status}
                         totalPrice={totalPrice}
+                        countIngredients={countIngredients}
                       />
                     </Modal>
                   }

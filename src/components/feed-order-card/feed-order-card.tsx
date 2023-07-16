@@ -8,17 +8,17 @@ import { WsOrders } from "../../types/websocket";
 import { useAppSelector } from "../../hooks/dispatch-selector-hooks";
 import { burgerItems } from "../../selectors/selectors";
 import { Link, useLocation } from "react-router-dom";
+import { Card } from "../../types/ingredient";
 
 type FeedOrderCardProps = {
   order: WsOrders;
 };
 
 export const FeedOrderCard: FC<FeedOrderCardProps> = ({ order }) => {
-  const { name, ingredients, number, createdAt, _id, status } = order;
+  const { name, ingredients, number, createdAt, status } = order;
   const items = useAppSelector(burgerItems);
   const location = useLocation();
   const maxIngredientsShown = 5;
-  const id = _id;
 
   const feedOrderIngredients = useMemo(() => {
     return ingredients.map(
@@ -26,20 +26,36 @@ export const FeedOrderCard: FC<FeedOrderCardProps> = ({ order }) => {
     );
   }, [ingredients, items]);
 
+  type Counter = {
+    [key: string]: number;
+  };
+
+  const countIngredients = feedOrderIngredients?.reduce(
+    (acc: Counter, item: Card) => {
+      acc[item._id] = (acc[item._id] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
+
   const totalPrice = useMemo(() => {
-    return feedOrderIngredients.reduce((acc, item) => acc + item.price, 0);
+    return feedOrderIngredients.reduce(
+      (acc, item) => acc + item.price * (item.type === "bun" ? 2 : 1),
+      0
+    );
   }, [feedOrderIngredients]);
 
   return (
     <Link
       to={{
-        pathname: `${location.pathname}/${id}`,
+        pathname: `${location.pathname}/${number}`,
       }}
       state={{
         background: location,
         name,
         number,
         feedOrderIngredients,
+        countIngredients,
         createdAt,
         status,
         totalPrice,
