@@ -1,0 +1,9 @@
+.main {
+    margin: 0 auto;
+    max-width: 1210px;
+}
+
+.body {
+    display: flex;
+    gap: 30px;
+}

@@ -5,25 +5,25 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import itemStyles from "../../components/item/item.module.css";
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
 import { totalIngredients } from "../../selectors/selectors";
 import { useLocation, Link } from "react-router-dom";
-import { Card } from '../../types/ingredient'
+import { Card } from "../../types/ingredient";
+import { useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 type ItemProps = {
-  item: Card,
-}
+  item: Card;
+};
 
 export const Item: FC<ItemProps> = ({ item }) => {
-  const totalConstructorIngredients = useSelector(totalIngredients);
+  const totalConstructorIngredients = useAppSelector(totalIngredients);
   const location = useLocation();
   const id = item._id;
 
   useMemo(() => {
     const quantity = totalConstructorIngredients.filter(
-      (elem: Card) => elem._id === item._id
+      (elem) => elem._id === item._id
     ).length;
-    totalConstructorIngredients.find((elem: Card) =>
+    totalConstructorIngredients.find((elem) =>
       elem._id === item._id && elem.type === "bun"
         ? (item.count = 2)
         : elem._id === item._id && elem.type !== "bun"
@@ -69,4 +69,4 @@ export const Item: FC<ItemProps> = ({ item }) => {
       </div>
     </Link>
   );
-}
+};

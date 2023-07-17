@@ -1,65 +1,48 @@
-import React, { FormEvent, SyntheticEvent, useEffect } from "react";
-import { useState } from "react";
-import {
-  PasswordInput,
-  Input,
-  Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import React, { FC, ReactNode, SyntheticEvent, useEffect } from "react";
 import styles from "./profile.module.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/actions/auth";
-import { useDispatch, useSelector } from "react-redux";
 import { getUserData } from "../../services/actions/user";
-import { updateUserData } from "../../services/actions/user";
-import { auth, userInfo } from "../../selectors/selectors";
-import { useForm } from "../../hooks/use-form";
-import { userData } from "../../selectors/selectors";
+import {
+  WS_CONNECTION_START,
+  WS_CONNECTION_CLOSED,
+} from "../../services/actions/websocket";
+import { wsUrl } from "../../services/actions/websocket";
 
-const ProfilePage = () => {
-  const [show, setShow] = useState(false);
-  const { logoutFailed, message } = useSelector(auth);
-  const { getUserFailed, updateUserFailed, errMessage } = useSelector(userInfo);
-  const user = useSelector(userData);
-  const {values, handleChange, resetForm} = useForm({});
-  const { name, email, password } = values;
+import { useAppDispatch } from "../../hooks/dispatch-selector-hooks";
+import { getCookie } from "../../utils/cookie";
 
+type ProfilePageProps = {
+  children?: ReactNode;
+};
+
+const ProfilePage: FC<ProfilePageProps> = ({ children }) => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch<any>(getUserData());
+    dispatch(getUserData());
   }, [dispatch]);
 
-  const logout = (event: SyntheticEvent ) => {
+  const logout = (event: SyntheticEvent) => {
     event.preventDefault();
-    dispatch<any>(
+    dispatch(
       logoutUser({ route: () => navigate("/login", { replace: true }) })
     );
   };
 
-  const update = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (user) {
-      dispatch<any>(updateUserData({ 
-        name: name ?? user.name, 
-        email: email ?? user.email, 
-        password: password ?? user.password 
-      }));
-    }
-  };
+  const accessToken = getCookie("accessToken");
 
-  if (logoutFailed) {
-    alert(`Ошибка: ${message}. Попробуйте еще раз.`);
-  }
-
-  if (getUserFailed || updateUserFailed) {
-    alert(`Ошибка: ${errMessage}. Попробуйте еще раз.`);
-  }
-
-  const reset = () => {
-    resetForm()
-    setShow(false);
-  };
+  useEffect(() => {
+    dispatch({
+      type: WS_CONNECTION_START,
+      payload: `${wsUrl}?token=${accessToken}`,
+    });
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
+  }, [dispatch, accessToken]);
 
   return (
     <div className={styles.container}>
@@ -67,7 +50,7 @@ const ProfilePage = () => {
         <ul className="text text_type_main-medium">
           <li>
             <NavLink
-              to="/profile"
+              to="/profile/profile"
               style={({ isActive }) => {
                 return {
                   color: isActive ? "#F2F2F3" : "#8585AD",
@@ -79,7 +62,7 @@ const ProfilePage = () => {
           </li>
           <li className="text text_type_main-medium pb-4 pt-4">
             <NavLink
-              to="/orders"
+              to="/profile/orders"
               style={({ isActive }) => {
                 return {
                   color: isActive ? "#F2F2F3" : "#8585AD",
@@ -103,63 +86,17 @@ const ProfilePage = () => {
             </NavLink>
           </li>
         </ul>
-        <p className="text text_type_main-default text_color_inactive mt-20">
-          В этом разделе вы можете <br /> изменить свои персональные данные
-        </p>
-      </div>
-      <form className={styles.form} onSubmit={update} onFocus={() => setShow(true)}>
-        <Input
-          type={"text"}
-          placeholder={"Имя"}
-          onChange={handleChange}
-          value={name ?? user?.name ?? ''}
-          name={"name"}
-          extraClass="mb-6"
-          icon={"EditIcon"}
-          required
-          maxLength={20}
-        />
-        <Input
-          type={"email"}
-          onChange={handleChange}
-          placeholder={"Логин"}
-          value={email ?? user?.email ?? ''}
-          name={"email"}
-          extraClass="mb-6"
-          icon={"EditIcon"}
-          required
-        />
-        <PasswordInput
-          onChange={handleChange}
-          value={password ?? user?.password ?? ''}
-          name={"password"}
-          extraClass="mb-6"
-          icon={"EditIcon"}
-          required
-          minLength={6}
-        />
-        {show && (
-          <div>
-            <Button
-              htmlType="submit"
-              type="primary"
-              size="small"
-              extraClass="ml-2 mt-3"
-            >
-              Сохранить
-            </Button>
-            <Button
-              htmlType="reset"
-              type="primary"
-              size="small"
-              extraClass="ml-2 mt-3"
-              onClick={reset}
-            >
-              Отмена
-            </Button>
-          </div>
+        {location.pathname === "/profile/profile" ? (
+          <p className="text text_type_main-default text_color_inactive mt-20">
+            В этом разделе вы можете <br /> изменить свои персональные данные
+          </p>
+        ) : (
+          <p className="text text_type_main-default text_color_inactive mt-20">
+            В этом разделе вы можете <br /> просмотреть свою историю заказов
+          </p>
         )}
-      </form>
+      </div>
+      <Outlet></Outlet>
     </div>
   );
 };

@@ -3,9 +3,8 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import orderStyles from "../../components/order-total/order-total.module.css";
-import {Modal} from "../modal/modal";
+import { Modal } from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { useDispatch, useSelector } from "react-redux";
 import { getOrderNumber } from "../../services/actions/order-details";
 import { FC, useMemo } from "react";
 import {
@@ -14,38 +13,51 @@ import {
 } from "../../selectors/selectors";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
-import { Card } from '../../types/ingredient'
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/dispatch-selector-hooks";
 
 type OrderTotalProps = {
   ingredientsId: string[];
   onOpen: () => void;
   onClose: () => void;
   active: boolean;
-}
+};
 
-export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose, active }) => {
-  const dispatch = useDispatch();
-  const { orderNumber, dataRequest, dataFailed } = useSelector(orderDetails);
+export const OrderTotal: FC<OrderTotalProps> = ({
+  ingredientsId,
+  onOpen,
+  onClose,
+  active,
+}) => {
+  const dispatch = useAppDispatch();
+  const { orderNumber, dataRequest, dataFailed } = useAppSelector(orderDetails);
   const { totalConstructorIngredients, selectedBun, draggedIngredients } =
-    useSelector(constructorIngredients);
+    useAppSelector(constructorIngredients);
   const navigate = useNavigate();
 
   const total = useMemo(() => {
+    let total;
     const ingredientsPrice = draggedIngredients.reduce(
-      (acc: number, item: Card) => acc + item.price,
+      (acc, item) => acc + item.price,
       0
     );
-    const total = selectedBun.price * 2 + ingredientsPrice;
+    if (selectedBun.length) {
+      total = selectedBun[0].price * 2 + ingredientsPrice;
+    } else {
+      total = ingredientsPrice;
+    }
     return total;
   }, [draggedIngredients, selectedBun]);
 
   const isBunAdded = totalConstructorIngredients.find(
-    (item: Card) => item.type === "bun"
+    (item) => item.type === "bun"
   );
 
   const sendOrder = () => {
     if (getCookie("accessToken")) {
-      dispatch<any>(getOrderNumber(ingredientsId));
+      dispatch(getOrderNumber(ingredientsId));
     } else {
       navigate("/login");
     }
@@ -53,7 +65,10 @@ export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose
 
   return (
     <>
-      <div className={orderStyles.order} onClick={isBunAdded ? onOpen : onClose}>
+      <div
+        className={orderStyles.order}
+        onClick={isBunAdded ? onOpen : onClose}
+      >
         <div className={`${orderStyles.price} mr-10`}>
           <p className="text text_type_digits-medium mr-2">
             {total ? total : 0}
@@ -79,4 +94,4 @@ export const OrderTotal: FC<OrderTotalProps> = ({ ingredientsId, onOpen, onClose
       )}
     </>
   );
-}
+};

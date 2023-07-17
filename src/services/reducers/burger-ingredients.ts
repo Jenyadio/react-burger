@@ -4,13 +4,22 @@ import {
     GET_ITEMS_SUCCESS,
   } from '../actions/burger-ingredients';
 
-const initialState = {
+import { Card } from '../../types/ingredient';
+import { GetItemsActions } from '../actions/burger-ingredients';
+
+type IngredientsState = {
+  items: Card[],
+  itemsRequest: boolean,
+  itemsFailed: boolean,
+}
+
+const initialState: IngredientsState = {
     items: [],
     itemsRequest: false,
     itemsFailed: false,
 };
 
-export const burgerIngredientsReducer = (state = initialState, action) => {
+export const burgerIngredientsReducer = (state = initialState, action: GetItemsActions): IngredientsState => {
     switch (action.type) {
         case GET_ITEMS_REQUEST: {
           return {

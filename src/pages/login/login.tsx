@@ -6,21 +6,21 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../services/actions/auth";
 import { auth } from "../../selectors/selectors";
 import { useForm } from "../../hooks/use-form";
+import { useAppDispatch, useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
-  const { loginFailed, message } = useSelector(auth);
+  const dispatch = useAppDispatch();
+  const { loginFailed, message } = useAppSelector(auth);
   const {values, handleChange} = useForm({});
   const { email, password } = values;
 
   const login = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (email && password) {
-      dispatch<any>(
+      dispatch(
         loginUser({
           email,
           password,

@@ -4,16 +4,15 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
 import {
   DELETE_DRUGGED_INGREDIENT,
   MOVE_INGREDIENT,
 } from "../../services/actions/constructor-ingredients";
 import { XYCoord } from "dnd-core";
 import { useDrop, useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
 import { draggedConstructorIngredients } from "../../selectors/selectors";
-import { Card } from '../../types/ingredient'
+import { Card } from '../../types/ingredient';
+import { useAppDispatch, useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 type ConstructorElementProps = {
   index: number;
@@ -26,10 +25,10 @@ type DragItem = {
 }
 
 export const ConstructorElementWrapper: FC<ConstructorElementProps> = ({ index, item }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ref = useRef<HTMLDivElement>(null);
 
-  const draggedIngredients = useSelector(draggedConstructorIngredients);
+  const draggedIngredients = useAppSelector(draggedConstructorIngredients);
 
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {

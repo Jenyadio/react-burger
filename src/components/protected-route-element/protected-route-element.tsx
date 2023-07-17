@@ -1,15 +1,18 @@
 import { FC, ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import { authLoginSuccess } from "../../selectors/selectors";
+import { useAppSelector } from "../../hooks/dispatch-selector-hooks";
 
 type ProtectedRouteProps = {
   anonymous?: boolean;
   element: ReactElement;
-}
+};
 
-export const ProtectedRouteElement: FC<ProtectedRouteProps> = ({ anonymous = false, element }) => {
-  const loginSuccess = useSelector(authLoginSuccess);
+export const ProtectedRouteElement: FC<ProtectedRouteProps> = ({
+  anonymous = false,
+  element,
+}) => {
+  const loginSuccess = useAppSelector(authLoginSuccess);
   const token = localStorage.getItem("refreshToken");
   const location = useLocation();
 
