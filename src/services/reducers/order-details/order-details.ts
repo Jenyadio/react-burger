@@ -5,10 +5,10 @@ import {
   GET_ORDER_FAILED,
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
-} from "../actions/order-details";
-import { GetNumberAndOrderActions } from "../actions/order-details";
+} from "../../actions/order-details";
+import { GetNumberAndOrderActions } from "../../actions/order-details";
 import { Reducer } from "redux";
-import { WsOrders } from "../../types/websocket";
+import { WsOrders } from "../../../types/websocket";
 
 type OrderState = {
   orderNumber: number | null;
@@ -19,7 +19,7 @@ type OrderState = {
   orderFailed: boolean;
 };
 
-const initialState = {
+export const initialState = {
   orderNumber: null,
   dataRequest: false,
   dataFailed: false,
