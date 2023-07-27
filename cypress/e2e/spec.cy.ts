@@ -1,6 +1,5 @@
 import "@4tw/cypress-drag-drop";
 
-const url = "http://localhost:3000/";
 const login = "test-user@yandex.ru";
 const password = "12435687";
 
@@ -14,8 +13,7 @@ const ingredientName = "p[data-test=ingredient-name]";
 describe("burger constructor test", () => {
   it("should drag ingredients and create order", () => {
     cy.viewport(1300, 900);
-    cy.visit(`${url}login`);
-
+    cy.visit(`login`);
     cy.get(loginEmailInput).type(login);
     cy.get(loginPasswordInput).type(password);
     cy.get("button").contains("Войти").click();
@@ -30,7 +28,7 @@ describe("burger constructor test", () => {
 
   it("should open modal", () => {
     cy.viewport(1300, 900);
-    cy.visit(url);
+    cy.visit("/");
 
     cy.get("#bun div a").first().click();
     cy.get(modalHeader, { timeout: 10000 })
@@ -39,6 +37,6 @@ describe("burger constructor test", () => {
     cy.get(ingredientName).should("be.visible");
 
     cy.get(modalHeader).next().click();
-    cy.url().should("eq", url);
+    cy.url().should("eq", "http://localhost:3000/");
   });
 });
