@@ -71,7 +71,10 @@ export const BurgerConstructor: FC<BurgerConstructorProps> = ({
             thumbnail={selectedBun[0].image}
           />
         ) : null}
-        <div className={`${constructorStyles.boxInside} pr-2`}>
+        <div
+          className={`${constructorStyles.boxInside} pr-2`}
+          data-test="burger-constructor"
+        >
           {draggedIngredients.length ? (
             draggedIngredients.map((item, index: number) => (
               <ConstructorElementWrapper

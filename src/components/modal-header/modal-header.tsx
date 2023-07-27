@@ -5,16 +5,15 @@ import modalHeaderStyles from "../modal-header/modal-header.module.css";
 type ModalHeaderProps = {
   children?: string;
   onClose: () => void;
-}
+};
 
 export const ModalHeader: FC<ModalHeaderProps> = ({ children, onClose }) => {
   return (
     <header className={modalHeaderStyles.header}>
-      <h2 className="text text_type_main-large">{children}</h2>
-      <CloseIcon
-        onClick={onClose}
-        type="primary"
-      />
+      <h2 className="text text_type_main-large" data-test="modal-header">
+        {children}
+      </h2>
+      <CloseIcon onClick={onClose} type="primary" />
     </header>
   );
-}
+};

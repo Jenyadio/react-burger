@@ -9,7 +9,12 @@ function OrderDetails() {
 
   return (
     <div className={orderStyles.box}>
-      <p className="text text_type_digits-large pt-10 mb-8">{number}</p>
+      <p
+        className="text text_type_digits-large pt-10 mb-8"
+        data-test="order-number"
+      >
+        {number}
+      </p>
       <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
       <img className="mb-15" src={img} alt="check icon" />
       <p className="text text_type_main-default mb-2">
