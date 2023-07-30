@@ -3,9 +3,9 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
-} from "../actions/websocket";
-import { WsActions } from "../actions/websocket";
-import { WsOrders } from "../../types/websocket";
+} from "../../actions/websocket";
+import { WsActions } from "../../actions/websocket";
+import { WsOrders } from "../../../types/websocket";
 
 type WsState = {
   wsConnected: boolean;
@@ -16,7 +16,7 @@ type WsState = {
   error?: Event;
 };
 
-const initialState: WsState = {
+export const initialState: WsState = {
   wsConnected: false,
   orders: null,
   total: 0,

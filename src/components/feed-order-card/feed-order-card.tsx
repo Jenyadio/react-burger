@@ -25,9 +25,9 @@ export const FeedOrderCard: FC<FeedOrderCardProps> = ({ order }) => {
   const maxIngredientsShown = 5;
 
   const feedOrderIngredients = useMemo(() => {
-    return ingredients.map(
-      (item) => items.filter((ingredient) => ingredient._id === item)[0]
-    );
+    return ingredients
+      .map((item) => items.filter((ingredient) => ingredient._id === item)[0])
+      .filter((item) => item !== undefined);
   }, [ingredients, items]);
 
   const countIngredients = feedOrderIngredients?.reduce(
