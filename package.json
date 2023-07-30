@@ -34,7 +34,8 @@
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "deploy-script": "npm run build && scp -r ./build/* jenyadio@158.160.74.94:/home/jenyadio/stellar-frontend"
   },
   "eslintConfig": {
     "extends": [
