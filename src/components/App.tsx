@@ -170,7 +170,7 @@ function App() {
     );
   };
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/react-burger">
       <div className="App">
         <ModalSwitch />
       </div>
